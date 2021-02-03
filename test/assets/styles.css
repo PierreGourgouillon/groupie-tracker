@@ -1,0 +1,215 @@
+body{
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+
+#title-menu{
+margin-top: 300px;
+  text-align: center;
+  font-size: 5.6rem;
+  color: #0B79E7;
+}
+
+#a-color{
+  color: #0B79E7;
+}
+
+#title-members{
+  text-decoration: underline;
+}
+
+.div-API{
+    color:  #0B79E7;
+    width: auto;
+    height: 300px;
+    display: flex; 
+    margin: auto;
+    box-sizing:border-box;
+}
+
+.card-name-artist{
+  color: white;
+}
+
+h1.title-API{
+    margin:auto;
+    text-align: center;
+    font-size: 5.6rem;
+}
+
+.card {
+    width: 400px; /*1*/
+    margin: 0px auto; /*2*/
+    background-color: #0B79E7;/*3*/
+    box-shadow: 0px 5px 20px #999; /*4*/
+    border-radius: 8px;
+    color: white;
+}
+  .card a { /*5*/
+    color: white; 
+    text-decoration: none;
+  }
+  .card:hover .card-image img { /*6*/
+    width: 160%;
+    filter: grayscale(0);
+  }
+
+.card:hover .card-image img { /*6*/
+  width: 160%;
+  filter: grayscale(0);
+}
+
+.card-image {
+  height: 250px;/*1*/
+  position: relative;/*2*/
+  overflow: hidden;/*3*/
+  border-radius: 8px;
+}
+
+.card-image img {
+  width: 100%;/*4*/
+    /*5 - Méthode de centrage en fonction de la taille de l'image */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: grayscale(1);/*6*/
+    /*7 - Transition */
+  transition-property: filter width; 
+  transition-duration: .3s;
+  transition-timing-function: ease;
+}
+
+.card-body {
+  text-align:center;  /*1*/
+  padding: 15px 20px; /*2*/
+  box-sizing: border-box; /*3*/
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px,1fr));
+  grid-auto-rows: auto;
+  grid-gap: 4rem;
+  margin-top: 15px;
+}
+
+.card-concert-dates, .card-member, .card-first-album, .card-creation-date {
+  width: 400px; /*1*/
+  margin: 0px auto; /*2*/
+  background-color: #0B79E7; /*3*/
+  box-shadow: 0px 5px 20px #999; /*4*/
+  border-radius: 8px;
+  position: fixed;
+  top: 80px;
+  right: 10px;
+  text-align: center;
+}
+  
+.card-date-creation, .card-members {
+color:white;
+}
+  
+a:link, a:visited{
+  text-decoration: none;
+  color: white;
+}
+
+a:hover, a:active{
+  text-decoration: none;
+  color: white;
+}
+
+.div-btn{
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  top: 85%;
+  transform: translateX(-50%);
+}
+
+.btn{
+  width: 90px;
+  height: 90px;
+  border-radius: 100px;
+  text-align: center;
+  background: #0B79E7;
+  color: white;
+  font-family: 'Noto Sans JP', sans-serif;
+  border-color: white;
+}
+
+h4{
+  text-align: center;
+}
+
+.image-artist img{
+  width: 100%;
+  height: 250px;
+}
+
+
+h2{
+  text-align: center;
+}
+
+#CARD{
+ height: 510px;
+ background-color:#0B79E7;
+}
+
+li{
+  list-style: none;
+}
+
+.COLORS{
+  color: white;
+}
+
+#error{
+  font-size: 150px;
+  text-align: center;
+  color :rgb(60, 62, 68);
+}
+
+#name-ARTIST{
+  text-align: center;
+}
+
+.DIV-BTN{
+  position: fixed;
+  z-index: 100;
+  left: 45%;
+  top: 85%;
+  transform: translateX(-50%);
+  color: white;
+}
+
+.BTN{
+  width: 90px;
+  height: 90px;
+  border-radius: 100px;
+  text-align: center;
+  background: #0B79E7;
+  color: white;
+  font-family: 'Noto Sans JP', sans-serif;
+  border-color: white;
+}
+
+
+.div-btns{
+  position: fixed;
+  z-index: 100;
+  left: 55%;
+  top: 85%;
+  transform: translateX(-50%);
+}
+
+#galere{
+  width: 90px;
+  height: 90px;
+}
+
+#map{ /* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
+  height:400px;
+}

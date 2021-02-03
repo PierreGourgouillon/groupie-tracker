@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link type="text/css" rel="stylesheet" href="/static/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="/static/file.js"></script>
+    
+
+    <title>API</title>
+</head>
+
+<body>
+    <div class="div-API"><h1 class="title-API">MUSIC API</h1></div>
+    
+    <div class="div-btn">
+        <button class="btn"type="button" onclick="javascript:randomArtist()">RANDOM ARTIST</button>
+    </div>
+
+    <input list="browsers" name="browser" id="browser">
+    <datalist id="browsers">
+    {{$MDR := .}}
+        {{range $ID,$v:= $MDR.Artists}}
+            
+            <option value="{{$ID}}">{{(index $MDR.Artists $ID).Name}}</option>
+
+        {{range (index $MDR.Artists $ID).Members }}
+            <option value="{{$ID}}">{{.}}</option>
+        {{end}}
+            <option value="{{$ID}}">{{(index $MDR.Artists $ID).FirstAlbum}}</option>
+            <option value="{{$ID}}">{{(index $MDR.Artists $ID).CreationDate}}</option>
+        {{end}}
+
+    {{range $ID,$v := $MDR.Locations.Index}}
+        {{range (index $MDR.Locations.Index $ID).Locations}}
+            <option value="{{$ID}}">{{.}}</option>
+        {{end}}
+    {{end}}
+    </datalist>
+ 
+
+    <div class="cards">
+    {{ $API := . }}
+    {{ range $ID, $v := $API.Artists }}
+    <div class="card">
+        <a href="/artist/{{$ID}}">
+            <div class="card-image"><img src={{ (index $API.Artists $ID).Image }}></div>
+
+            <div class="card-body">
+                <div class="card-name-artist">
+                    <h1 class="color">{{ (index $API.Artists $ID).Name }}</h1>
+                </div>
+                <div class="card-date-creation">
+                    <p>Creation date : {{ (index $API.Artists $ID).CreationDate }}</p>
+                </div>
+                <div class="card-members">
+                    <p id="title-members" class="color">MEMBERS</p>
+                    <p>| {{range (index $API.Artists $ID).Members }}{{ . }} | {{ end }}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    {{ end }}
+</div>
+</body>
+</html>
