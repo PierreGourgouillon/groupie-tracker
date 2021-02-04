@@ -7,7 +7,7 @@ html,body{
 body{
     color: white;
     font-family: 'Open Sans', sans-serif;
-    background-color: black;
+    background-color: #EAEDED;
 }
 
 a{
@@ -245,12 +245,21 @@ header div{
 
 /* Filter Menu*/
 
+
 .flip-card {
     background-color: transparent;
     width: 300px;
-    height: 400px;
+    height: 350px;
     perspective: 1000px;
     border-radius: 15px;
+    margin-right: 2%;
+    margin-top: 2%;
+  }
+
+  .flip-card-front img{
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
   }
   
   .flip-card-inner {
@@ -258,7 +267,8 @@ header div{
     width: 100%;
     height: 100%;
     text-align: center;
-    transition: transform 1.6s;
+    border-radius: 15px;
+    transition: transform 1.2s;
     transform-style: preserve-3d;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   }
@@ -278,22 +288,26 @@ header div{
   .flip-card-front {
     background-color: #bbb;
     color: black;
+    border-radius: 15px;
   }
   
   .flip-card-back {
-    background-color: #2980b9;
+    background-color: #F07404;
     color: white;
     transform: rotateY(180deg);
-    border-radius: 30px;
+    border-radius: 15px;
   }
 
   .flip-card-front img{
-      border-radius: 30px;
+      border-radius: 15px;
   }
 
-  .flex-box{
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: row;
-      justify-content: space-around;
-    }
+.flex-box{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 50px;
+    margin-left: 5%;
+    margin-right: 5%
+}
