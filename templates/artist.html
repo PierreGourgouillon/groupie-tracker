@@ -42,8 +42,17 @@
         </div>
     </header>
 
+    {{ $API := . }}
+    {{ $ID := .ID }}
     <div id="div-image-artist">
-        <img src="/static/images/pop_smoke.jpg">
+        <img src={{ (index $API.Artists $ID).Image }}>
+    </div>
+
+    <div id="text-artist">
+        <h1>{{ (index $API.Artists $ID).Name }}</h1>
+        <p>Les membres du groupes sont: {{range (index $API.Artists $ID).Members }}{{  . }}, {{ end }}</p>
+        <p>{{ (index $API.Artists $ID).Name }} a fait son apparition en {{ (index $API.Artists $ID).CreationDate }}</p>
+        <p>Son premier album est sortie le {{ (index $API.Artists $ID).FirstAlbum }}</p>
     </div>
 
 </body>

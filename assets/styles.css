@@ -328,6 +328,19 @@ header div{
     border-radius: 66px;
 }
 
+#text-artist{
+    text-align: center;
+    color: black;
+}
+
+#text-artist h1{
+    font-size: 60px;
+}
+
+#text-artist p{
+    font-size: 23px;
+}
+
 
 
 

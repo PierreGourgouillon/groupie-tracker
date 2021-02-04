@@ -3,17 +3,6 @@ function randomArtist() {
     document.location.href="http://localhost:8080/artist/"+random;
 }
 
-function displayDate(thingId) {
-    var targetElement;
-    targetElement = document.getElementById(thingId) ;
-    if (targetElement.style.display == "none")
-    {
-        targetElement.style.display = "" ;
-    } else {
-        targetElement.style.display = "none" ;
-    }
-}
-
 function petitTest() {
     var valInput = document.getElementById('search').value;
     var valData = document.getElementById('searchs').options;
