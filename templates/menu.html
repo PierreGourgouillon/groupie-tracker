@@ -16,8 +16,8 @@
             <a href="/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
         </div>
 
-        <div id="form-search">
-            <input onsubmit="event.preventDefault();" name="search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
+        <div class="form-search">
+            <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
             
             <datalist id="searchs" name="searchs">
                 {{$MDR := .}}
@@ -38,7 +38,7 @@
             {{end}}
             </datalist>
             
-            <button id="button" onclick="javascript:petitTest();" type="submit">Go</button>    
+            <button class="button" onclick="javascript:petitTest();" type="submit">Go</button>    
         </div>
     </header>
 

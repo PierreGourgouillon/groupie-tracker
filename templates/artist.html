@@ -3,9 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="/static/file.js"></script>
     <title>Document</title>
 </head>
 <body>
-    
+
+    <header>
+        <div class="logo-ynov">
+            <a href="/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
+        </div>
+
+        <div class="form-search">
+            <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
+            
+            <datalist id="searchs" name="searchs">
+                {{$MDR := .}}
+                {{range $ID,$v:= $MDR.Artists}}
+                <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).Name}} | Artist - Band">
+        
+                {{range (index $MDR.Artists $ID).Members }}
+                    <option data-id="{{$ID}}" value="{{.}} | Member"></option>
+                {{end}}
+                    <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).FirstAlbum}} | First Album"></option>
+                    <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).CreationDate}} | Creation date"></option>
+                {{end}}
+        
+            {{range $ID,$v := $MDR.Locations.Index}}
+                {{range (index $MDR.Locations.Index $ID).Locations}}
+                    <option data-id="{{$ID}}" value="{{.}} | Locations"></option>
+                {{end}}
+            {{end}}
+            </datalist>
+            
+            <button class="button" onclick="javascript:petitTest();" type="submit">Go</button>    
+        </div>
+    </header>
+
+    <div id="div-image-artist">
+        <img src="/static/images/pop_smoke.jpg">
+    </div>
+
 </body>
 </html>

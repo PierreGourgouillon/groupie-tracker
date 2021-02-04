@@ -7,7 +7,7 @@ html,body{
 body{
     color: white;
     font-family: 'Open Sans', sans-serif;
-    background-color: #EAEDED;
+    background-color: #d7dddd;
 }
 
 a{
@@ -24,12 +24,11 @@ a{
     text-align: center;
     border-radius: 32px;
     border: none;
-    background-color: white;
-    opacity: 48%;
+    background-color: rgba(255,255,255, 0.48)
 }
 .button-style a{
     font-weight: bold;
-    color: blue;
+    color: white;
     font-size: 25px;
 }
 
@@ -174,7 +173,7 @@ header div{
     display: inline-block;
 }
 
-#form-search{
+.form-search{
     margin-right: 25px;
     margin-top: 1%;
     float: right;
@@ -197,21 +196,21 @@ header div{
     --bez: cubic-bezier(0, 0, 0.43, 1.49);
   }
   
-#form-search {
+.form-search {
   position: relative;
   width: 30rem;
   background: var(--color-brand);
   border-radius: var(--rad);
 }
 
-#search, #button {
+.design-search, .button {
   height: var(--height);
   border: 0;
   color: var(--color-dark);
   font-size: 1.4rem;
 }
 
-#search[type="text"] {
+.design-search[type="text"] {
   outline: 0; 
   width: 90%;
   background: var(--color-light);
@@ -224,7 +223,7 @@ header div{
   position: relative;
 }
 
-#button {
+.button {
   display: none; 
   position: absolute;
   top: 0;
@@ -234,12 +233,12 @@ header div{
   background: var(--color-brand);
   border-radius: 0 var(--rad) var(--rad) 0;
 }
-#search:not(:placeholder-shown) {
+.design-search:not(:placeholder-shown) {
   border-radius: var(--rad) 0 0 var(--rad);
   width: calc(100% - 8rem);
 }
 
-#button:not(:placeholder-shown){
+.button:not(:placeholder-shown){
     display: block;
 }
 
@@ -311,3 +310,51 @@ header div{
     margin-left: 5%;
     margin-right: 5%
 }
+
+/*Page Artist*/
+#div-image-artist{
+    height: 720px;
+    text-align: center;
+    position: relative;
+    margin-top: 50px;
+    text-align: center;
+}
+
+#div-image-artist img{
+    background :no-repeat;
+    height: 720px;
+    position: relative;
+    background-position: center;
+    border-radius: 66px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*Page Error*/
+#error-button{
+background-color: #707070;
+}
+
+#error{
+margin-top: 10%;
+text-align: center;
+}
+
+#error h1{
+    text-align: center;
+    color: black;
+}
+
+#div-button-error{
+    text-align: center;
+}
+
