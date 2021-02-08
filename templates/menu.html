@@ -43,6 +43,19 @@
     </header>
 
 
+    <div>
+        <form action="/groupie/" method="GET">
+            <label for="creation">Date de création</label>
+            <input type="radio" name="creation" value="creation">
+
+            <label for="album">Date du premier Album</label>
+            <input type="radio" name="album" value="album">
+
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+
 
     <div class="flex-box">
       {{$API := .}}

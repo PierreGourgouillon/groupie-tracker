@@ -53,6 +53,11 @@ type pageA struct {
 	Number int
 }
 
+type Filter struct {
+	creation string
+	album    string
+}
+
 var Tracker API
 
 func JSON() {
@@ -96,6 +101,17 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
+	}
+
+	filter := Filter{
+		creation: r.FormValue("creation"),
+		album:    r.FormValue("album"),
+	}
+
+	if filter.album != "" { // A coché Albu
+
+	} else if filter.creation != "" { // A coché Creation
+		fmt.Println("salut")
 	}
 
 	tmpl.Execute(w, Tracker)

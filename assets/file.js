@@ -26,7 +26,7 @@ function searchBar() {
     document.location.href="http://localhost:8080/error/";
 }
 
-/* Javascript : Transmorm les données de la datalist pour les recherches tapéees à la main
+/* Javascript : Transmorme les données de la datalist pour les recherches tapéees à la main
 (Supprime la partie à partir du |) */
 function transformSearch(text) {
     var newText = "";
