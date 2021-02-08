@@ -38,7 +38,7 @@ a:hover, a:active,a:visited{
 
 
 
-.button-style a{
+.button-style{
     font-weight: bold;
     color: white;
     font-size: 25px;
@@ -50,31 +50,25 @@ a:hover, a:active,a:visited{
 footer{
     background-color: black;
     margin-top: 60px;
-    overflow: hidden;
-}
-
-.social-network{
-    width: auto;
-}
-
-.social-network div{
-    display: inline-block;
-}
-
-.text-footer{
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .logo-footer{
-    margin-left: 20%;
-    width: 10%;
-    height: auto;
+    margin-left: 30%;
+    margin-right: auto;
+    align-items: center;
 }
 
 .logo-footer img{
     width: 100%;
-    height: 100%;
-    margin-bottom: 25px;
+    margin-top: 25%;
+    margin-bottom: auto;
+}
+
+.logo-footer p{
+    width: max-content;
+    margin-top: 15%;
 }
 
 .social-network-link h2{
@@ -82,8 +76,13 @@ footer{
 }
 
 
-
-
+@media screen and (max-width:650px){
+    .social-network-link{
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
 
 
 /***************************Page Index***************************/
@@ -98,17 +97,34 @@ footer{
     position: relative;
 }
 
-.index-header h1{
+.div-header-index{
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.div-header-index h1{
     color: white;
     margin-top: 50px;
     font-size: 95px;
     font-weight: bold;
 }
 
-.index-header h2{
+
+.div-header-index h2{
     color: white;
     font-size: 50px;
     font-weight: bold;
+}
+
+@media screen and (max-width:650px){
+    .div-header-index h1{
+        font-size: 80px;
+    }
+
+    .div-header-index h2{
+        font-size: 30px;
+    }
 }
 
 #image-arrow{
@@ -118,84 +134,64 @@ footer{
 }
 
 /* Partie Flexbox*/
-#container-index{
+.container{
+    margin-top: 50px;
     display: flex;
     flex-wrap: wrap;
-    background-color: rgba(24, 6, 44, 0.2);
-    margin-left: 70px;
-    margin-top: 46px;
-    margin-right: 70px;
-    padding: 70px;
-    border-radius: 100px;
+    max-width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 50px;
+    padding: 2%;
+    background-color:rgba(112, 112, 112,0.2);
 }
 
-.text-in-container-index{
-    color: black;
-    height: auto;
-    overflow-wrap: break-word;
-    flex-basis: 50%;
-    font-size: 20px;
+.row{
+    flex-basis: 1024px;
+	flex-grow: 1;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	
 }
 
-#text-container-1{
-    flex-basis: 30%;
-    margin-left: 120px;
+.row img{
+    border-radius: 50px;
+    width: 407px;
+    height: 271px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-#text-container-2{
-    flex-basis: 30%;
-    margin-top: 70px;
+.row p{
+    margin-left: auto;
+    margin-right: auto;
 }
 
-#image1{
-    flex-basis: 50%;
-    margin-left: 70px;
+@media screen and (min-width:1024px) {
+     .container p{
+        width: 50%;
+        margin-top: auto;
+        margin-bottom: auto;
+     }
 }
 
-#image1 img{
-    width: 70%;
-    border-radius: 30px;
-    margin-left: 30%;
+.row-reverse{
+    flex-direction: row-reverse;
 }
 
-#image2{
-    flex-basis: 50%;
-    margin-left: 120px;
-    margin-top: 50px;
-
+.row-reverse p{
+    margin-left: auto;
+    margin-right: auto;
 }
 
-#image2 img{
-    width: 70%;
-    border-radius: 30px;
-}
 
 /***************************Page Menu***************************/
 
 
 /*Header*/
 
-header{
-    background-color: #18062C;
-    height: 100px;
-}
-
-header div{
-    display: inline-block;
-}
-
-.form-search{
-    margin-right: 25px;
-    margin-top: 1%;
-    float: right;
-}
-
-.logo-ynov{
-    margin-left: 28px;
-    margin-top: 1.2%;
-}
-
-/*SearchBar*/
 :root {
     --rad: .5rem;
     --dur: .3s;
@@ -206,14 +202,33 @@ header div{
     --btn-width: 5rem;
     --bez: cubic-bezier(0, 0, 0.43, 1.49);
   }
-  
-.form-search {
-  position: relative;
-  width: 30rem;
-  background: var(--color-brand);
-  border-radius: var(--rad);
+
+header{
+    background-color: #18062C;
+    height: 100px;
 }
 
+
+header div{
+    display: inline-block;
+}
+
+.form-search{
+    margin-right: 25px;
+    margin-top: 1%;
+    float: right;
+    position: relative;
+    width: 30rem;
+    background: var(--color-brand);
+    border-radius: var(--rad);
+}
+
+.logo-ynov{
+    margin-left: 28px;
+    margin-top: 1.2%;
+}
+ 
+/*SearchBar*/
 .design-search, .button {
   height: var(--height);
   border: 0;
@@ -253,9 +268,29 @@ header div{
     display: block;
 }
 
-/* Filter Menu*/
+@media screen and (max-width:700px) {
+
+    header{
+        background-color: #18062C;
+        height: 150px;
+    }
+
+    .logo-ynov{
+        width: 100%;
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .form-search{
+        width: 20rem;
+        float: none;
+        margin-left: 15%;
+    }
+}
 
 
+
+/* Menu Card*/
 .flip-card {
     background-color: transparent;
     width: 300px;
@@ -307,6 +342,10 @@ header div{
     transform: rotateY(180deg);
     border-radius: 15px;
   }
+  .flip-card-back p{
+    text-align: center;
+  }
+
 
   .flip-card-front img{
       border-radius: 15px;
@@ -394,23 +433,13 @@ header div{
     font-weight: bold;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*Page Error*/
 #error-button{
 background-color: #707070;
+}
+
+#error-button:hover{
+    background-color: black;
 }
 
 #error{

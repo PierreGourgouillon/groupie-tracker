@@ -16,30 +16,30 @@
             <a href="/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
         </div>
 
-        <div class="form-search">
-            <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
+            <div class="form-search">
+                <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
+                
+                <datalist id="searchs" name="searchs">
+                    {{$MDR := .}}
+                    {{range $ID,$v:= $MDR.Artists}}
+                    <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).Name}} | Artist - Band">
             
-            <datalist id="searchs" name="searchs">
-                {{$MDR := .}}
-                {{range $ID,$v:= $MDR.Artists}}
-                <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).Name}} | Artist - Band">
-        
-                {{range (index $MDR.Artists $ID).Members }}
-                    <option data-id="{{$ID}}" value="{{.}} | Member"></option>
-                {{end}}
-                    <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).FirstAlbum}} | First Album"></option>
-                    <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).CreationDate}} | Creation date"></option>
-                {{end}}
-        
-            {{range $ID,$v := $MDR.Locations.Index}}
-                {{range (index $MDR.Locations.Index $ID).Locations}}
-                    <option data-id="{{$ID}}" value="{{.}} | Locations"></option>
-                {{end}}
-            {{end}}
-            </datalist>
+                    {{range (index $MDR.Artists $ID).Members }}
+                        <option data-id="{{$ID}}" value="{{.}} | Member"></option>
+                    {{end}}
+                        <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).FirstAlbum}} | First Album"></option>
+                        <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).CreationDate}} | Creation date"></option>
+                    {{end}}
             
-            <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
-        </div>
+                {{range $ID,$v := $MDR.Locations.Index}}
+                    {{range (index $MDR.Locations.Index $ID).Locations}}
+                        <option data-id="{{$ID}}" value="{{.}} | Locations"></option>
+                    {{end}}
+                {{end}}
+                </datalist>
+                
+                <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
+            </div>     
     </header>
 
 
@@ -66,30 +66,22 @@
     </div>
 
     <footer>
-      <div class="social-network">
-
-          <div class="social-network-link">
-              <h2>Nous contacter</h2>
-              <div>
-                <a href="https://www.linkedin.com/in/pierre-gourgouillon-a506391aa/" target="_blank"><ul><img src="/static/images/linkedin.png">Pierre Gourgouillon</ul></a>
-                <a href="#" target="_blank"><ul><img src="/static/images/linkedin.png"> Lucas Barthelemy</ul></a>
-              </div>
-              
-              <div>
-                  <ul><img src="/static/images/email.png">Pierre_gourgouillon@hotmail.com</ul>
-                  <ul><img src="/static/images/email.png">lucasbart@hotmail.fr</ul>
-              </div>
-          </div>
-
-          <div class="logo-footer">
-              <img src="/static/images/logo_ynov.svg">
+      <div class="social-network-link">
+          <h2>Nous contacter</h2>
+          <div>
+              <a href="https://www.linkedin.com/in/pierre-gourgouillon-a506391aa/" target="_blank"><ul><img src="/static/images/linkedin.png">Pierre Gourgouillon</ul></a>
+              <a href="#" target="_blank"><ul><img src="/static/images/linkedin.png"> Lucas Barthelemy</ul></a>
+          </div> 
+          <div>
+              <ul><img src="/static/images/email.png">Pierre_gourgouillon@hotmail.com</ul>
+              <ul><img src="/static/images/email.png">lucasbart@hotmail.fr</ul>
           </div>
       </div>
-
-      <div class="text-footer">
+      <div class="logo-footer">
+          <img src="/static/images/logo_ynov.svg">
           <p>Créé par Lucas et Pierre</p>
       </div>
-  </footer>
+</footer>
 
 </body>
 </html>
