@@ -143,65 +143,43 @@ func Filters(filterAPI filter) (API, bool) {
 	var table Artists
 	var test API
 
-	//Si city est check
-	if filterAPI.checkCity == "cityIsCheck" && filterAPI.checkCreation != "creationIsCheck" && filterAPI.checkAlbum != "albumIsCheck" && filterAPI.checkMembers != "membersIsCheck" {
-		for i, b := range Tracker.Locations.Index {
-			isFilterCity = filterCity(filterAPI.city, b.Locations)
-
-			if isFilterCity {
-				table = append(table, Tracker.Artists[i])
-			}
-		}
-	}
-
 	for i, b := range Tracker.Artists {
 
-		//si creation, album et Members sont check
-		if filterAPI.checkCreation == "creationIsCheck" && filterAPI.checkAlbum == "albumIsCheck" && filterAPI.checkMembers == "membersIsCheck" && filterAPI.checkCity != "cityIsCheck" {
-			isFilterAlbum = filterAlbum(filterAPI.FirstAlbum, b.FirstAlbum)
-			isFilterCreation = filterCreation(b.CreationDate, filterAPI.creationDate)
-			isFilterMembers = filterMembers(filterAPI.members, b.Members)
+		//si city est check
+		if filterAPI.checkCity == "cityIsCheck" {
+			isFilterCity = filterCity(filterAPI.city, i)
 
-			if isFilterAlbum && isFilterCreation && isFilterMembers {
-				table = append(table, Tracker.Artists[i])
+			if !isFilterCity {
+				continue
 			}
 		}
 
-		//si creation et album sont check
-		if filterAPI.checkCreation == "creationIsCheck" && filterAPI.checkAlbum == "albumIsCheck" && filterAPI.checkMembers != "membersIsCheck" {
-			isFilterAlbum = filterAlbum(filterAPI.FirstAlbum, b.FirstAlbum)
-			isFilterCreation = filterCreation(b.CreationDate, filterAPI.creationDate)
+		//si Members est check
+		if filterAPI.checkMembers == "membersIsCheck" {
+			isFilterMembers = filterMembers(filterAPI.members, b.Members)
 
-			if isFilterAlbum && isFilterCreation {
-				table = append(table, Tracker.Artists[i])
+			if !isFilterMembers {
+				continue
+			}
+		}
+
+		//si creation est check
+		if filterAPI.checkCreation == "creationIsCheck" {
+			isFilterCreation = filterCreation(b.CreationDate, filterAPI.creationDate)
+			if !isFilterCreation {
+				continue
 			}
 		}
 
 		//si seulement album est check
-		if filterAPI.checkAlbum == "albumIsCheck" && filterAPI.checkCreation != "creationIsCheck" && filterAPI.checkMembers != "membersIsCheck" {
+		if filterAPI.checkAlbum == "albumIsCheck" {
 			isFilterAlbum = filterAlbum(filterAPI.FirstAlbum, b.FirstAlbum)
-
-			if isFilterAlbum {
-				table = append(table, Tracker.Artists[i])
+			if !isFilterAlbum {
+				continue
 			}
 		}
 
-		//Si seulement creation est check
-		if filterAPI.checkCreation == "creationIsCheck" && filterAPI.checkAlbum != "albumIsCheck" && filterAPI.checkMembers != "membersIsCheck" {
-			isFilterCreation = filterCreation(b.CreationDate, filterAPI.creationDate)
-			if isFilterCreation {
-				table = append(table, Tracker.Artists[i])
-			}
-		}
-
-		//si seulement members est check
-		if filterAPI.checkCreation != "creationIsCheck" && filterAPI.checkAlbum != "albumIsCheck" && filterAPI.checkMembers == "membersIsCheck" {
-			isFilterMembers = filterMembers(filterAPI.members, b.Members)
-
-			if isFilterMembers {
-				table = append(table, Tracker.Artists[i])
-			}
-		}
+		table = append(table, Tracker.Artists[i])
 	}
 
 	if table == nil {
@@ -212,10 +190,14 @@ func Filters(filterAPI filter) (API, bool) {
 	return test, notFoundArtist
 }
 
-func filterCity(filterCity string, Locations []string) bool {
+func filterCity(filterCity string, index int) bool {
 	number, _ := strconv.Atoi(filterCity)
-	if len(Locations) == number {
-		return true
+	for j, b := range Tracker.Locations.Index {
+		if j == index {
+			if len(b.Locations) == number {
+				return true
+			}
+		}
 	}
 	return false
 }
