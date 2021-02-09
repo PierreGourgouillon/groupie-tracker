@@ -54,14 +54,12 @@ type pageA struct {
 }
 
 type filter struct {
-	checkAlbum    string
-	FirstAlbum    string
-	checkCreation string
-	creationDate  string
-	checkMembers  string
-	members       string
-	checkCity     string
-	city          string
+	FirstAlbum   string
+	creationDate string
+	checkMembers string
+	members      string
+	checkCity    string
+	city         string
 }
 
 var Tracker API
@@ -110,17 +108,15 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	filterAPI := filter{
-		checkAlbum:    r.FormValue("checkAlbum"),
-		FirstAlbum:    r.FormValue("firstAlbum"),
-		checkCreation: r.FormValue("checkCreation"),
-		creationDate:  r.FormValue("creationDate"),
-		checkMembers:  r.FormValue("checkMembers"),
-		members:       r.FormValue("members"),
-		checkCity:     r.FormValue("checkCity"),
-		city:          r.FormValue("city"),
+		FirstAlbum:   r.FormValue("firstAlbum"),
+		creationDate: r.FormValue("creationDate"),
+		checkMembers: r.FormValue("checkMembers"),
+		members:      r.FormValue("members"),
+		checkCity:    r.FormValue("checkCity"),
+		city:         r.FormValue("city"),
 	}
 
-	if filterAPI.checkAlbum != "" || filterAPI.checkCreation != "" || filterAPI.checkMembers != "" || filterAPI.checkCity != "" {
+	if filterAPI.FirstAlbum != "" || filterAPI.creationDate != "" || filterAPI.checkMembers != "" || filterAPI.checkCity != "" {
 		structTest, notFound := Filters(filterAPI)
 		if notFound {
 			errorHandler(w, r)
@@ -164,7 +160,7 @@ func Filters(filterAPI filter) (API, bool) {
 		}
 
 		//si creation est check
-		if filterAPI.checkCreation == "creationIsCheck" {
+		if filterAPI.creationDate != "" {
 			isFilterCreation = filterCreation(b.CreationDate, filterAPI.creationDate)
 			if !isFilterCreation {
 				continue
@@ -172,13 +168,12 @@ func Filters(filterAPI filter) (API, bool) {
 		}
 
 		//si seulement album est check
-		if filterAPI.checkAlbum == "albumIsCheck" {
+		if filterAPI.FirstAlbum != "" {
 			isFilterAlbum = filterAlbum(filterAPI.FirstAlbum, b.FirstAlbum)
 			if !isFilterAlbum {
 				continue
 			}
 		}
-
 		table = append(table, Tracker.Artists[i])
 	}
 
@@ -212,13 +207,11 @@ func filterMembers(filterMembers string, Members []string) bool {
 }
 
 func filterAlbum(filterAlbum, albumArtist string) bool {
-	plageOneAlbum, _ := strconv.Atoi(filterAlbum)
-	plageTwoAlbum := plageOneAlbum + 10
-
+	plageAlbum, _ := strconv.Atoi(filterAlbum)
 	dateString := albumArtist[6:10]
 	date, _ := strconv.Atoi(dateString)
 
-	if date >= plageOneAlbum && date <= plageTwoAlbum {
+	if date == plageAlbum {
 		return true
 	}
 
@@ -226,10 +219,9 @@ func filterAlbum(filterAlbum, albumArtist string) bool {
 }
 
 func filterCreation(creationDate int, filterCreation string) bool {
-	plageOneCreation, _ := strconv.Atoi(filterCreation)
-	plageTwoCreation := plageOneCreation + 10
+	plageCreation, _ := strconv.Atoi(filterCreation)
 
-	if creationDate >= plageOneCreation && creationDate <= plageTwoCreation {
+	if creationDate == plageCreation {
 		return true
 	}
 	return false

@@ -110,3 +110,41 @@ function transformText(text) {
     }
     return newText;
 }
+
+//Javascript : évite d'appuyer sur enter dans le formulaire de filtre
+function checkEnter(event){
+    if (event.keyCode == 13){
+    return false;
+    }
+}
+
+//Javascript: Rends les élèments invisibles lorsque l'on clique sur le boutton
+function printFilter(){
+    document.getElementById("form-filters").hidden = false;
+    document.getElementById("buton-hidden").hidden = true;
+    document.getElementById("random-artist").hidden = true;
+}
+
+function checkboxHiddenMembers(){
+    var a = document.getElementById("idmembers").hidden
+
+    if (a == true){
+        document.getElementById("idmembers").hidden = false;
+        document.getElementById("membersSlider").hidden = false;
+    }else {
+        document.getElementById("idmembers").hidden = true;
+        document.getElementById("membersSlider").hidden = true;
+    }
+}
+
+function checkboxHiddencity(){
+    var a = document.getElementById("idcity").hidden
+
+    if (a == true){
+        document.getElementById("idcity").hidden = false;
+        document.getElementById("citySlider").hidden = false;
+    }else {
+        document.getElementById("idcity").hidden = true;
+        document.getElementById("citySlider").hidden = true;
+    }
+}

@@ -42,55 +42,45 @@
             </div>     
     </header>
 
+    <a href="/" id="button-back-menu"><button class="button-back">Retour</button></a>
 
-    <div>
-        <form action="/groupie/" method="GET">
-
-
+    <div class="div-form-filters">
+        <div id="div-button-form">
+            <button  id="buton-hidden" class="button-style-form" onclick="javascript:printFilter();">Filtres de recherches</button>
+            <button id="random-artist" class="button-style-form" onclick="javascript:randomArtist();">Random Artist</button>
+        </div>
+        
+        
+    <form action="/groupie/" method="GET" id="form-filters" hidden>
+        <div class="div-input-form">
             <label for="checkAlbum">Premier Album</label>
-            <input type="checkbox" name="checkAlbum" value="albumIsCheck">
-            <input type="range" min="1950" max="2020" step="10" name="firstAlbum" id="idFirstAlbum">
-            <p><span id="firstAlbumSlider"></span></p>
+            <input type="text" onkeypress="return checkEnter(event);" name="firstAlbum" id="idFirstAlbum" placeholder="Entrer une année">
+        </div>
 
-
+        <div>
             <label for="checkCreation">Date de création</label>
-            <input type="checkbox" name="checkCreation" value="creationIsCheck">
-            <input type="range" min="1950" max="2020" step="10" name="creationDate" id="idCreationDate">
-            <p><span id="creationDateSlider"></span></p>
-
-
+            <input type="text" onkeypress="return checkEnter(event);" name="creationDate" id="idCreationDate" placeholder="Entrer une année">
+        </div>
+        
+        <div class="Members-form">
             <label for="checkMembers">Nombre de Membres</label>
-            <input type="checkbox" name="checkMembers" value="membersIsCheck">
-            <input type="range" min="1" max="8" step="1" name="members" id="idmembers">
-            <p><span id="membersSlider"></span></p>
+            <input type="checkbox" id="checkbox-members" name="checkMembers" value="membersIsCheck" onclick="javascript:checkboxHiddenMembers();"> 
+            <input type="range" min="1" max="8" step="1" name="members" id="idmembers" hidden>
+            <label id="membersSlider" hidden></label>
+        </div>
 
-
-            <label for="checkCity">Nombre de villes de concerts</label>
-            <input type="checkbox" name="checkCity" value="cityIsCheck">
-            <input type="range" min="2" max="15" step="1" name="city" id="idcity">
-            <p><span id="citySlider"></span></p>
-
+        <div>
+            <label for="checkCity">Nombre de ville joués</label>
+            <input type="checkbox" id="checkbox-city" name="checkCity" value="cityIsCheck"  onclick="javascript:checkboxHiddencity();">
+            <input type="range" min="2" max="15" step="1" name="city" id="idcity" hidden>
+            <label id="citySlider" hidden></label>
+        </div>
             <button type="submit">Send</button>
-        </form>
+    </form>
     </div>
 
+
     <script>
-//JavaScript : Affiche le filtre plage de l'album
-var sliderAlbum = document.getElementById("idFirstAlbum");
-var outputAlbum = document.getElementById("firstAlbumSlider");
-outputAlbum.innerHTML = sliderAlbum.value;       
-sliderAlbum.oninput = function() {
-    outputAlbum.innerHTML = this.value;
-}
-
-//JavaScript : Affiche le filtre plage de la date de création
-var sliderCreation = document.getElementById("idCreationDate");
-var outputCreation = document.getElementById("creationDateSlider");
-outputCreation.innerHTML = sliderCreation.value;      
-sliderCreation.oninput = function() {
-    outputCreation.innerHTML = this.value;
-}
-
 //JavaScript : Affiche le filtre plage des membres
 var sliderMembers = document.getElementById("idmembers");
 var outputMembers = document.getElementById("membersSlider");
@@ -107,6 +97,7 @@ sliderCity.oninput = function() {
     outputCity.innerHTML = this.value;
 }
     </script>
+
 
     <div class="flex-box">
       {{$API := .}}
