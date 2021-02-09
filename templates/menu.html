@@ -45,23 +45,75 @@
 
     <div>
         <form action="/groupie/" method="GET">
-            <label for="creation">Date de création</label>
-            <input type="radio" name="creation" value="creation">
 
-            <label for="album">Date du premier Album</label>
-            <input type="radio" name="album" value="album">
+
+            <label for="checkAlbum">Premier Album</label>
+            <input type="checkbox" name="checkAlbum" value="albumIsCheck">
+            <input type="range" min="1950" max="2020" step="10" name="firstAlbum" id="idFirstAlbum">
+            <p><span id="firstAlbumSlider"></span></p>
+
+
+            <label for="checkCreation">Date de création</label>
+            <input type="checkbox" name="checkCreation" value="creationIsCheck">
+            <input type="range" min="1950" max="2020" step="10" name="creationDate" id="idCreationDate">
+            <p><span id="creationDateSlider"></span></p>
+
+
+            <label for="checkMembers">Nombre de Membres</label>
+            <input type="checkbox" name="checkMembers" value="membersIsCheck">
+            <input type="range" min="1" max="8" step="1" name="members" id="idmembers">
+            <p><span id="membersSlider"></span></p>
+
+
+            <label for="checkCity">Nombre de villes de concerts</label>
+            <input type="checkbox" name="checkCity" value="cityIsCheck">
+            <input type="range" min="2" max="15" step="1" name="city" id="idcity">
+            <p><span id="citySlider"></span></p>
 
             <button type="submit">Send</button>
         </form>
     </div>
 
+    <script>
+//JavaScript : Affiche le filtre plage de l'album
+var sliderAlbum = document.getElementById("idFirstAlbum");
+var outputAlbum = document.getElementById("firstAlbumSlider");
+outputAlbum.innerHTML = sliderAlbum.value;       
+sliderAlbum.oninput = function() {
+    outputAlbum.innerHTML = this.value;
+}
 
+//JavaScript : Affiche le filtre plage de la date de création
+var sliderCreation = document.getElementById("idCreationDate");
+var outputCreation = document.getElementById("creationDateSlider");
+outputCreation.innerHTML = sliderCreation.value;      
+sliderCreation.oninput = function() {
+    outputCreation.innerHTML = this.value;
+}
+
+//JavaScript : Affiche le filtre plage des membres
+var sliderMembers = document.getElementById("idmembers");
+var outputMembers = document.getElementById("membersSlider");
+outputMembers.innerHTML = sliderMembers.value;   
+sliderMembers.oninput = function() {
+    outputMembers.innerHTML = this.value;
+}
+
+//JavaScript : Affiche le filtre plage des villes
+var sliderCity = document.getElementById("idcity");
+var outputCity = document.getElementById("citySlider");
+outputCity.innerHTML = sliderCity.value;   
+sliderCity.oninput = function() {
+    outputCity.innerHTML = this.value;
+}
+    </script>
 
     <div class="flex-box">
       {{$API := .}}
       {{range $ID, $v := $API.Artists}}
+      <p>{{$OKLM:= (index $API.Artists $ID).ID}}</p>
         <div class="flip-card">
-          <a href="/artist/{{$ID}}">
+          <a href="/artist/{{(index $API.Artists $ID).ID}}">
             <div class="flip-card-inner">
               <div class="flip-card-front">
                 <img src="{{(index $API.Artists $ID).Image}}">

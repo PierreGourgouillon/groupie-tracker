@@ -53,9 +53,15 @@ type pageA struct {
 	Number int
 }
 
-type Filter struct {
-	creation string
-	album    string
+type filter struct {
+	checkAlbum    string
+	FirstAlbum    string
+	checkCreation string
+	creationDate  string
+	checkMembers  string
+	members       string
+	checkCity     string
+	city          string
 }
 
 var Tracker API
@@ -103,18 +109,148 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 		os.Exit(1)
 	}
 
-	filter := Filter{
-		creation: r.FormValue("creation"),
-		album:    r.FormValue("album"),
+	filterAPI := filter{
+		checkAlbum:    r.FormValue("checkAlbum"),
+		FirstAlbum:    r.FormValue("firstAlbum"),
+		checkCreation: r.FormValue("checkCreation"),
+		creationDate:  r.FormValue("creationDate"),
+		checkMembers:  r.FormValue("checkMembers"),
+		members:       r.FormValue("members"),
+		checkCity:     r.FormValue("checkCity"),
+		city:          r.FormValue("city"),
 	}
 
-	if filter.album != "" { // A coché Albu
-
-	} else if filter.creation != "" { // A coché Creation
-		fmt.Println("salut")
+	if filterAPI.checkAlbum != "" || filterAPI.checkCreation != "" || filterAPI.checkMembers != "" || filterAPI.checkCity != "" {
+		structTest, notFound := Filters(filterAPI)
+		if notFound {
+			errorHandler(w, r)
+			return
+		} else {
+			tmpl.Execute(w, structTest)
+			return
+		}
 	}
 
 	tmpl.Execute(w, Tracker)
+}
+
+func Filters(filterAPI filter) (API, bool) {
+	var isFilterCreation bool
+	var isFilterAlbum bool
+	var isFilterMembers bool
+	var isFilterCity bool
+	var notFoundArtist bool = false
+	var table Artists
+	var test API
+
+	//Si city est check
+	if filterAPI.checkCity == "cityIsCheck" && filterAPI.checkCreation != "creationIsCheck" && filterAPI.checkAlbum != "albumIsCheck" && filterAPI.checkMembers != "membersIsCheck" {
+		for i, b := range Tracker.Locations.Index {
+			isFilterCity = filterCity(filterAPI.city, b.Locations)
+
+			if isFilterCity {
+				table = append(table, Tracker.Artists[i])
+			}
+		}
+	}
+
+	for i, b := range Tracker.Artists {
+
+		//si creation, album et Members sont check
+		if filterAPI.checkCreation == "creationIsCheck" && filterAPI.checkAlbum == "albumIsCheck" && filterAPI.checkMembers == "membersIsCheck" && filterAPI.checkCity != "cityIsCheck" {
+			isFilterAlbum = filterAlbum(filterAPI.FirstAlbum, b.FirstAlbum)
+			isFilterCreation = filterCreation(b.CreationDate, filterAPI.creationDate)
+			isFilterMembers = filterMembers(filterAPI.members, b.Members)
+
+			if isFilterAlbum && isFilterCreation && isFilterMembers {
+				table = append(table, Tracker.Artists[i])
+			}
+		}
+
+		//si creation et album sont check
+		if filterAPI.checkCreation == "creationIsCheck" && filterAPI.checkAlbum == "albumIsCheck" && filterAPI.checkMembers != "membersIsCheck" {
+			isFilterAlbum = filterAlbum(filterAPI.FirstAlbum, b.FirstAlbum)
+			isFilterCreation = filterCreation(b.CreationDate, filterAPI.creationDate)
+
+			if isFilterAlbum && isFilterCreation {
+				table = append(table, Tracker.Artists[i])
+			}
+		}
+
+		//si seulement album est check
+		if filterAPI.checkAlbum == "albumIsCheck" && filterAPI.checkCreation != "creationIsCheck" && filterAPI.checkMembers != "membersIsCheck" {
+			isFilterAlbum = filterAlbum(filterAPI.FirstAlbum, b.FirstAlbum)
+
+			if isFilterAlbum {
+				table = append(table, Tracker.Artists[i])
+			}
+		}
+
+		//Si seulement creation est check
+		if filterAPI.checkCreation == "creationIsCheck" && filterAPI.checkAlbum != "albumIsCheck" && filterAPI.checkMembers != "membersIsCheck" {
+			isFilterCreation = filterCreation(b.CreationDate, filterAPI.creationDate)
+			if isFilterCreation {
+				table = append(table, Tracker.Artists[i])
+			}
+		}
+
+		//si seulement members est check
+		if filterAPI.checkCreation != "creationIsCheck" && filterAPI.checkAlbum != "albumIsCheck" && filterAPI.checkMembers == "membersIsCheck" {
+			isFilterMembers = filterMembers(filterAPI.members, b.Members)
+
+			if isFilterMembers {
+				table = append(table, Tracker.Artists[i])
+			}
+		}
+	}
+
+	if table == nil {
+		notFoundArtist = true
+	}
+
+	test.Artists = table
+	return test, notFoundArtist
+}
+
+func filterCity(filterCity string, Locations []string) bool {
+	number, _ := strconv.Atoi(filterCity)
+	if len(Locations) == number {
+		return true
+	}
+	return false
+}
+
+func filterMembers(filterMembers string, Members []string) bool {
+	intFilterMembers, _ := strconv.Atoi(filterMembers)
+
+	if len(Members) == intFilterMembers {
+		return true
+	}
+	return false
+}
+
+func filterAlbum(filterAlbum, albumArtist string) bool {
+	plageOneAlbum, _ := strconv.Atoi(filterAlbum)
+	plageTwoAlbum := plageOneAlbum + 10
+
+	dateString := albumArtist[6:10]
+	date, _ := strconv.Atoi(dateString)
+
+	if date >= plageOneAlbum && date <= plageTwoAlbum {
+		return true
+	}
+
+	return false
+}
+
+func filterCreation(creationDate int, filterCreation string) bool {
+	plageOneCreation, _ := strconv.Atoi(filterCreation)
+	plageTwoCreation := plageOneCreation + 10
+
+	if creationDate >= plageOneCreation && creationDate <= plageTwoCreation {
+		return true
+	}
+	return false
 }
 
 func artistPage(w http.ResponseWriter, r *http.Request) {
@@ -125,11 +261,12 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	nbrPath, err2 := strconv.Atoi(r.URL.Path[8:])
-	if err2 != nil || nbrPath < 0 || nbrPath > 51 {
+	if err2 != nil || nbrPath < 0 || nbrPath > 52 {
 		errorHandler(w, r)
 		return
 	}
-	Tracker.ID = nbrPath
+
+	Tracker.ID = nbrPath - 1
 
 	tmpl.Execute(w, Tracker)
 }
