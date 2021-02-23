@@ -48,21 +48,29 @@ type Relation struct {
 	} `json:"index"`
 }
 
-type pageA struct {
+type pageArtist struct {
 	Data   API
-	Number int
+	number int
+	Cities []citySearch
 }
 
 type filter struct {
-	FirstAlbum   string
-	creationDate string
-	checkMembers string
-	members      string
-	checkCity    string
-	city         string
+	FirstAlbum       string
+	creationDate     string
+	checkMembers     string
+	members          string
+	checkCity        string
+	city             string
+	citySearchFilter string
+}
+
+type citySearch struct {
+	ID   string
+	City string
 }
 
 var Tracker API
+var Artist pageArtist
 
 func JSON() {
 	urlArtists := "https://groupietrackers.herokuapp.com/api/artists"
@@ -107,16 +115,25 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 		os.Exit(1)
 	}
 
+	structCity := filterCitySearch()
+
+	Artist.Data.Artists = Tracker.Artists
+	Artist.Data.Locations = Tracker.Locations
+	Artist.Data.Dates = Tracker.Dates
+	Artist.Data.Relation = Tracker.Relation
+	Artist.Cities = structCity
+
 	filterAPI := filter{
-		FirstAlbum:   r.FormValue("firstAlbum"),
-		creationDate: r.FormValue("creationDate"),
-		checkMembers: r.FormValue("checkMembers"),
-		members:      r.FormValue("members"),
-		checkCity:    r.FormValue("checkCity"),
-		city:         r.FormValue("city"),
+		FirstAlbum:       r.FormValue("firstAlbum"),
+		creationDate:     r.FormValue("creationDate"),
+		checkMembers:     r.FormValue("checkMembers"),
+		members:          r.FormValue("members"),
+		checkCity:        r.FormValue("checkCity"),
+		city:             r.FormValue("city"),
+		citySearchFilter: r.FormValue("citySearchFilter"),
 	}
 
-	if filterAPI.FirstAlbum != "" || filterAPI.creationDate != "" || filterAPI.checkMembers != "" || filterAPI.checkCity != "" {
+	if filterAPI.FirstAlbum != "" || filterAPI.creationDate != "" || filterAPI.checkMembers != "" || filterAPI.checkCity != "" || filterAPI.citySearchFilter != "" {
 		structTest, notFound := Filters(filterAPI)
 		if notFound {
 			errorHandler(w, r)
@@ -127,17 +144,18 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	tmpl.Execute(w, Tracker)
+	tmpl.Execute(w, Artist)
 }
 
-func Filters(filterAPI filter) (API, bool) {
+func Filters(filterAPI filter) (pageArtist, bool) {
 	var isFilterCreation bool
 	var isFilterAlbum bool
 	var isFilterMembers bool
 	var isFilterCity bool
+	var isFilterCitySearch bool
 	var notFoundArtist bool = false
 	var table Artists
-	var test API
+	var test pageArtist
 
 	for i, b := range Tracker.Artists {
 
@@ -167,13 +185,22 @@ func Filters(filterAPI filter) (API, bool) {
 			}
 		}
 
-		//si seulement album est check
+		//si album est check
 		if filterAPI.FirstAlbum != "" {
 			isFilterAlbum = filterAlbum(filterAPI.FirstAlbum, b.FirstAlbum)
 			if !isFilterAlbum {
 				continue
 			}
 		}
+
+		if filterAPI.citySearchFilter != "" {
+			isFilterCitySearch = filterSearchCity(b.ID, filterAPI.citySearchFilter)
+
+			if !isFilterCitySearch {
+				continue
+			}
+		}
+
 		table = append(table, Tracker.Artists[i])
 	}
 
@@ -181,10 +208,30 @@ func Filters(filterAPI filter) (API, bool) {
 		notFoundArtist = true
 	}
 
-	test.Artists = table
+	test.Data.Artists = table
 	return test, notFoundArtist
 }
 
+func filterSearchCity(ID int, stringID string) bool {
+	a := ""
+
+	for i := range stringID {
+
+		if stringID[i] != ',' {
+			a += string(stringID[i])
+		} else {
+			number, _ := strconv.Atoi(a)
+			if number == ID {
+				return true
+			}
+			a = ""
+			number = 0
+		}
+	}
+	return false
+}
+
+//Nombre de villes
 func filterCity(filterCity string, index int) bool {
 	number, _ := strconv.Atoi(filterCity)
 	for j, b := range Tracker.Locations.Index {
@@ -225,6 +272,49 @@ func filterCreation(creationDate int, filterCreation string) bool {
 		return true
 	}
 	return false
+}
+
+func filterCitySearch() []citySearch {
+	var pb []citySearch
+
+	a := false
+	for _, b := range Tracker.Locations.Index {
+		for _, city := range b.Locations {
+			a, pb = search(city, b.ID, pb, a)
+		}
+	}
+	return pb
+}
+
+func search(ville string, id int, pb []citySearch, a bool) (bool, []citySearch) {
+	if id == 1 && !a {
+		item1 := citySearch{
+			ID:   strconv.Itoa(id) + ",",
+			City: ville,
+		}
+		pb = append(pb, item1)
+		a = true
+		return a, pb
+	}
+
+	for i, k := range pb {
+		if k.City == ville {
+			o := pb[i]
+			o.ID += strconv.Itoa(id) + ","
+			pb[i] = o
+			return a, pb
+		}
+
+		if i == len(pb)-1 {
+			item := citySearch{
+				ID:   strconv.Itoa(id) + ",",
+				City: ville,
+			}
+			pb = append(pb, item)
+		}
+	}
+
+	return a, pb
 }
 
 func artistPage(w http.ResponseWriter, r *http.Request) {
