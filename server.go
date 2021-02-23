@@ -52,6 +52,11 @@ type Relation struct {
 // Structure pour la page artist
 type pageArtist struct {
 	Data   API
+	Number int
+}
+
+type pageArtist2 struct {
+	Data   API
 	number int
 	Cities []citySearch
 }
@@ -96,7 +101,7 @@ type citySearch struct {
 }
 
 var Tracker API
-var Artist pageArtist
+var Artist pageArtist2
 var allLocations []string
 
 func JSON() {
@@ -200,7 +205,7 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, Artist)
 }
 
-func Filters(filterAPI filter) (pageArtist, bool) {
+func Filters(filterAPI filter) (pageArtist2, bool) {
 	var isFilterCreation bool
 	var isFilterAlbum bool
 	var isFilterMembers bool
@@ -208,7 +213,7 @@ func Filters(filterAPI filter) (pageArtist, bool) {
 	var isFilterCitySearch bool
 	var notFoundArtist bool = false
 	var table Artists
-	var test pageArtist
+	var test pageArtist2
 
 	for i, b := range Tracker.Artists {
 
@@ -385,7 +390,7 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 
 	selectedArtist := pageArtist{
 		Data:   Tracker,
-		number: nbrPath - 1,
+		Number: nbrPath - 1,
 	}
 
 	tmpl.Execute(w, selectedArtist)
