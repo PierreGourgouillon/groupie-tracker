@@ -10,54 +10,120 @@
     <title>Groupie Tracker</title>
 </head>
 <body>
-
     <header>
         <div class="logo-ynov">
             <a href="/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
         </div>
 
-        <div class="form-search">
-            <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
+            <div class="form-search">
+                <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
+                
+                <datalist id="searchs" name="searchs">
+                    {{$MDR := .}}
+                    {{range $ID,$v:= $MDR.Data.Artists}}
+                    <option data-id="{{(index $MDR.Data.Artists $ID).ID}}" value="{{(index $MDR.Data.Artists $ID).Name}} | Artist - Band">
             
-            <datalist id="searchs" name="searchs">
-                {{$MDR := .}}
-                {{range $ID,$v:= $MDR.Artists}}
-                <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).Name}} | Artist - Band">
-        
-                {{range (index $MDR.Artists $ID).Members }}
-                    <option data-id="{{$ID}}" value="{{.}} | Member"></option>
-                {{end}}
-                    <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).FirstAlbum}} | First Album"></option>
-                    <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).CreationDate}} | Creation date"></option>
-                {{end}}
-        
-            {{range $ID,$v := $MDR.Locations.Index}}
-                {{range (index $MDR.Locations.Index $ID).Locations}}
-                    <option data-id="{{$ID}}" value="{{.}} | Locations"></option>
-                {{end}}
-            {{end}}
-            </datalist>
+                    {{range (index $MDR.Data.Artists $ID).Members }}
+                        <option data-id="{{(index $MDR.Data.Artists $ID).ID}}" value="{{.}} | Member"></option>
+                    {{end}}
+                        <option data-id="{{(index $MDR.Data.Artists $ID).ID}}" value="{{(index $MDR.Data.Artists $ID).FirstAlbum}} | First Album"></option>
+                        <option data-id="{{(index $MDR.Data.Artists $ID).ID}}" value="{{(index $MDR.Data.Artists $ID).CreationDate}} | Creation date"></option>
+                    {{end}}
             
-            <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
-        </div>
+                {{range $ID,$v := $MDR.Data.Locations.Index}}
+                    {{range (index $MDR.Data.Locations.Index $ID).Locations}}
+                        <option data-id="{{(index $MDR.Data.Artists $ID).ID}}" value="{{.}} | Locations"></option>
+                    {{end}}
+                {{end}}
+                </datalist>
+                
+                <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
+            </div>     
     </header>
 
+    <a href="/" id="button-back-menu"><button class="button-back">Retour</button></a>
+
+    <div class="div-form-filters">
+        <div id="div-button-form">
+            <button  id="buton-hidden" class="button-style-form" onclick="javascript:printFilter();">Filtres de recherches</button>
+            <button id="random-artist" class="button-style-form" onclick="javascript:randomArtist();">Random Artist</button>
+        </div>
+        
+        
+    <form action="/groupie/" method="GET" id="form-filters" hidden>
+        <div class="div-input-form">
+            <label for="checkAlbum">Premier Album</label>
+            <input type="text" onkeypress="return checkEnter(event);" name="firstAlbum" id="idFirstAlbum" placeholder="Entrer une année">
+        </div>
+
+        <div>
+            <label for="checkCreation">Date de création</label>
+            <input type="text" onkeypress="return checkEnter(event);" name="creationDate" id="idCreationDate" placeholder="Entrer une année">
+        </div>
+        
+        <div class="Members-form">
+            <label for="checkMembers">Nombre de Membres</label>
+            <input type="checkbox" id="checkbox-members" name="checkMembers" value="membersIsCheck" onclick="javascript:checkboxHiddenMembers();"> 
+            <input type="range" min="1" max="8" step="1" name="members" id="idmembers" hidden>
+            <label id="membersSlider" hidden></label>
+        </div>
+
+        <div>
+            <label for="checkCity">Nombre de ville joués</label>
+            <input type="checkbox" id="checkbox-city" name="checkCity" value="cityIsCheck"  onclick="javascript:checkboxHiddencity();">
+            <input type="range" min="2" max="15" step="1" name="city" id="idcity" hidden>
+            <label id="citySlider" hidden></label>
+        </div>
+
+        <div>
+            <label>Ville joué:</label>
+            <select name="citySearchFilter">
+                <option disabled selected value>Choisir une ville</option>
+                {{$a := .}}
+                {{range $ID,$v:= $a.Cities}}
+                <option value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
+                {{end}}
+            </select>
+        </div>
+            <button type="submit">Send</button>
+    </form>
+    </div>
+
+
+    <script>
+//JavaScript : Affiche le filtre plage des membres
+var sliderMembers = document.getElementById("idmembers");
+var outputMembers = document.getElementById("membersSlider");
+outputMembers.innerHTML = sliderMembers.value;   
+sliderMembers.oninput = function() {
+    outputMembers.innerHTML = this.value;
+}
+
+//JavaScript : Affiche le filtre plage des villes
+var sliderCity = document.getElementById("idcity");
+var outputCity = document.getElementById("citySlider");
+outputCity.innerHTML = sliderCity.value;   
+sliderCity.oninput = function() {
+    outputCity.innerHTML = this.value;
+}
+    </script>
 
 
     <div class="flex-box">
       {{$API := .}}
-      {{range $ID, $v := $API.Artists}}
+      {{range $ID, $v := $API.Data.Artists}}
+      <p>{{$OKLM:= (index $API.Data.Artists $ID).ID}}</p>
         <div class="flip-card">
-          <a href="/artist/{{$ID}}">
+          <a href="/artist/{{(index $API.Data.Artists $ID).ID}}">
             <div class="flip-card-inner">
               <div class="flip-card-front">
-                <img src="{{(index $API.Artists $ID).Image}}">
+                <img src="{{(index $API.Data.Artists $ID).Image}}">
               </div>
               <div class="flip-card-back">
-                <h1>{{(index $API.Artists $ID).Name}}</h1> 
-                <p>Creation date : {{ (index $API.Artists $ID).CreationDate}}</p>
+                <h1>{{(index $API.Data.Artists $ID).Name}}</h1> 
+                <p>Creation date : {{ (index $API.Data.Artists $ID).CreationDate}}</p>
                 <h4>Membres: </h4>
-                <p>{{range (index $API.Artists $ID).Members }}{{ . }} <br> {{ end }}</p>
+                <p>{{range (index $API.Data.Artists $ID).Members }}{{ . }} <br> {{ end }}</p>
               </div>
             </div>
           </a>         
@@ -66,30 +132,23 @@
     </div>
 
     <footer>
-      <div class="social-network">
+      <div class="social-network-link">
+          <h2>Nous contacter</h2>
+          <div>
+              <a href="https://www.linkedin.com/in/pierre-gourgouillon-a506391aa/" target="_blank"><ul><img src="/static/images/linkedin.png">Pierre Gourgouillon</ul></a>
+              <a href="#" target="_blank"><ul><img src="/static/images/linkedin.png"> Lucas Barthelemy</ul></a>
+          </div> 
+          <div>
+              <ul><img src="/static/images/email.png">Pierre_gourgouillon@hotmail.com</ul>
 
-          <div class="social-network-link">
-              <h2>Nous contacter</h2>
-              <div>
-                <a href="https://www.linkedin.com/in/pierre-gourgouillon-a506391aa/" target="_blank"><ul><img src="/static/images/linkedin.png">Pierre Gourgouillon</ul></a>
-                <a href="#" target="_blank"><ul><img src="/static/images/linkedin.png"> Lucas Barthelemy</ul></a>
-              </div>
-              
-              <div>
-                  <ul><img src="/static/images/email.png">Pierre_gourgouillon@hotmail.com</ul>
-                  <ul><img src="/static/images/email.png">lucasbart@hotmail.fr</ul>
-              </div>
-          </div>
-
-          <div class="logo-footer">
-              <img src="/static/images/logo_ynov.svg">
+              <ul><img src="/static/images/email.png">lucasbart@hotmail.fr</ul>
           </div>
       </div>
-
-      <div class="text-footer">
+      <div class="logo-footer">
+          <img src="/static/images/logo_ynov.svg">
           <p>Créé par Lucas et Pierre</p>
       </div>
-  </footer>
+</footer>
 
 </body>
 </html>
