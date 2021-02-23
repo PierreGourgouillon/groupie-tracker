@@ -37,8 +37,8 @@
                 {{end}}
         
             {{range $ID,$v := $MDR.Data.Locations.Index}}
-                {{range (index $MDR.Locations.Index $ID).Locations}}
-                    <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{.}} | Locations"></option>
+                {{range (index $MDR.Data.Locations.Index $ID).Locations}}
+                    <option data-id="{{(index $MDR.Data.Artists $ID).ID}}" value="{{.}} | Locations"></option>
                 {{end}}
             {{end}}
             </datalist>
