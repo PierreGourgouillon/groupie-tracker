@@ -84,7 +84,8 @@ function loadMap(lat, lon) {
     });
 
     /* Récupère les données se trouvant dans les objet HTML ayant la classe geocities */
-    var geo = document.getElementsByClassName('geocities');
+    var geo = document.getElementsByClassName('capitalize');
+    console.log(geo)
     for(var i = 0; i < geo.length; i++){
         /* Récupère le texte se trouvant dans la donnée geo à l'index i */
         var geoLocation = transformText(geo[i].innerHTML);
@@ -109,12 +110,15 @@ function loadMap(lat, lon) {
 function transformText(text) {
     var newText = "";
     for(i = 0; i < text.length; i++) {
-        if(text[i] == "_") {
+        if(text[i] == " ") {
             newText = newText + "-";
+        } else if(text[i] == "|")  {
+            i++
         } else {
             newText = newText + text[i];
         }
     }
+    console.log(newText)
     return newText;
 }
 
