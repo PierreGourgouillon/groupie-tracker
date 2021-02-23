@@ -51,8 +51,6 @@
 
     <a href="/groupie/" id="button-back-artist"><button class="button-back">Retour</button></a>
 
-    {{ $API := .Data }}
-    {{ $ID := .ID }}
     <div id="div-image-artist">
         <img src={{ (index $API.Artists $artistID).Image }}>
     </div>
