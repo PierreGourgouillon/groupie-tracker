@@ -35,10 +35,20 @@
                         <option data-id="{{(index $MDR.Data.Artists $ID).ID}}" value="{{.}} | Locations"></option>
                     {{end}}
                 {{end}}
-                </datalist>
-                
-                <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
-            </div>     
+        
+            {{range $ID,$v := $MDR.Data.Locations.Index}}
+                {{range (index $MDR.Locations.Index $ID).Locations}}
+                    <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{.}} | Locations"></option>
+                {{end}}
+            {{end}}
+            </datalist>
+            
+            <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
+        </div>
+
+        <div class="allLocations">
+            <a href="/concertLocation/"><h3 id="allLocations">Villes</h3></a>
+        </div>
     </header>
 
     <a href="/" id="button-back-menu"><button class="button-back">Retour</button></a>

@@ -13,8 +13,7 @@
     <title>Document</title>
 </head>
 <body>
-    {{$API := .Data}}
-    {{$artistID := .Number}}
+    
     <header>
         <div class="logo-ynov">
             <a href="/groupie/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
@@ -24,21 +23,22 @@
             <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
             
             <datalist id="searchs" name="searchs">
-                {{range $ID, $v := $API.Artists}}
-                <option data-id="{{(index $API.Artists $ID).ID}}" value="{{(index $API.Artists $ID).Name}} | Artist - Band">{{(index $API.Artists $ID).ID}}</option>
+                {{$MDR := .Data}}
+                {{range $ID,$v:= $MDR.Artists}}
+                <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).Name}} | Artist - Band">
         
-                {{range (index $API.Artists $ID).Members }}
-                    <option data-id="{{(index $API.Artists $ID).ID}}" value="{{.}} | Member">{{(index $API.Artists $ID).ID}}</option>
+                {{range (index $MDR.Artists $ID).Members }}
+                    <option data-id="{{$ID}}" value="{{.}} | Member"></option>
                 {{end}}
-                    <option data-id="{{(index $API.Artists $ID).ID}}" value="{{(index $API.Artists $ID).FirstAlbum}} | First Album"></option>
-                    <option data-id="{{(index $API.Artists $ID).ID}}" value="{{(index $API.Artists $ID).CreationDate}} | Creation date"></option>
+                    <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).FirstAlbum}} | First Album"></option>
+                    <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).CreationDate}} | Creation date"></option>
                 {{end}}
         
-                {{range $ID,$v := $API.Locations.Index}}
-                    {{range (index $API.Locations.Index $ID).Locations}}
-                        <option data-id="{{(index $API.Artists $ID).ID}}" value="{{.}} | Locations"></option>
-                    {{end}}
+            {{range $ID,$v := $MDR.Locations.Index}}
+                {{range (index $MDR.Locations.Index $ID).Locations}}
+                    <option data-id="{{$ID}}" value="{{.}} | Locations"></option>
                 {{end}}
+            {{end}}
             </datalist>
             
             <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
@@ -49,31 +49,15 @@
         </div>
     </header>
 
-    <a href="/groupie/" id="button-back-artist"><button class="button-back">Retour</button></a>
-
-    {{ $API := . }}
-    {{ $ID := .ID }}
-    <div id="div-image-artist">
-        <img src={{ (index $API.Artists $artistID).Image }}>
-    </div>
-
-    <div id="text-artist">
-        <h1>{{ (index $API.Artists $artistID).Name }}</h1>
-        <p>Les membres du groupes sont: {{range (index $API.Artists $artistID).Members }}{{ . }}, {{ end }}</p>
-        <p>{{ (index $API.Artists $artistID).Name }} a fait son apparition en {{ (index $API.Artists $artistID).CreationDate }}</p>
-        <p>Son premier album est sortie le {{ (index $API.Artists $artistID).FirstAlbum }}</p>
-    </div>
-
-    <div class="div-location">
-
-        <div class="text-location">
-            <h1>Les différents concerts :</h1>
-                {{ range $i, $v := (index $API.Locations.Index $artistID).Locations }}<li class="capitalize" class="geocities" autocapitalize="words">{{ . }}</li>
-                {{ range index (index $API.Relation.Index $artistID).DatesLocations $v }} <ul> {{ . }}</ul> {{ end }}{{ end }}
-        </div>
-
-        <div id="mapID"></div>
-    
+    {{ $API := .SpecialData }}
+    <div id="concertLocation">
+        {{range $index, $v := $API.Locations}}
+            <a href="/cityConcert/{{$index}}">
+                <div class="concert">
+                    <li id="location" class="capitalize">{{$v}}</li>
+                </div>
+            </a>
+        {{end}}
     </div>
 
     <footer>
@@ -93,5 +77,8 @@
             <p>Créé par Lucas et Pierre</p>
         </div>
     </footer>
+  
+
+
 </body>
 </html>

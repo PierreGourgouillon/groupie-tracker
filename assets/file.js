@@ -1,10 +1,14 @@
+/************* Random Artist *************/
+
 /* Javascript : Choisi un nombre au hasard et renvoie sur la page de l'artidte correspondant */
 function randomArtist() {
-    /* Choisi un nombre entier entre 0 et 52 */
-    var random = Math.floor(Math.random()*52);
+    /* Choisi un nombre entier entre 1 et 52 */
+    var random = Math.floor(Math.random()*52)+1;
     /* Renvoie sur la page de l'artiste correspondant à l'id */
     document.location.href="http://localhost:8080/artist/"+random;
 }
+
+/************* Search Bar *************/
 
 /* Javacript : Compare la valeur d'entrée avec les valeurs de la datalist pour renvoyer l'utilisateur sur la bonne page */
 function searchBar() {
@@ -39,6 +43,9 @@ function transformSearch(text) {
         }
     }
 }
+
+/************* Map sur la page artist.html *************/
+
 /* Javascript : Centrage de la map en fonction des options de l'utilisateur */
 function mapConcert() {
     let lat = 0;
@@ -59,7 +66,7 @@ function mapConcert() {
 function loadMap(lat, lon) {
     console.log(lat, lon);
     /* Créer la map */
-    var map = L.map('mapID').setView([lat, lon], 16);
+    var map = L.map('mapID').setView([lat, lon], 3);
 
     /* Ajoute à la map les cartes sur openstreetmap */
     L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
@@ -148,3 +155,10 @@ function checkboxHiddencity(){
         document.getElementById("citySlider").hidden = true;
     }
 }
+
+/************* concertLocation *************/
+function goToConcert(location) {
+    console.log(location);
+    document.location.href="http://localhost:8080/artist/"+location;
+}
+

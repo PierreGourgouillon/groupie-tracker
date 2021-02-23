@@ -227,6 +227,17 @@ header div{
     margin-left: 28px;
     margin-top: 1.2%;
 }
+
+.allLocations {
+    margin-top: 3px;
+    margin-right: 25px;
+    float: right;
+    position: relative;
+}
+
+#allLocations {
+    color: red;
+}
  
 /*SearchBar*/
 .design-search, .button {
@@ -517,4 +528,31 @@ text-align: center;
 
 #div-button-error{
     text-align: center;
+}
+
+/***************************Page concertLocation***************************/
+
+#concertLocation {
+    background-color: transparent;
+    display: flex;
+    max-width: 90%;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+#location {
+    color: blue;
+}
+
+.concert {
+    background-color: white;
+    width: 250px;
+    height: 20px;
+    margin-right: 2%;
+    margin-top: 2%;
+    color: black;
+}
+
+.capitalize {
+    text-transform: capitalize;
 }
