@@ -16,30 +16,34 @@
             <a href="/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
         </div>
 
-            <div class="form-search">
-                <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
-                
-                <datalist id="searchs" name="searchs">
-                    {{$MDR := .}}
-                    {{range $ID,$v:= $MDR.Artists}}
-                    <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).Name}} | Artist - Band">
+        <div class="form-search">
+            <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
             
-                    {{range (index $MDR.Artists $ID).Members }}
-                        <option data-id="{{$ID}}" value="{{.}} | Member"></option>
-                    {{end}}
-                        <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).FirstAlbum}} | First Album"></option>
-                        <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).CreationDate}} | Creation date"></option>
-                    {{end}}
-            
-                {{range $ID,$v := $MDR.Locations.Index}}
-                    {{range (index $MDR.Locations.Index $ID).Locations}}
-                        <option data-id="{{$ID}}" value="{{.}} | Locations"></option>
-                    {{end}}
+            <datalist id="searchs" name="searchs">
+                {{$MDR := .}}
+                {{range $ID,$v:= $MDR.Artists}}
+                <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{(index $MDR.Artists $ID).Name}} | Artist - Band">
+        
+                {{range (index $MDR.Artists $ID).Members }}
+                    <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{.}} | Member"></option>
                 {{end}}
-                </datalist>
-                
-                <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
-            </div>     
+                    <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{(index $MDR.Artists $ID).FirstAlbum}} | First Album"></option>
+                    <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{(index $MDR.Artists $ID).CreationDate}} | Creation date"></option>
+                {{end}}
+        
+            {{range $ID,$v := $MDR.Locations.Index}}
+                {{range (index $MDR.Locations.Index $ID).Locations}}
+                    <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{.}} | Locations"></option>
+                {{end}}
+            {{end}}
+            </datalist>
+            
+            <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
+        </div>
+
+        <div class="allLocations">
+            <a href="/concertLocation/"><h3 id="allLocations">Villes</h3></a>
+        </div>
     </header>
 
 
@@ -111,7 +115,6 @@ sliderCity.oninput = function() {
     <div class="flex-box">
       {{$API := .}}
       {{range $ID, $v := $API.Artists}}
-      <p>{{$OKLM:= (index $API.Artists $ID).ID}}</p>
         <div class="flip-card">
           <a href="/artist/{{(index $API.Artists $ID).ID}}">
             <div class="flip-card-inner">

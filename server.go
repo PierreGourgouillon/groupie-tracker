@@ -10,6 +10,7 @@ import (
 	"strconv"
 )
 
+// Structure pour l'API Globale
 type API struct {
 	ID        int
 	Artists   Artists
@@ -48,9 +49,34 @@ type Relation struct {
 	} `json:"index"`
 }
 
-type pageA struct {
+// Structure pour la page artist
+type pageArtist struct {
 	Data   API
 	Number int
+}
+
+// Structure pour la page concertLocation
+
+type ConcertAPI struct {
+	ID        int
+	Locations []string
+}
+
+type pageConcert struct {
+	Data        API
+	SpecialData ConcertAPI
+}
+
+// Structure pour la page cityConcert
+
+type CityAPI struct {
+	ID      int
+	Artists Artists
+}
+
+type pageCity struct {
+	Data        API
+	SpecialData CityAPI
 }
 
 type filter struct {
@@ -65,6 +91,7 @@ type filter struct {
 }
 
 var Tracker API
+var allLocations []string
 
 func JSON() {
 	urlArtists := "https://groupietrackers.herokuapp.com/api/artists"
@@ -76,7 +103,33 @@ func JSON() {
 	ParseJSON(urlLocations, &Tracker.Locations)
 	ParseJSON(urlDates, &Tracker.Dates)
 	ParseJSON(urlRelation, &Tracker.Relation)
+
+	transformAPILocation()
+
 	fmt.Println("Server UP")
+}
+
+func transformAPILocation() {
+	for index, api := range Tracker.Locations.Index {
+		for i := 0; i < len(api.Locations); i++ {
+			locationChange := transformLocation(api.Locations[i])
+			Tracker.Locations.Index[index].Locations[i] = locationChange
+		}
+	}
+}
+
+func transformLocation(text string) string {
+	var newText string = ""
+	for i := 0; i < len(text); i++ {
+		if text[i] == '_' {
+			newText = newText + " "
+		} else if text[i] == '-' {
+			newText = newText + " | "
+		} else {
+			newText = newText + string(text[i])
+		}
+	}
+	return newText
 }
 
 func ParseJSON(url string, API interface{}) {
@@ -261,14 +314,96 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	nbrPath, err2 := strconv.Atoi(r.URL.Path[8:])
-	if err2 != nil || nbrPath < 0 || nbrPath > 52 {
+	if err2 != nil || nbrPath < 1 || nbrPath > 52 {
 		errorHandler(w, r)
 		return
 	}
 
-	Tracker.ID = nbrPath - 1
+	selectedArtist := pageArtist{
+		Data:   Tracker,
+		Number: nbrPath - 1,
+	}
 
-	tmpl.Execute(w, Tracker)
+	tmpl.Execute(w, selectedArtist)
+}
+
+func concertLocationPage(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("./templates/concertLocation.html")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	LocationsTracker := locationsConcertFilter()
+	locationsConcert := pageConcert{
+		Data:        Tracker,
+		SpecialData: LocationsTracker,
+	}
+	tmpl.Execute(w, locationsConcert)
+}
+
+func locationsConcertFilter() ConcertAPI {
+	var tableLocations []string
+	for index, api := range Tracker.Locations.Index {
+		for i := 0; i < len(api.Locations); i++ {
+			if len(tableLocations) == 0 {
+				tableLocations = append(tableLocations, Tracker.Locations.Index[index].Locations[i])
+			} else if locationIn(tableLocations, Tracker.Locations.Index[index].Locations[i]) {
+				tableLocations = append(tableLocations, Tracker.Locations.Index[index].Locations[i])
+			}
+		}
+	}
+	var API ConcertAPI
+	API.Locations = tableLocations
+	allLocations = tableLocations
+	return API
+}
+
+func locationIn(locations []string, selectedLocation string) bool {
+	for i := 0; i < len(locations); i++ {
+		if locations[i] == selectedLocation {
+			return false
+		}
+	}
+	return true
+}
+
+func cityConcertPage(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("./templates/cityConcert.html")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	nbrPath, err2 := strconv.Atoi(r.URL.Path[13:])
+	if err2 != nil {
+		errorHandler(w, r)
+		return
+	}
+
+	city := allLocations[nbrPath]
+	CityTracker := cityConcertFilter(city)
+
+	selectedCity := pageCity{
+		Data:        Tracker,
+		SpecialData: CityTracker,
+	}
+	tmpl.Execute(w, selectedCity)
+}
+
+func cityConcertFilter(city string) CityAPI {
+	var tableArtist Artists
+	for index, api := range Tracker.Locations.Index {
+		for i := 0; i < len(api.Locations); i++ {
+			if Tracker.Locations.Index[index].Locations[i] == city {
+				tableArtist = append(tableArtist, Tracker.Artists[index])
+				continue
+			}
+		}
+	}
+	var API CityAPI
+	API.Artists = tableArtist
+	return API
 }
 
 func errorHandler(w http.ResponseWriter, r *http.Request) {
@@ -283,13 +418,15 @@ func errorHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	StaticFile()
 	JSON()
-	http.HandleFunc("/", Menu)
+	http.HandleFunc("/", menuPage)
 	http.HandleFunc("/groupie/", groupiePage)
 	http.HandleFunc("/artist/", artistPage)
+	http.HandleFunc("/concertLocation/", concertLocationPage)
+	http.HandleFunc("/cityConcert/", cityConcertPage)
 	http.ListenAndServe(":8080", nil)
 }
 
-func Menu(w http.ResponseWriter, r *http.Request) {
+func menuPage(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path != "/" {
 		errorHandler(w, r)
