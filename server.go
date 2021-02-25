@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // Structure pour l'API Globale
@@ -53,6 +54,16 @@ type Relation struct {
 type pageArtist struct {
 	Data   API
 	Number int
+	Deezer DeezerAPI
+}
+
+//DeezerAPI -> Structure les données Deezer de l'artiste
+type DeezerAPI struct {
+	DeezerArtist   ArtistDeezer
+	ListSong       ListSong
+	AlbumInfo      Album
+	TrackListAlbum TrackListAlbum
+	ListAlbums     ListAlbums
 }
 
 type pageArtist2 struct {
@@ -62,7 +73,6 @@ type pageArtist2 struct {
 }
 
 // Structure pour la page concertLocation
-
 type ConcertAPI struct {
 	ID        int
 	Locations []string
@@ -392,6 +402,9 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 		Data:   Tracker,
 		Number: nbrPath - 1,
 	}
+	var test *pageArtist
+	test = &selectedArtist
+	Deezer(test)
 
 	tmpl.Execute(w, selectedArtist)
 }
@@ -484,6 +497,17 @@ func errorHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, nil)
 }
 
+func menuPage(w http.ResponseWriter, r *http.Request) {
+
+	if r.URL.Path != "/" {
+		errorHandler(w, r)
+		return
+	}
+	tmpl, _ := template.ParseFiles("./templates/index.html")
+
+	tmpl.Execute(w, nil)
+}
+
 func main() {
 	StaticFile()
 	JSON()
@@ -495,13 +519,125 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
-func menuPage(w http.ResponseWriter, r *http.Request) {
+/***************DEEZER API***************/
 
-	if r.URL.Path != "/" {
-		errorHandler(w, r)
-		return
+func Deezer(selectedArtist *pageArtist) {
+	nameArtist := SearchNameID(selectedArtist.Number)
+	URLTracklist := SearchArtistDeezer(nameArtist, selectedArtist)
+	ParseJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
+	InsertAlbums(&selectedArtist.Deezer)
+}
+
+//SearchNameID -> Trouve le nom pour l'id et le modifie
+func SearchNameID(ID int) string {
+	ID++
+	for _, data := range Tracker.Artists {
+		if data.ID == ID {
+			nameModif := strings.Replace(data.Name, " ", "%20", -1)
+			return nameModif
+		}
 	}
-	tmpl, _ := template.ParseFiles("./templates/index.html")
+	return ""
+}
 
-	tmpl.Execute(w, nil)
+//SearchArtistDeezer -> Trouve l'artiste dans l'API Deezer
+func SearchArtistDeezer(name string, StructPageArtist *pageArtist) string {
+	var urlPart1 string = "https://api.deezer.com/search/artist/?q="
+
+	var url = urlPart1 + name
+
+	ParseJSON(url, &StructPageArtist.Deezer.DeezerArtist)
+	ParseJSON(url, &StructPageArtist.Deezer.DeezerArtist)
+
+	URLTracklist := ""
+
+	for i, b := range StructPageArtist.Deezer.DeezerArtist.Data {
+		if i == 0 {
+			URLTracklist = b.TracklistSongURL
+		}
+	}
+
+	return URLTracklist
+}
+
+//InsertAlbums -> insère Les tracklists de l'album dans la structure ListAlbums
+func InsertAlbums(Deezer *DeezerAPI) {
+	var tableURLAlbum []string
+	isInArray := false
+
+	for _, data := range Deezer.ListSong.Data {
+		for _, url := range tableURLAlbum {
+			if data.Album.TrackListAlbum == url {
+				isInArray = true
+				break
+			}
+		}
+		if !isInArray {
+			tableURLAlbum = append(tableURLAlbum, data.Album.TrackListAlbum)
+			var test TrackListAlbum
+			ParseJSON(data.Album.TrackListAlbum, &test)
+			fmt.Println(test)
+			break
+		}
+	}
+}
+
+//ArtistDeezer -> Information sur l'artiste
+type ArtistDeezer struct {
+	Data []struct {
+		ID               int    `json:"id"`
+		Name             string `json:"name"`
+		Link             string `json:"link"`
+		Picture          string `json:"picture"`
+		NbAlbum          int    `json:"nb_album"`
+		NbFan            int    `json:"nb_fan"`
+		Radio            bool   `json:"radio"`
+		TracklistSongURL string `json:"tracklist"`
+	} `json:"data"`
+}
+
+//ListSong -> Liste tous les sons de l'artiste
+type ListSong struct {
+	Data []struct {
+		ID             int    `json:"id"`
+		Readable       bool   `json:"readable"`
+		Title          string `json:"title"`
+		TitleShort     string `json:"title_short"`
+		LinkURL        string `json:"link"`
+		Duration       int    `json:"duration"`
+		Rank           int    `json:"rank"`
+		ExplicitLyrics bool   `json:"explicit_lyrics"`
+		Preview        string `json:"preview"`
+		Album          Album  `json:"album"`
+	} `json:"data"`
+}
+
+//Album -> Information sur l'album
+type Album struct {
+	ID             int    `json:"id"`
+	Title          string `json:"title"`
+	CoverURL       string `json:"cover"`
+	TrackListAlbum string `json:"tracklist"`
+}
+
+// ListAlbums -> Liste tous les albums de l'artistes
+type ListAlbums []struct {
+	TrackListAlbum TrackListAlbum
+}
+
+//TrackListAlbum -> Liste de tous les sons dans l'album
+type TrackListAlbum struct {
+	Data []struct {
+		ID             int    `json:"id"`
+		Readable       bool   `json:"readable"`
+		Title          string `json:"title"`
+		TitleShort     string `json:"title_short"`
+		LinkURL        string `json:"link"`
+		Duration       int    `json:"duration"`
+		TrackPosition  int    `json:"track_position"`
+		DiskNumber     int    `json:"disk_number"`
+		Rank           int    `json:"rank"`
+		ExplicitLyrics bool   `json:"explicit_lyrics"`
+		Preview        string `json:"preview"`
+	} `json:"data"`
 }
