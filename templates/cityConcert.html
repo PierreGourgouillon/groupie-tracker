@@ -50,27 +50,31 @@
     </header>
 
     {{ $API := .SpecialData }}
-    <div id="concertLocation">
-        {{ range $ID, $v := $API.Artists }}
-            <div class="flip-card">
-                <a href="/artist/{{(index $API.Artists $ID).ID}}">
-                    <div class="flip-card-inner">
-                    <div class="flip-card-front">
-                        <img src="{{(index $API.Artists $ID).Image}}">
-                    </div>
-                    <div class="flip-card-back">
-                        <h1>{{(index $API.Artists $ID).Name}}</h1> 
-                        <p>Creation date : {{ (index $API.Artists $ID).CreationDate}}</p>
-                        <h4>Membres: </h4>
-                        <p>{{range (index $API.Artists $ID).Members }}{{ . }} <br> {{ end }}</p>
-                    </div>
-                    </div>
-                </a>         
-            </div>
-        {{ end }}
-    </div>
 
-    <div class="map" id="mapID"></div>
+    <div class="city-concert"><h1 class="capitalize">{{.City}}</h1></div>
+
+    <div class="city-concert-page">
+        <div class="city-concert-artist">
+            {{ range $ID, $v := $API.Artists }}
+                <div class="flip-card">
+                    <a href="/artist/{{(index $API.Artists $ID).ID}}">
+                        <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="{{(index $API.Artists $ID).Image}}">
+                        </div>
+                        <div class="flip-card-back">
+                            <h1>{{(index $API.Artists $ID).Name}}</h1> 
+                            <p>Creation date : {{ (index $API.Artists $ID).CreationDate}}</p>
+                            <h4>Membres: </h4>
+                            <p>{{range (index $API.Artists $ID).Members }}{{ . }} <br> {{ end }}</p>
+                        </div>
+                        </div>
+                    </a>         
+                </div>
+            {{ end }}
+        </div>
+        <div id="mapcity"></div>
+    </div>
 
     <footer>
         <div class="social-network-link">

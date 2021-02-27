@@ -438,7 +438,7 @@ func search(ville string, id int, pb []citySearch, a bool) (bool, []citySearch) 
 
 // artistPage -> charge la page /artist
 func artistPage(w http.ResponseWriter, r *http.Request) {
-	tmpl, err1 := template.ParseFiles("./templates/testartist.html")
+	tmpl, err1 := template.ParseFiles("./templates/artist.html")
 	if err1 != nil {
 		fmt.Println(err1)
 		os.Exit(1)

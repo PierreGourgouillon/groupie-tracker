@@ -46,71 +46,112 @@ function transformSearch(text) {
 
 /************* Map sur la page artist.html *************/
 
-// /* Javascript : Centrage de la map en fonction des options de l'utilisateur */
-// function mapConcert() {
-//     let lat = 0;
-//     let lon = 0;
-//     /* Si la geolocalisation est activée pour le navigateur utilisé */
-//     if('geolocation' in navigator) {
-//         /* Prend la position de l'appareil utilisé et charge la map centrée sur cette position */
-//         navigator.geolocation.getCurrentPosition(position => {
-//             loadMap(position.coords.latitude, position.coords.longitude)
-//         });
-//     /* Sinon charge la map centrée sur Paris */
-//     } else {
-//         loadMap(48.85341, 2.34880);
-//     }
-// }
+/* Javascript : Centrage de la map en fonction des options de l'utilisateur */
+function mapConcert() {
+    let lat = 0;
+    let lon = 0;
+    /* Si la geolocalisation est activée pour le navigateur utilisé */
+    if('geolocation' in navigator) {
+        /* Prend la position de l'appareil utilisé et charge la map centrée sur cette position */
+        navigator.geolocation.getCurrentPosition(position => {
+            loadMap(position.coords.latitude, position.coords.longitude)
+        });
+    /* Sinon charge la map centrée sur Paris */
+    } else {
+        loadMap(48.85341, 2.34880);
+    }
+}
 
-// /* Javascript : Création et chargement de la map */
-// function loadMap(lat, lon) {
-//     console.log(lat, lon);
-//     /* Créer la map */
-//     var map = L.map('mapID').setView([lat, lon], 3);
+/* Javascript : Création et chargement de la map */
+function loadMap(lat, lon) {
+    console.log(lat, lon);
+    /* Créer la map */
+    var map = L.map('mapID').setView([lat, lon], 3);
 
-//     /* Ajoute à la map les cartes sur openstreetmap */
-//     L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-//         // Il est toujours bien de laisser le lien vers la source des données
-//         attribution: 'données © OpenStreetMap/ODbL - rendu OSM France',
-//         minZoom: 1,
-//         maxZoom: 20
-//     }).addTo(map);
+    /* Ajoute à la map les cartes sur openstreetmap */
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+        // Il est toujours bien de laisser le lien vers la source des données
+        attribution: 'données © OpenStreetMap/ODbL - rendu OSM France',
+        minZoom: 1,
+        maxZoom: 20
+    }).addTo(map);
 
-//     /* créer un pin personnalisé à mettre sur la carte */
-//     var pinDesign = L.icon({
-//         iconUrl: "/static/images/pin.svg",
-//         iconSize: [50, 50],
-//         iconAnchor: [25, 50]
-//     });
+    /* créer un pin personnalisé à mettre sur la carte */
+    var pinDesign = L.icon({
+        iconUrl: "/static/images/pin.svg",
+        iconSize: [50, 50],
+        iconAnchor: [25, 50]
+    });
 
-//     /* Récupère les données se trouvant dans les objet HTML ayant la classe geocities */
-//     var geo = document.getElementsByClassName('geocities');
-//     console.log(geo)
-//     for(var i = 0; i < geo.length; i++){
-//         /* Récupère le texte se trouvant dans la donnée geo à l'index i */
-//         var geoLocation = transformText(geo[i].innerHTML);
-//         /* URL de l'API concernant le bon lieu de concert */
-//         var url = 'https://nominatim.openstreetmap.org/search.php?q='+geoLocation+'&polygon_geojson=1&format=jsonv2';
-//         /* Création et envoie de la requête API */
-//         var request = new XMLHttpRequest();
-//         request.onreadystatechange = function() {
-//             if (this.readyState == 4 && this.status == 200) {
-//                 /* Récupère les données de la requête */
-//                 var coords = JSON.parse(this.responseText);
-//                 /* Ajoute à la map le marqueur personnalisé aux lieux des concerts */
-//                 L.marker([coords[0].lat, coords[0].lon], {icon: pinDesign}).addTo(map);
-//             }
-//         };
-//         request.open('GET', url, true);
-//         request.send();
-//     }
-// }
+    /* Récupère les données se trouvant dans les objet HTML ayant la classe geocities */
+    // var geo = document.getElementsByClassName('geocities');
+    // console.log(geo)
+    // for(var i = 0; i < geo.length; i++){
+    //     /* Récupère le texte se trouvant dans la donnée geo à l'index i */
+    //     var geoLocation = transformText(geo[i].innerHTML);
+    //     /* URL de l'API concernant le bon lieu de concert */
+    //     var url = 'https://nominatim.openstreetmap.org/search.php?q='+geoLocation+'&polygon_geojson=1&format=jsonv2';
+    //     /* Création et envoie de la requête API */
+    //     var request = new XMLHttpRequest();
+    //     request.onreadystatechange = function() {
+    //         if (this.readyState == 4 && this.status == 200) {
+    //             /* Récupère les données de la requête */
+    //             var coords = JSON.parse(this.responseText);
+    //             /* Ajoute à la map le marqueur personnalisé aux lieux des concerts */
+    //             L.marker([coords[0].lat, coords[0].lon], {icon: pinDesign}).addTo(map);
+    //         }
+    //     };
+    //     request.open('GET', url, true);
+    //     request.send();
+    // 
+
+    var popup = L.popup();
+
+    function onMapClick(e) {
+        popup
+        .setContent("You clicked the map at")
+        .openOn(map);
+    }    
+
+    map.on('click', document.getElementById("boutonmarker").addEventListener("click", function (e) {
+ 
+        console.log("Evènement");
+     
+    }));
+
+}
+
+
+function addMarker(city) {
+    /* créer un pin personnalisé à mettre sur la carte */
+    console.log("Click")
+    var pinDesign = L.icon({
+        iconUrl: "/static/images/pin.svg",
+        iconSize: [50, 50],
+        iconAnchor: [25, 50],
+    });
+
+    var url = 'https://nominatim.openstreetmap.org/search.php?q='+city+'&polygon_geojson=1&format=jsonv2';
+    /* Création et envoie de la requête API */
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            /* Récupère les données de la requête */
+            var coords = JSON.parse(this.responseText);
+            /* Ajoute à la map le marqueur personnalisé aux lieux des concerts */
+            marker.setLatLng([coords[0].lat, coords[0].lon]);
+            map.panTo([coords[0].lat, coords[0].lon])
+        }
+    };
+    request.open('GET', url, true);
+    request.send();
+}
 
 /************* Map sur la page artist.html *************/
 /* Javascript : Création et chargement de la map */
 function loadMapCity(city) {
     /* Créer la map */
-    var map = L.map('mapID').setView([0, 0], 13);
+    var map = L.map('mapcity').setView([0, 0], 12);
 
     /* Ajoute à la map les cartes sur openstreetmap */
     L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {

@@ -68,7 +68,7 @@
             <h1>Les différents concerts :</h1>
             {{ $Flag := .Flag }}
             {{ range $index, $city := (index $ArtAPI.Locations) }}
-                <div class="concert">
+                <div class="concert" onclick="javascript:addMarker({{$city}})">
                     <div class="location">
                         <p id="location" class="geocities" class="capitalize">{{$city}}</p>
                     </div>

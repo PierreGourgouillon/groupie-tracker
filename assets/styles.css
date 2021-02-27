@@ -2,6 +2,7 @@
 html,body{
     margin: 0;
     padding: 0;
+    max-width: 1500px;
 }
 
 body{
@@ -569,40 +570,30 @@ text-align: center;
     text-transform: capitalize;
 }
 
-/*********testartist*********/
-
-.hautdepage {
-    background-color: white;
+/*********cityConcertt*********/
+.city-concert {
+    text-align: center;
+}
+.city-concert-page {
     width: 100%;
-    margin-right: 0;
-    margin-top: 30px;
-    display: grid;
-    grid-template: auto auto 10px / 50% 5% 45%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 
-.NameG {
-    background-color: transparent;
-    grid-area: 1/1/1/1;
-    color:rgb(34, 2, 34);
-    font-size: 75px;
-    text-align: center;
+.city-concert-artist {
+    width: 55%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
 }
 
-.div-image-artist-D {
-    border: 1px solid green;
-    grid-area: 1/2/4/4;
-    text-align: center;
-}
-
-#photo {
-    max-width: 100%;
-	height: auto;
-}
-
-.text-artist-G {
-    z-index: 2;
-    margin-bottom: 5px;
-    background-color: rgb(34, 2, 34);;
-    height: auto;
-    grid-area: 2/1/2/3;
+#mapcity{
+    height: 500px;
+    width: 100%;
+    border-radius: 15px;
+    flex-basis: 40%;
+    margin-top: 1%;
+    margin-left: 3%;
 }
