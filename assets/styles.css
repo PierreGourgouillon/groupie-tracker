@@ -2,6 +2,7 @@
 html,body{
     margin: 0;
     padding: 0;
+    max-width: 1920px;
 }
 
 body{
@@ -232,7 +233,7 @@ margin-left: 15px;
   }
 
 header{
-    background-color: #18062C;
+    background: linear-gradient(90deg, #3A1757 20%, #F98718);
     height: 100px;
 }
 
@@ -443,6 +444,231 @@ header div{
 }
 
 /***************************Page Artist***************************/
+
+#header-artist{
+    height:830px;
+    border-top: 1px solid transparent;
+    background-color: white;
+    overflow: hidden;
+}
+
+#position-image-artist{
+    height: 770px;
+    width: 770px;
+    float: right;
+    z-index: 1;
+    margin-right: 30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#position-image-artist img{
+    width: 100%;
+    height: 100%;
+}
+
+#position-text-artist{
+    color: white;
+    border:  1px solid transparent;
+    z-index: 2;
+    position: relative;
+    height: 100%;
+}
+
+#position-text-artist h1{
+    margin-top: 150px;
+    font-size: 120px;
+    color: #3A1757;
+    text-shadow: 8px 8px #F98718;
+    font-family: "gisbon_demodemo";
+    margin-left: 50px;
+    height: auto;
+    width: 55%;
+}
+
+#position-text-artist div{
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: 80px;
+    background-color: #3A1757;
+    width: 60%;
+    height: 200px;
+    margin-left: 50px;
+    padding-left: 30px;
+    padding-top: 30px;
+}
+
+.title-top-songs{
+    color: #3A1757;
+    font-family: "gisbon_demodemo";
+    text-shadow: 8px 8px #F98718;
+    font-size: 70px;
+    margin-left: 50px;
+}
+
+.container-songs{
+    background-color: #3A1757;
+    width: 95.8%;
+    height: 144px;
+    position: absolute;
+    z-index: 0;
+    top: 29px;
+    left: 50px;
+}
+
+.top-songs{
+    text-align: center;
+    position: relative;
+    bottom: 40px;
+}
+
+.top-songs li{
+    margin-right: 122px;
+    z-index: 2;
+    position: relative;
+}
+
+.top-songs ul,li{
+    display: inline-block;
+}
+
+.top-songs ul li img{
+    border-radius: 300px;
+    width: 192px;
+    height: 192px;
+    border: 3px solid white;
+}
+
+.top-songs h2{
+    position: relative;
+    bottom: 59px;
+    z-index: 3;
+    color: #F98718;
+    font-size: 35px;
+    font-family: "gisbon_demodemo";
+}
+
+.position-flex{
+    position: relative;
+    bottom: 230px;
+}
+
+.flex-artists{
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.container-concerts{
+    flex-basis: 45%;
+    padding: 50px;
+}
+
+.container-concerts h1{
+    color: #3A1757;
+    text-shadow: 5px 5px #F98718;
+    font-size: 70px;
+    font-family: "gisbon_demodemo";
+    z-index: 1;
+    position: relative;
+    top: 85px;
+    left: 50px;
+}
+
+.between-concerts{
+    background-color: white;
+    height: 499px;
+    box-shadow: 2px 2px 2px grey;
+}
+
+.container-location-concerts p, button{
+    display: inline-block;
+}
+
+.container-location-concerts p{
+    margin-left: 92px;
+    font-size: 23px;
+    color: black;
+}
+
+.container-location-concerts button{
+    margin-left: 200px;
+    font-size: 20px;
+    color: white;
+    width: 241px;
+    height: 53px;
+    border-radius: 30px;
+    background-color: #F98718;
+    border: none;
+    text-align: center;
+    font-weight: bold;
+}
+
+.container-all-songs{
+    flex-basis: 47%;
+    color: black;
+}
+
+.list-songs{
+    background-color: white;
+    box-shadow: 2px 2px 2px grey;
+    height: 499px;
+    overflow-x: hidden;
+    overflow-y:auto ;
+    margin-top: 97px;
+}
+
+.div-song{
+    width: 95%;
+    border-bottom: 1px solid gray;
+}
+
+.div-song span{
+    margin-left: 600px;
+}
+
+.container-all-songs h1{
+    color: #3A1757;
+    text-shadow: 5px 5px #F98718;
+    font-size: 70px;
+    font-family: "gisbon_demodemo";
+    z-index: 1;
+    position: relative;
+    top: 130px;
+    left: 50px;
+}
+
+.background-map{
+    background-color: white;
+    width: 95%;
+    height: 900px;
+    margin-left: 2.5%;
+    position: relative;
+    bottom: 350px;
+}
+
+.map-title{
+    color: #3A1757;
+    text-shadow: 5px 5px #F98718;
+    font-size: 70px;
+    font-family: "gisbon_demodemo";
+    z-index: 1;
+    position: relative;
+    bottom: 260px;
+    left: 100px;
+    width: 30%;
+}
+
+#mapID{
+    width: 95%;
+    height: 800px;
+    margin-left: 48.5px;
+    top: 50px;
+}
+
+.footer-artists{
+    
+}
 
 
 

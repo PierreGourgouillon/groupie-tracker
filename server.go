@@ -523,9 +523,10 @@ func Deezer(selectedArtist *pageArtist) {
 	nameArtist := SearchNameID(selectedArtist.Number)
 	URLTracklist := SearchArtistDeezer(nameArtist, selectedArtist)
 	ParseJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
-	for i, b := range selectedArtist.Deezer.DeezerArtist.Data {
+	for i, b := range selectedArtist.Deezer.ListSong.Data {
 		if i == 0 {
-			fmt.Println(b.Picture)
+			fmt.Println(b.Title)
+			fmt.Println(b.TitleShort)
 		}
 	}
 }
@@ -596,6 +597,6 @@ type ListSong struct {
 type Album struct {
 	ID             int    `json:"id"`
 	Title          string `json:"title"`
-	CoverURL       string `json:"cover"`
+	CoverURL       string `json:"cover_small"`
 	TrackListAlbum string `json:"tracklist"`
 }
