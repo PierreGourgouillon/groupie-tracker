@@ -14,7 +14,6 @@
 </head>
 <body onload="javascript:mapConcert()">
     {{$API := .Data}}
-    {{$artistID := .Number}}
     {{$deezer := .Deezer}}
     <header>
         <div class="logo-ynov">
@@ -26,10 +25,10 @@
             
             <datalist id="searchs" name="searchs">
                 {{range $ID, $v := $API.Artists}}
-                <option data-id="{{(index $API.Artists $ID).ID}}" value="{{(index $API.Artists $ID).Name}} | Artist - Band">{{(index $API.Artists $ID).ID}}</option>
+                <option data-id="{{(index $API.Artists $ID).ID}}" value="{{(index $API.Artists $ID).Name}} | Artist - Band"></option>
         
                 {{range (index $API.Artists $ID).Members }}
-                    <option data-id="{{(index $API.Artists $ID).ID}}" value="{{.}} | Member">{{(index $API.Artists $ID).ID}}</option>
+                    <option data-id="{{(index $API.Artists $ID).ID}}" value="{{.}} | Member"></option>
                 {{end}}
                     <option data-id="{{(index $API.Artists $ID).ID}}" value="{{(index $API.Artists $ID).FirstAlbum}} | First Album"></option>
                     <option data-id="{{(index $API.Artists $ID).ID}}" value="{{(index $API.Artists $ID).CreationDate}} | Creation date"></option>
@@ -50,12 +49,16 @@
         </div>
     </header>
 
+    {{$ArtAPI:= .SpecialData}}
+
+    
+
     <div id="header-artist">
         <div id="position-image-artist">
             <img src="https://e-cdns-images.dzcdn.net/images/artist/ad61d6e0fa724d880db979c9ac8cc5e3/1000x1000-000000-80-0-0.jpg">
         </div>
         <div id="position-text-artist">
-            <h1>Kendrick Lamar fdfsd</h1>
+            <h1>{{(index $ArtAPI.Artists 0).Name }}</h1>
             <div>
                 <p>Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte
                 Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte</p>        
@@ -70,18 +73,14 @@
         <div class="top-songs">
             <p class="container-songs"></p>
             <ul>
-                
+                {{range $ID,$v:= $deezer.ListSong.Data}}
+                {{if eq $ID 0}}
                 <li>
                     <img src="https://e-cdns-images.dzcdn.net/images/cover/a0a843e993afcfcf54c603f96ed1e59f/1000x1000-000000-80-0-0.jpg">
-                    <h2>Another Brick In The Wall, Pt. 2</h2>
-                </li>
-                <li>
-                    <img src="https://e-cdns-images.dzcdn.net/images/cover/a0a843e993afcfcf54c603f96ed1e59f/250x250-000000-80-0-0.jpg">
-                    <h2>Another Brick In The Wall, Pt. 2</h2>
-                </li>
-                <li>
-                    <img src="https://e-cdns-images.dzcdn.net/images/cover/a0a843e993afcfcf54c603f96ed1e59f/250x250-000000-80-0-0.jpg">
-                    <h2>Another Brick In The Wall, Pt. 2</h2>
+                    
+                    <h2>{{(index $deezer.ListSong.Data $ID).Title}}</h2>
+                    {{end}}
+                    {{end}}
                 </li>
             </ul>   
         </div>

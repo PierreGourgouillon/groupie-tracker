@@ -84,29 +84,111 @@ function loadMap(lat, lon) {
     });
 
     /* Récupère les données se trouvant dans les objet HTML ayant la classe geocities */
-    var geo = document.getElementsByClassName('capitalize');
-    console.log(geo)
-    for(var i = 0; i < geo.length; i++){
-        /* Récupère le texte se trouvant dans la donnée geo à l'index i */
-        var geoLocation = transformText(geo[i].innerHTML);
-        /* URL de l'API concernant le bon lieu de concert */
-        var url = 'https://nominatim.openstreetmap.org/search.php?q='+geoLocation+'&polygon_geojson=1&format=jsonv2';
-        /* Création et envoie de la requête API */
-        var request = new XMLHttpRequest();
-        request.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                /* Récupère les données de la requête */
-                var coords = JSON.parse(this.responseText);
-                /* Ajoute à la map le marqueur personnalisé aux lieux des concerts */
-                L.marker([coords[0].lat, coords[0].lon], {icon: pinDesign}).addTo(map);
-            }
-        };
-        request.open('GET', url, true);
-        request.send();
-    }
+    // var geo = document.getElementsByClassName('geocities');
+    // console.log(geo)
+    // for(var i = 0; i < geo.length; i++){
+    //     /* Récupère le texte se trouvant dans la donnée geo à l'index i */
+    //     var geoLocation = transformText(geo[i].innerHTML);
+    //     /* URL de l'API concernant le bon lieu de concert */
+    //     var url = 'https://nominatim.openstreetmap.org/search.php?q='+geoLocation+'&polygon_geojson=1&format=jsonv2';
+    //     /* Création et envoie de la requête API */
+    //     var request = new XMLHttpRequest();
+    //     request.onreadystatechange = function() {
+    //         if (this.readyState == 4 && this.status == 200) {
+    //             /* Récupère les données de la requête */
+    //             var coords = JSON.parse(this.responseText);
+    //             /* Ajoute à la map le marqueur personnalisé aux lieux des concerts */
+    //             L.marker([coords[0].lat, coords[0].lon], {icon: pinDesign}).addTo(map);
+    //         }
+    //     };
+    //     request.open('GET', url, true);
+    //     request.send();
+    // 
+
+    var popup = L.popup();
+
+    function onMapClick(e) {
+        popup
+        .setContent("You clicked the map at")
+        .openOn(map);
+    }    
+
+    map.on('click', document.getElementById("boutonmarker").addEventListener("click", function (e) {
+ 
+        console.log("Evènement");
+     
+    }));
+
 }
 
-/* Javascript : Transforme l'orthographe des lieux des concerts afin qu'ils soient conformnt pour être utilisés par l'API */
+
+function addMarker(city) {
+    /* créer un pin personnalisé à mettre sur la carte */
+    console.log("Click")
+    var pinDesign = L.icon({
+        iconUrl: "/static/images/pin.svg",
+        iconSize: [50, 50],
+        iconAnchor: [25, 50],
+    });
+
+    var url = 'https://nominatim.openstreetmap.org/search.php?q='+city+'&polygon_geojson=1&format=jsonv2';
+    /* Création et envoie de la requête API */
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            /* Récupère les données de la requête */
+            var coords = JSON.parse(this.responseText);
+            /* Ajoute à la map le marqueur personnalisé aux lieux des concerts */
+            marker.setLatLng([coords[0].lat, coords[0].lon]);
+            map.panTo([coords[0].lat, coords[0].lon])
+        }
+    };
+    request.open('GET', url, true);
+    request.send();
+}
+
+/************* Map sur la page artist.html *************/
+/* Javascript : Création et chargement de la map */
+function loadMapCity(city) {
+    /* Créer la map */
+    var map = L.map('mapcity').setView([0, 0], 12);
+
+    /* Ajoute à la map les cartes sur openstreetmap */
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+        // Il est toujours bien de laisser le lien vers la source des données
+        attribution: 'données © OpenStreetMap/ODbL - rendu OSM France',
+        minZoom: 1,
+        maxZoom: 20
+    }).addTo(map);
+
+    console.log(city)
+
+    var geoLocation = transformText(city);
+    /* URL de l'API concernant le bon lieu de concert */
+    var url = 'https://nominatim.openstreetmap.org/search.php?city='+geoLocation+'&polygon_geojson=1&format=jsonv2'
+    /* Création et envoie de la requête API */
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            /* Récupère les données de la requête */
+            var coords = JSON.parse(this.responseText);
+            map.panTo([coords[0].lat, coords[0].lon])
+            var geojson = L.geoJSON(coords[0].geojson, {
+                style: {
+                    "color": 'green',
+                    "opacity": 1,
+                    "weight": 1,
+                    "fillColor": 'green',
+                    "fillOpacity": 0.5
+                }
+            }).addTo(map);
+        }
+    };
+    request.open('GET', url, true);
+    request.send();
+}
+
+/* Javascript : Transforme l'orthographe des lieux des concerts afin qu'ils soient conforment pour être utilisés par l'API */
 function transformText(text) {
     var newText = "";
     for(i = 0; i < text.length; i++) {

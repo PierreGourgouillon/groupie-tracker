@@ -7,11 +7,14 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
 
 // Structure pour l'API Globale
+
+// API -> structure contenants les structure de l'API groupie-trackers
 type API struct {
 	ID        int
 	Artists   Artists
@@ -20,6 +23,7 @@ type API struct {
 	Relation  Relation
 }
 
+// Artists -> structures contenant les informations sur les artistes
 type Artists []struct {
 	ID           int      `json:"id"`
 	Image        string   `json:"image"`
@@ -29,6 +33,7 @@ type Artists []struct {
 	FirstAlbum   string   `json:"firstAlbum"`
 }
 
+// Locations -> structure contenant les villes des concerts
 type Locations struct {
 	Index []struct {
 		ID        int      `json:"id"`
@@ -36,6 +41,7 @@ type Locations struct {
 	} `json:"index"`
 }
 
+// Dates -> structure contenant les dates des concerts
 type Dates struct {
 	Index []struct {
 		ID    int      `json:"id"`
@@ -43,6 +49,7 @@ type Dates struct {
 	} `json:"index"`
 }
 
+// Relation -> structures reliant les dates des concerts à leurs villes
 type Relation struct {
 	Index []struct {
 		ID             int                 `json:"id"`
@@ -51,10 +58,12 @@ type Relation struct {
 }
 
 // Structure pour la page artist
+// pageArtists -> structures pour envoyer les informations à la page /artist
 type pageArtist struct {
-	Data   API
-	Number int
-	Deezer DeezerAPI
+	Data        API
+	SpecialData ArtistAPI
+	Flag        []string
+	Deezer      DeezerAPI
 }
 
 //DeezerAPI -> Structure les données Deezer de l'artiste
@@ -64,34 +73,49 @@ type DeezerAPI struct {
 	AlbumInfo    Album
 }
 
+// ArtistAPI -> structure Artiste spécial pour la page /artist contient un seul artist, ses lieux de concert et leurs dates
+type ArtistAPI struct {
+	ID        int
+	Artists   Artists
+	Locations []string
+	Relation  map[string][]string
+}
+
 type pageArtist2 struct {
 	Data   API
 	number int
 	Cities []citySearch
 }
 
-//ConcertAPI -> Structure pour la page concertLocation
+// Structure pour la page concertLocation
+// pageConcert -> structure pour envoyer les informations à la page /concertLocations
+type pageConcert struct {
+	Data        API
+	SpecialData ConcertAPI
+	Flag        []string
+}
+
+// ConcertAPI -> structure spécial pour la page /concertLocations contient les lieux de concert
 type ConcertAPI struct {
 	ID        int
 	Locations []string
 }
 
-type pageConcert struct {
+// Structure pour la page cityConcert
+// pageCity -> structure pour envoyer les informations à la page /cityConcert
+type pageCity struct {
 	Data        API
-	SpecialData ConcertAPI
+	SpecialData CityAPI
+	City        string
 }
 
-//CityAPI -> Structure pour la page cityConcert
+// CityAPI -> structure spécial pour la page /cityConcert des artistes
 type CityAPI struct {
 	ID      int
 	Artists Artists
 }
 
-type pageCity struct {
-	Data        API
-	SpecialData CityAPI
-}
-
+// filter -> structure pour recevoir les informations du filtre
 type filter struct {
 	FirstAlbum       string
 	creationDate     string
@@ -102,31 +126,47 @@ type filter struct {
 	citySearchFilter string
 }
 
+// citySearch ->
 type citySearch struct {
 	ID   string
 	City string
 }
 
+// Variable Globale
+
+// Tracker -> Variable contenant toutes les informatiions de l'API groupie-tracker
 var Tracker API
+
+// Artist ->
 var Artist pageArtist2
+
+// allLocations -> Variable contenant tous les lieux de concert en un seul exemplaire
 var allLocations []string
 
-func JSON() {
+// flagCountry -> Variable contenant tous les pays et leur code pour pouvoir utiliser l'API flagcdn
+var flagCountry map[string]string
+
+// serverJSON -> Stocke les urls des APIs et prévient quand tous les informations ont été parsées
+func serverJSON() {
 	urlArtists := "https://groupietrackers.herokuapp.com/api/artists"
 	urlLocations := "https://groupietrackers.herokuapp.com/api/locations"
 	urlDates := "https://groupietrackers.herokuapp.com/api/dates"
 	urlRelation := "https://groupietrackers.herokuapp.com/api/relation"
+	urlDrapeau := "https://flagcdn.com/en/codes.json"
 
-	ParseJSON(urlArtists, &Tracker.Artists)
-	ParseJSON(urlLocations, &Tracker.Locations)
-	ParseJSON(urlDates, &Tracker.Dates)
-	ParseJSON(urlRelation, &Tracker.Relation)
+	unmarshallJSON(urlArtists, &Tracker.Artists)
+	unmarshallJSON(urlLocations, &Tracker.Locations)
+	unmarshallJSON(urlDates, &Tracker.Dates)
+	unmarshallJSON(urlRelation, &Tracker.Relation)
+	unmarshallJSON(urlDrapeau, &flagCountry)
 
 	transformAPILocation()
+	transformAPIRelation()
 
 	fmt.Println("Server UP")
 }
 
+// transformAPILocation -> change l'orthographe des lieux de concert
 func transformAPILocation() {
 	for index, api := range Tracker.Locations.Index {
 		for i := 0; i < len(api.Locations); i++ {
@@ -136,6 +176,19 @@ func transformAPILocation() {
 	}
 }
 
+// transformAPIRelation -> change l'orthographe des lieux de concert
+func transformAPIRelation() {
+	for i := 0; i < len(Tracker.Artists); i++ {
+		var mapChange = make(map[string][]string)
+		for index, api := range Tracker.Relation.Index[i].DatesLocations {
+			locationChange := transformLocation(index)
+			mapChange[locationChange] = api
+		}
+		Tracker.Relation.Index[i].DatesLocations = mapChange
+	}
+}
+
+// transformLocation -> remplace les "_" par un " " et les "-" par un "|"
 func transformLocation(text string) string {
 	var newText string = ""
 	for i := 0; i < len(text); i++ {
@@ -150,7 +203,8 @@ func transformLocation(text string) string {
 	return newText
 }
 
-func ParseJSON(url string, API interface{}) {
+// unmarshallJSON -> parse les données JSON
+func unmarshallJSON(url string, API interface{}) {
 	res, err := http.Get(url)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -165,11 +219,13 @@ func ParseJSON(url string, API interface{}) {
 	json.Unmarshal(body, &API)
 }
 
-func StaticFile() {
+// staticFile -> créer le serveur de fichiers destinées au site (css, js, images)
+func staticFile() {
 	fileserver := http.FileServer(http.Dir("./assets"))
 	http.Handle("/static/", http.StripPrefix("/static/", fileserver))
 }
 
+// groupiePage -> charge la page /groupie
 func groupiePage(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/groupie/" {
 		errorHandler(w, r)
@@ -200,20 +256,21 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if filterAPI.FirstAlbum != "" || filterAPI.creationDate != "" || filterAPI.checkMembers != "" || filterAPI.checkCity != "" || filterAPI.citySearchFilter != "" {
-		structTest, notFound := Filters(filterAPI)
+		structTest, notFound := filters(filterAPI)
 		if notFound {
 			errorHandler(w, r)
 			return
-		} else {
-			tmpl.Execute(w, structTest)
-			return
 		}
+
+		tmpl.Execute(w, structTest)
+		return
 	}
 
 	tmpl.Execute(w, Artist)
 }
 
-func Filters(filterAPI filter) (pageArtist2, bool) {
+// filters -> filtre en fonction des données reçues
+func filters(filterAPI filter) (pageArtist2, bool) {
 	var isFilterCreation bool
 	var isFilterAlbum bool
 	var isFilterMembers bool
@@ -310,6 +367,7 @@ func filterCity(filterCity string, index int) bool {
 	return false
 }
 
+// filterMembers -> filtre les artistes en fonction du nombre de membre
 func filterMembers(filterMembers string, Members []string) bool {
 	intFilterMembers, _ := strconv.Atoi(filterMembers)
 
@@ -319,6 +377,7 @@ func filterMembers(filterMembers string, Members []string) bool {
 	return false
 }
 
+// filterAlbum -> filtre les artistes en fonction de la date de sortie du premier album
 func filterAlbum(filterAlbum, albumArtist string) bool {
 	plageAlbum, _ := strconv.Atoi(filterAlbum)
 	dateString := albumArtist[6:10]
@@ -331,6 +390,7 @@ func filterAlbum(filterAlbum, albumArtist string) bool {
 	return false
 }
 
+// filterCreation -> filtre les artistes en fonction de la date de création
 func filterCreation(creationDate int, filterCreation string) bool {
 	plageCreation, _ := strconv.Atoi(filterCreation)
 
@@ -340,6 +400,7 @@ func filterCreation(creationDate int, filterCreation string) bool {
 	return false
 }
 
+// filterCitySearch ->
 func filterCitySearch() []citySearch {
 	var pb []citySearch
 
@@ -352,6 +413,7 @@ func filterCitySearch() []citySearch {
 	return pb
 }
 
+// search ->
 func search(ville string, id int, pb []citySearch, a bool) (bool, []citySearch) {
 	if id == 1 && !a {
 		item1 := citySearch{
@@ -383,6 +445,7 @@ func search(ville string, id int, pb []citySearch, a bool) (bool, []citySearch) 
 	return a, pb
 }
 
+// artistPage -> charge la page /artist
 func artistPage(w http.ResponseWriter, r *http.Request) {
 	tmpl, err1 := template.ParseFiles("./templates/artist.html")
 	if err1 != nil {
@@ -396,9 +459,33 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var ArtistTracker ArtistAPI
+
+	var tableArtist Artists
+	tableArtist = append(tableArtist, Tracker.Artists[nbrPath-1])
+	ArtistTracker.Artists = tableArtist
+
+	var tableLocations []string
+	for _, location := range Tracker.Locations.Index[nbrPath-1].Locations {
+		tableLocations = append(tableLocations, location)
+	}
+	ArtistTracker.Locations = tableLocations
+
+	var tableRelation map[string][]string
+	tableRelation = Tracker.Relation.Index[nbrPath-1].DatesLocations
+	ArtistTracker.Relation = tableRelation
+
+	var TableFlag []string
+	TableFlag = flagCountryFilter(ArtistTracker.Locations)
+
+	ArtistTracker.Locations = deleteCountry(ArtistTracker.Locations)
+
+	ArtistTracker.Relation = deleteCountryMap(ArtistTracker.Relation)
+
 	selectedArtist := pageArtist{
-		Data:   Tracker,
-		Number: nbrPath - 1,
+		Data:        Tracker,
+		SpecialData: ArtistTracker,
+		Flag:        TableFlag,
 	}
 	var selectedArtistPointer *pageArtist
 	selectedArtistPointer = &selectedArtist
@@ -407,6 +494,26 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, selectedArtistPointer)
 }
 
+// deleteCountry -> supprime le pays des lieux de concert
+func deleteCountry(table []string) []string {
+	for i, location := range table {
+		idxPipe := strings.Index(location, "|")
+		table[i] = location[:idxPipe-1]
+	}
+	return table
+}
+
+// deleteCountryMap -> change l'orthographe des lieux de concert
+func deleteCountryMap(mapRelation map[string][]string) map[string][]string {
+	var mapChange = make(map[string][]string)
+	for index, api := range mapRelation {
+		locationChange := deleteCountry([]string{index})
+		mapChange[locationChange[0]] = api
+	}
+	return mapChange
+}
+
+// concertLocationPage -> charge la page /concertLoaction
 func concertLocationPage(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("./templates/concertLocation.html")
 	if err != nil {
@@ -414,14 +521,67 @@ func concertLocationPage(w http.ResponseWriter, r *http.Request) {
 		os.Exit(1)
 	}
 
-	LocationsTracker := locationsConcertFilter()
+	var LocationsTracker ConcertAPI
+	var TableFlag []string
+
+	LocationsTracker = locationsConcertFilter()
+	TableFlag = flagCountryFilter(allLocations)
+	LocationsTracker.Locations = deleteCountry(LocationsTracker.Locations)
+
 	locationsConcert := pageConcert{
 		Data:        Tracker,
 		SpecialData: LocationsTracker,
+		Flag:        TableFlag,
 	}
 	tmpl.Execute(w, locationsConcert)
 }
 
+// flagCountryFilter -> créer un tableau contenant les codes des pays (de l'API flagcdn) dans l'ordre des lieux de concert
+func flagCountryFilter(locations []string) []string {
+	var TableFlag []string
+	for _, location := range locations {
+		idxPipe := strings.Index(location, "|")
+		if idxPipe == -1 {
+			continue
+		}
+		location = location[idxPipe+2:]
+		if location == "usa" {
+			TableFlag = append(TableFlag, "us")
+			continue
+		} else if location == "us" {
+			TableFlag = append(TableFlag, "us")
+			continue
+		} else if location == "uk" {
+			TableFlag = append(TableFlag, "gb")
+			continue
+		} else if location == "netherlands antilles" {
+			TableFlag = append(TableFlag, "nl")
+			continue
+		} else if location == "czech republic" {
+			TableFlag = append(TableFlag, "cz")
+			continue
+		} else if location == "brasil" {
+			TableFlag = append(TableFlag, "br")
+			continue
+		} else if location == "philippine" {
+			TableFlag = append(TableFlag, "ph")
+			continue
+		} else if location == "korea" {
+			TableFlag = append(TableFlag, "kr")
+			continue
+		}
+		for countryCode, value := range flagCountry {
+			value = strings.ToLower(value)
+			if value == location {
+				TableFlag = append(TableFlag, countryCode)
+				break
+			}
+		}
+	}
+	return TableFlag
+}
+
+// locationsConcertFilter -> créer un tableau contenant les lieux des concert en un seul exemplaire, l'insert dans la variable globale allLocations est dans la structure API destinée à la page /concertLocations
 func locationsConcertFilter() ConcertAPI {
 	var tableLocations []string
 	for index, api := range Tracker.Locations.Index {
@@ -434,11 +594,13 @@ func locationsConcertFilter() ConcertAPI {
 		}
 	}
 	var API ConcertAPI
-	API.Locations = tableLocations
+	sort.Strings(tableLocations)
 	allLocations = tableLocations
+	API.Locations = tableLocations
 	return API
 }
 
+// locationIn -> regarde si un lieu de concert est déjà présent dans le tableau
 func locationIn(locations []string, selectedLocation string) bool {
 	for i := 0; i < len(locations); i++ {
 		if locations[i] == selectedLocation {
@@ -448,6 +610,7 @@ func locationIn(locations []string, selectedLocation string) bool {
 	return true
 }
 
+// cityConcertPage -> charge la page /cityConcert
 func cityConcertPage(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("./templates/cityConcert.html")
 	if err != nil {
@@ -467,15 +630,18 @@ func cityConcertPage(w http.ResponseWriter, r *http.Request) {
 	selectedCity := pageCity{
 		Data:        Tracker,
 		SpecialData: CityTracker,
+		City:        city,
 	}
 	tmpl.Execute(w, selectedCity)
 }
 
+// cityConcertFilter -> filtre les artists en fonction de leurs lieux de concert
 func cityConcertFilter(city string) CityAPI {
 	var tableArtist Artists
 	for index, api := range Tracker.Locations.Index {
 		for i := 0; i < len(api.Locations); i++ {
-			if Tracker.Locations.Index[index].Locations[i] == city {
+			idxPipe := strings.Index(Tracker.Locations.Index[index].Locations[i], "|")
+			if Tracker.Locations.Index[index].Locations[i][:idxPipe-1] == city {
 				tableArtist = append(tableArtist, Tracker.Artists[index])
 				continue
 			}
@@ -486,6 +652,7 @@ func cityConcertFilter(city string) CityAPI {
 	return API
 }
 
+// errorHandler -> charge la page /error
 func errorHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("./templates/error.html")
 	if err != nil {
@@ -507,8 +674,8 @@ func menuPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	StaticFile()
-	JSON()
+	staticFile()
+	serverJSON()
 	http.HandleFunc("/", menuPage)
 	http.HandleFunc("/groupie/", groupiePage)
 	http.HandleFunc("/artist/", artistPage)
@@ -520,20 +687,13 @@ func main() {
 /***************DEEZER API***************/
 
 func Deezer(selectedArtist *pageArtist) {
-	nameArtist := SearchNameID(selectedArtist.Number)
+	nameArtist := SearchNameID(selectedArtist.SpecialData.Artists[0].ID)
 	URLTracklist := SearchArtistDeezer(nameArtist, selectedArtist)
-	ParseJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
-	for i, b := range selectedArtist.Deezer.ListSong.Data {
-		if i == 0 {
-			fmt.Println(b.Title)
-			fmt.Println(b.TitleShort)
-		}
-	}
+	unmarshallJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
 }
 
 //SearchNameID -> Trouve le nom pour l'id et le modifie
 func SearchNameID(ID int) string {
-	ID++
 	for _, data := range Tracker.Artists {
 		if data.ID == ID {
 			nameModif := strings.Replace(data.Name, " ", "%20", -1)
@@ -549,8 +709,8 @@ func SearchArtistDeezer(name string, StructPageArtist *pageArtist) string {
 
 	var url = urlPart1 + name
 
-	ParseJSON(url, &StructPageArtist.Deezer.DeezerArtist)
-	ParseJSON(url, &StructPageArtist.Deezer.DeezerArtist)
+	unmarshallJSON(url, &StructPageArtist.Deezer.DeezerArtist)
+	unmarshallJSON(url, &StructPageArtist.Deezer.DeezerArtist)
 
 	URLTracklist := ""
 
