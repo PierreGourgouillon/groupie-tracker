@@ -12,7 +12,7 @@
     <script type="text/javascript" src="/static/file.js"></script>
     <title>Document</title>
 </head>
-<body>
+<body onload="javascript:loadMapCity({{.City}})">
     
     <header>
         <div class="logo-ynov">
@@ -69,6 +69,8 @@
             </div>
         {{ end }}
     </div>
+
+    <div class="map" id="mapID"></div>
 
     <footer>
         <div class="social-network-link">

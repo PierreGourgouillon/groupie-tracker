@@ -473,38 +473,29 @@ margin-left: 15px;
     margin-left: 25%;
 }
 
-.div-location{
+.div-location {
     color: black;
-    display: flex;
-    margin-top: 5%;
+    display: grid;
+    grid-template: 100% / 20% 80%;
 }
 
-.text-location{
-    flex-basis: 30%;
-    width: 100%;
-}
-
-.text-location h1{
-    margin-left: 150px;
-}
-
-.text-location li{
-    margin-left: 180px;
-    list-style-type: none;
-    font-size: 20px;
-    font-weight: bold;
-    padding-top: 20px;
-}
-
-.text-location div{
+.text-location {
+    grid-area: 1/1/1/1;
+    align-items: center;
     text-align: center;
 }
 
-.text-location ul{
-    margin-left: 180px;
-    list-style-type: none;
-    font-size: 20px;
-    font-weight: bold;
+.map {
+    grid-area: 1/2/1/2;
+}
+
+.concert-date {
+    position: relative;
+    display: none; 
+}
+
+.concert:hover + .concert-date {
+    display: block;
 }
 
 /*Page Error*/
@@ -538,21 +529,80 @@ text-align: center;
     max-width: 90%;
     justify-content: space-around;
     flex-wrap: wrap;
+    margin-left: 5%;
 }
 
 #location {
-    color: blue;
+    margin-top: 5px;
+    color: white;
 }
 
 .concert {
     background-color: white;
-    width: 250px;
-    height: 20px;
+    width: 200px;
+    height: 30px;
     margin-right: 2%;
     margin-top: 2%;
-    color: black;
+    border-radius: 5px;
+    display: grid;
+    grid-template: 30px / 150px 50px;
+}
+
+.location {
+    grid-area: 1/1/1/1;
+    background-color: #2f2f2f;
+    border-radius: 5px;
+    font-size: 15px;
+    text-align: center;
+}
+
+.flag {
+    grid-area: 1/2/1/2;
+    background-size: cover;
+}
+
+#flag {
+    border-radius: 5px;
 }
 
 .capitalize {
     text-transform: capitalize;
+}
+
+/*********testartist*********/
+
+.hautdepage {
+    background-color: white;
+    width: 100%;
+    margin-right: 0;
+    margin-top: 30px;
+    display: grid;
+    grid-template: auto auto 10px / 50% 5% 45%;
+}
+
+.NameG {
+    background-color: transparent;
+    grid-area: 1/1/1/1;
+    color:rgb(34, 2, 34);
+    font-size: 75px;
+    text-align: center;
+}
+
+.div-image-artist-D {
+    border: 1px solid green;
+    grid-area: 1/2/4/4;
+    text-align: center;
+}
+
+#photo {
+    max-width: 100%;
+	height: auto;
+}
+
+.text-artist-G {
+    z-index: 2;
+    margin-bottom: 5px;
+    background-color: rgb(34, 2, 34);;
+    height: auto;
+    grid-area: 2/1/2/3;
 }

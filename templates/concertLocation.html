@@ -50,14 +50,20 @@
     </header>
 
     {{ $API := .SpecialData }}
+    {{ $Flag := .Flag}}
     <div id="concertLocation">
         {{range $index, $v := $API.Locations}}
             <a href="/cityConcert/{{$index}}">
                 <div class="concert">
-                    <li id="location" class="capitalize">{{$v}}</li>
+                    <div class="location">
+                        <p id="location" class="capitalize">{{$v}} </p>
+                    </div>
+                    <div class="flag">
+                        <img id="flag" src="https://flagcdn.com/{{(index $Flag $index)}}.svg" width="50" height="30">
+                    </div>
                 </div>
             </a>
-        {{end}}
+        {{end}}  
     </div>
 
     <footer>

@@ -51,15 +51,20 @@
     <a href="/groupie/" id="button-back-artist"><button class="button-back">Retour</button></a>
 
     {{ $ArtAPI := .SpecialData }}
-    <div id="div-image-artist">
-        <img src={{ (index $ArtAPI.Artists 0).Image }}>
-    </div>
 
-    <div id="text-artist">
-        <h1>{{ (index $ArtAPI.Artists 0).Name }}</h1>
-        <p>Les membres du groupes sont: {{range (index $ArtAPI.Artists 0).Members }}{{ . }}, {{ end }}</p>
-        <p>{{ (index $ArtAPI.Artists 0).Name }} a fait son apparition en {{ (index $ArtAPI.Artists 0).CreationDate }}</p>
-        <p>Son premier album est sortie le {{ (index $ArtAPI.Artists 0).FirstAlbum }}</p>
+    <div class="hautdepage">
+        <div class="NameG">
+            <h1>{{ (index $ArtAPI.Artists 0).Name }}</h1>
+        </div>
+        <div class="div-image-artist-D">
+            <img id="photo" src={{ (index $ArtAPI.Artists 0).Image }}>
+        </div>
+
+        <div class="text-artist-G">
+            <p>Les membres du groupes sont: {{range (index $ArtAPI.Artists 0).Members }}{{ . }}, {{ end }}</p>
+            <p>{{ (index $ArtAPI.Artists 0).Name }} a fait son apparition en {{ (index $ArtAPI.Artists 0).CreationDate }}</p>
+            <p>Son premier album est sortie le {{ (index $ArtAPI.Artists 0).FirstAlbum }}</p>
+        </div>
     </div>
 
     <div class="div-location">
