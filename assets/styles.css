@@ -20,6 +20,16 @@ a:hover, a:active,a:visited{
     color: white;
 }
 
+
+@font-face {
+    font-family: 'gisbon_demodemo';
+    src: url('gisbon_demo-webfont.woff2') format('woff2'),
+         url('gisbon_demo-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 /**************Style bouton**************/
 
 .button-style{
@@ -189,9 +199,27 @@ footer{
 
 /***************************Page Menu***************************/
 
+.button-back{
+    width: 150px;
+    height: 60px;
+    color: black;
+    border-radius: 6px;
+    font-size: 25px;
+    border:none;
+    background-color: #F07404;
+}
+
+.button-back:hover{
+    border:2px solid black
+}
+
+#button-back-menu{
+position: absolute;
+margin-top: 15px;
+margin-left: 15px;
+}
 
 /*Header*/
-
 :root {
     --rad: .5rem;
     --dur: .3s;
@@ -207,7 +235,6 @@ header{
     background-color: #18062C;
     height: 100px;
 }
-
 
 header div{
     display: inline-block;
@@ -415,99 +442,11 @@ header div{
     margin-right: 5%
 }
 
-/*Page Artist*/
-.button-back{
-    width: 150px;
-    height: 60px;
-    color: black;
-    border-radius: 6px;
-    font-size: 25px;
-    border:none;
-    background-color: #F07404;
-}
+/***************************Page Artist***************************/
 
-.button-back:hover{
-    border:2px solid black
-}
 
-#button-back-artist, #button-back-menu{
-position: absolute;
-margin-top: 15px;
-margin-left: 15px;
-}
 
-#div-image-artist{
-    height: 720px;
-    text-align: center;
-    position: relative;
-    margin-top: 50px;
-    text-align: center;
-}
-
-#div-image-artist img{
-    background :no-repeat;
-    height: 720px;
-    position: relative;
-    background-position: center;
-    border-radius: 66px;
-}
-
-#text-artist{
-    text-align: center;
-    color: black;
-}
-
-#text-artist h1{
-    font-size: 60px;
-}
-
-#text-artist p{
-    font-size: 23px;
-}
-
-#mapID{
-    height: 500px;
-    width: 700px;
-    border-radius: 15px;
-    flex-basis: 40%;
-    margin-left: 25%;
-}
-
-.div-location{
-    color: black;
-    display: flex;
-    margin-top: 5%;
-}
-
-.text-location{
-    flex-basis: 30%;
-    width: 100%;
-}
-
-.text-location h1{
-    margin-left: 150px;
-}
-
-.text-location li{
-    margin-left: 180px;
-    list-style-type: none;
-    font-size: 20px;
-    font-weight: bold;
-    padding-top: 20px;
-}
-
-.text-location div{
-    text-align: center;
-}
-
-.text-location ul{
-    margin-left: 180px;
-    list-style-type: none;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-/*Page Error*/
+/***************************Page Error***************************/
 #error-button{
 background-color: #707070;
 }

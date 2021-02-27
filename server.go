@@ -59,11 +59,9 @@ type pageArtist struct {
 
 //DeezerAPI -> Structure les données Deezer de l'artiste
 type DeezerAPI struct {
-	DeezerArtist   ArtistDeezer
-	ListSong       ListSong
-	AlbumInfo      Album
-	TrackListAlbum TrackListAlbum
-	ListAlbums     ListAlbums
+	DeezerArtist ArtistDeezer
+	ListSong     ListSong
+	AlbumInfo    Album
 }
 
 type pageArtist2 struct {
@@ -72,7 +70,7 @@ type pageArtist2 struct {
 	Cities []citySearch
 }
 
-// Structure pour la page concertLocation
+//ConcertAPI -> Structure pour la page concertLocation
 type ConcertAPI struct {
 	ID        int
 	Locations []string
@@ -83,8 +81,7 @@ type pageConcert struct {
 	SpecialData ConcertAPI
 }
 
-// Structure pour la page cityConcert
-
+//CityAPI -> Structure pour la page cityConcert
 type CityAPI struct {
 	ID      int
 	Artists Artists
@@ -160,6 +157,7 @@ func ParseJSON(url string, API interface{}) {
 		os.Exit(0)
 	}
 	body, err := ioutil.ReadAll(res.Body)
+
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(0)
@@ -402,11 +400,11 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 		Data:   Tracker,
 		Number: nbrPath - 1,
 	}
-	var test *pageArtist
-	test = &selectedArtist
-	Deezer(test)
+	var selectedArtistPointer *pageArtist
+	selectedArtistPointer = &selectedArtist
+	Deezer(selectedArtistPointer)
 
-	tmpl.Execute(w, selectedArtist)
+	tmpl.Execute(w, selectedArtistPointer)
 }
 
 func concertLocationPage(w http.ResponseWriter, r *http.Request) {
@@ -525,7 +523,11 @@ func Deezer(selectedArtist *pageArtist) {
 	nameArtist := SearchNameID(selectedArtist.Number)
 	URLTracklist := SearchArtistDeezer(nameArtist, selectedArtist)
 	ParseJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
-	InsertAlbums(&selectedArtist.Deezer)
+	for i, b := range selectedArtist.Deezer.DeezerArtist.Data {
+		if i == 0 {
+			fmt.Println(b.Picture)
+		}
+	}
 }
 
 //SearchNameID -> Trouve le nom pour l'id et le modifie
@@ -560,35 +562,13 @@ func SearchArtistDeezer(name string, StructPageArtist *pageArtist) string {
 	return URLTracklist
 }
 
-//InsertAlbums -> insère Les tracklists de l'album dans la structure ListAlbums
-func InsertAlbums(Deezer *DeezerAPI) {
-	var tableURLAlbum []string
-	isInArray := false
-
-	for _, data := range Deezer.ListSong.Data {
-		for _, url := range tableURLAlbum {
-			if data.Album.TrackListAlbum == url {
-				isInArray = true
-				break
-			}
-		}
-		if !isInArray {
-			tableURLAlbum = append(tableURLAlbum, data.Album.TrackListAlbum)
-			var test TrackListAlbum
-			ParseJSON(data.Album.TrackListAlbum, &test)
-			fmt.Println(test)
-			break
-		}
-	}
-}
-
 //ArtistDeezer -> Information sur l'artiste
 type ArtistDeezer struct {
 	Data []struct {
 		ID               int    `json:"id"`
 		Name             string `json:"name"`
 		Link             string `json:"link"`
-		Picture          string `json:"picture"`
+		Picture          string `json:"picture_big"`
 		NbAlbum          int    `json:"nb_album"`
 		NbFan            int    `json:"nb_fan"`
 		Radio            bool   `json:"radio"`
@@ -618,26 +598,4 @@ type Album struct {
 	Title          string `json:"title"`
 	CoverURL       string `json:"cover"`
 	TrackListAlbum string `json:"tracklist"`
-}
-
-// ListAlbums -> Liste tous les albums de l'artistes
-type ListAlbums []struct {
-	TrackListAlbum TrackListAlbum
-}
-
-//TrackListAlbum -> Liste de tous les sons dans l'album
-type TrackListAlbum struct {
-	Data []struct {
-		ID             int    `json:"id"`
-		Readable       bool   `json:"readable"`
-		Title          string `json:"title"`
-		TitleShort     string `json:"title_short"`
-		LinkURL        string `json:"link"`
-		Duration       int    `json:"duration"`
-		TrackPosition  int    `json:"track_position"`
-		DiskNumber     int    `json:"disk_number"`
-		Rank           int    `json:"rank"`
-		ExplicitLyrics bool   `json:"explicit_lyrics"`
-		Preview        string `json:"preview"`
-	} `json:"data"`
 }

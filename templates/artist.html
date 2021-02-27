@@ -15,6 +15,7 @@
 <body onload="javascript:mapConcert()">
     {{$API := .Data}}
     {{$artistID := .Number}}
+    {{$deezer := .Deezer}}
     <header>
         <div class="logo-ynov">
             <a href="/groupie/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
@@ -49,30 +50,13 @@
         </div>
     </header>
 
-    <a href="/groupie/" id="button-back-artist"><button class="button-back">Retour</button></a>
 
-    <div id="div-image-artist">
-        <img src={{ (index $API.Artists $artistID).Image }}>
-    </div>
 
-    <div id="text-artist">
-        <h1>{{ (index $API.Artists $artistID).Name }}</h1>
-        <p>Les membres du groupes sont: {{range (index $API.Artists $artistID).Members }}{{ . }}, {{ end }}</p>
-        <p>{{ (index $API.Artists $artistID).Name }} a fait son apparition en {{ (index $API.Artists $artistID).CreationDate }}</p>
-        <p>Son premier album est sortie le {{ (index $API.Artists $artistID).FirstAlbum }}</p>
-    </div>
 
-    <div class="div-location">
 
-        <div class="text-location">
-            <h1>Les différents concerts :</h1>
-                {{ range $i, $v := (index $API.Locations.Index $artistID).Locations }}<li class="capitalize" class="geocities" autocapitalize="words">{{ . }}</li>
-                {{ range index (index $API.Relation.Index $artistID).DatesLocations $v }} <ul> {{ . }}</ul> {{ end }}{{ end }}
-        </div>
 
-        <div id="mapID"></div>
-    
-    </div>
+
+
 
     <footer>
         <div class="social-network-link">
