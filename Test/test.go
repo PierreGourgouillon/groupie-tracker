@@ -230,4 +230,5 @@ func main() {
 	serverJSON()
 	salut := deleteCountryMap(Tracker.Relation.Index[0].DatesLocations)
 	fmt.Println(salut)
+	fmt.Println("salut")
 }
