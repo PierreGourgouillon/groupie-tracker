@@ -629,45 +629,76 @@ header div{
     display: block;
 }
 
-.container-all-songs{
-    flex-basis: 47%;
-    color: black;
+
+
+.container-albums{
+    flex-basis:  47%;
 }
 
-.list-songs{
+.container{
+    width: 100%;
+    display:block;
+    overflow:hidden;
     background-color: white;
+    border-radius: 0px;
+    margin-top: 249px;
+    height: 462px;
+    position: relative;
+    bottom:150px;
     box-shadow: 2px 2px 2px grey;
-    height: 499px;
-    overflow-x: hidden;
-    overflow-y:auto ;
-    margin-top: 97px;
 }
 
-.div-song{
-    width: 95%;
+.carousel{
+    display:block;
+    width: 750px;
+    height: 400px;
+    background: white;
+    overflow-x: scroll;
+    padding: 10px;
+    margin: 0;
+    white-space: nowrap; 
+    margin-top: 40px;
+}
+
+.item{
     display: inline-block;
-    border-bottom: 1px solid grey;
+    width: 380px;
+    margin: 0 10px;
+    height: 380px;
+    background: rgba(0, 0, 0, 0.05) no-repeat center center;
+    background-size: cover;
+    position:relative;
+    border-radius: 20px;
+    box-shadow: 0 0 10px #dfdfdf;
 }
-.div-song p{
-    display: inline-block;
-}
 
-#song-list{
-    width: 700px;
-}
-
-
-
-.container-all-songs h1{
+.albums-title{
     color: #3A1757;
     text-shadow: 5px 5px #F98718;
     font-size: 70px;
     font-family: "gisbon_demodemo";
-    z-index: 1;
+    z-index: 2;
     position: relative;
-    top: 130px;
+    top: 140px;
     left: 50px;
 }
+  
+.item h1{
+    top: 70%;
+    position: absolute;
+    color: white;
+    text-align: center;
+    width: 100%;
+    font-size: 1em;
+  }
+
+
+
+
+
+
+
+
 
 .background-map{
     background-color: white;

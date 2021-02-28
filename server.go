@@ -71,6 +71,7 @@ type DeezerAPI struct {
 	DeezerArtist ArtistDeezer
 	ListSong     ListSong
 	AlbumInfo    Album
+	ListAlbum    []Album
 }
 
 // ArtistAPI -> structure Artiste spécial pour la page /artist contient un seul artist, ses lieux de concert et leurs dates
@@ -690,6 +691,33 @@ func Deezer(selectedArtist *pageArtist) {
 	nameArtist := SearchNameID(selectedArtist.SpecialData.Artists[0].ID)
 	URLTracklist := SearchArtistDeezer(nameArtist, selectedArtist)
 	unmarshallJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
+	ListAlbum(selectedArtist)
+}
+
+func ListAlbum(selectedArtist *pageArtist) {
+	var table []string
+	var tableau []Album
+	var isFirstAlbum bool = true
+
+	for i, b := range selectedArtist.Deezer.ListSong.Data {
+		if i == 0 && isFirstAlbum {
+			table = append(table, b.Album.Title)
+			isFirstAlbum = false
+		}
+		for _, k := range table {
+			if b.Album.Title == k {
+				isFirstAlbum = true
+				break
+			} else {
+				isFirstAlbum = false
+			}
+		}
+		if !isFirstAlbum {
+			table = append(table, b.Album.Title)
+			tableau = append(tableau, b.Album)
+		}
+	}
+	selectedArtist.Deezer.ListAlbum = tableau
 }
 
 //SearchNameID -> Trouve le nom pour l'id et le modifie
@@ -757,6 +785,6 @@ type ListSong struct {
 type Album struct {
 	ID             int    `json:"id"`
 	Title          string `json:"title"`
-	CoverURL       string `json:"cover_xl"`
+	CoverURL       string `json:"cover_big"`
 	TrackListAlbum string `json:"tracklist"`
 }

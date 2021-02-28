@@ -128,27 +128,19 @@
                 </div>
             </div>
     
-            <div class="container-all-songs">
-                <h1>Titres phares</h1>
-                    <div class="list-songs">
-                        <div>
-                            <nav>
-                                <ul>{{range $ID,$v:= $deezer.ListSong.Data}}
-                                    {{if gt $ID 2}}
-                                    <div class="div-song">
-                                        <li>
-                                            <p id="song-list">{{(index $deezer.ListSong.Data $ID).TitleShort}}</p>
-                                            <p id="minutes">{{(index $deezer.ListSong.Data $ID).Duration}}</p>
-                                        </li>
-                                    </div>
-                                    {{end}}
-                                    {{end}}
-                                </ul>
-                            </nav>
+            <div class="container-albums">
+                <h1 class="albums-title">Les Albums</h1>
+                <div class="container">
+                    <div class="carousel">
+                        {{range $ID,$v := $deezer.ListAlbum}}
+                        <div class="item" style="background:url('{{(index $deezer.ListAlbum $ID).CoverURL}}') ;">
+                            <h1>{{(index $deezer.ListAlbum $ID).Title}}</h1>
                         </div>
+                        {{end}}
                     </div>
+                </div>
             </div>
-    </div>
+        </div>
     </div>
 
     <h1 class="map-title">Carte des concerts</h1>
