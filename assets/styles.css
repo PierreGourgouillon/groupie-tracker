@@ -645,12 +645,18 @@ header div{
 
 .div-song{
     width: 95%;
-    border-bottom: 1px solid gray;
+    display: inline-block;
+    border-bottom: 1px solid grey;
+}
+.div-song p{
+    display: inline-block;
 }
 
-.div-song span{
-    margin-left: 600px;
+#song-list{
+    width: 700px;
 }
+
+
 
 .container-all-songs h1{
     color: #3A1757;
@@ -691,8 +697,29 @@ header div{
     top: 50px;
 }
 
-.footer-artists{
-    
+.follower{
+    width: 400px;
+    height: 150px;
+    position: relative;
+    bottom: 270px;
+    left: 750px;
+    background-color: transparent;
+    z-index: 5;
+    display: inline-block;
+    text-align: center;
+}
+
+.follower p{
+    position: relative;
+    bottom: 15px;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 20px;
+}
+
+#logo-deezer{
+    width: 75px;
+    height: 75px;
 }
 
 

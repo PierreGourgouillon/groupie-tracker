@@ -51,18 +51,35 @@
 
     {{$ArtAPI:= .SpecialData}}
 
-    
 
-    <div id="header-artist">
+    <div id="header-artist"> 
         <div id="position-image-artist">
-            <img src="https://e-cdns-images.dzcdn.net/images/artist/ad61d6e0fa724d880db979c9ac8cc5e3/1000x1000-000000-80-0-0.jpg">
+            {{range $f,$g := $deezer.DeezerArtist.Data}}
+            {{if eq $f 0}}
+            <img src="{{(index $deezer.DeezerArtist.Data $f).Picture}}">
+            {{end}}
+            {{end}}
         </div>
         <div id="position-text-artist">
             <h1>{{(index $ArtAPI.Artists 0).Name }}</h1>
             <div>
-                <p>Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte
-                Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte Sympa ce texte</p>        
+                <p>Première apparition : {{(index $ArtAPI.Artists 0).CreationDate}}</p>
+                <p>Date du premier projet: {{(index $ArtAPI.Artists 0).FirstAlbum}}</p>
+                {{range $ID,$v := $deezer.DeezerArtist.Data}}
+                {{if eq $ID 0}}
+                <p>Nombre de projets réalisés: {{(index $deezer.DeezerArtist.Data $ID).NbAlbum}}</p>{{end}}{{end}}
             </div>
+            
+        </div>
+        <div class="follower">
+            {{range $ID,$v := $deezer.DeezerArtist.Data}}
+                {{if eq $ID 0}}
+            <a href="{{(index $deezer.DeezerArtist.Data $ID).Link}}" target="_blank">
+                <img id="logo-deezer" src="/static/images/deezer.png">
+            </a>
+            <p> {{(index $deezer.DeezerArtist.Data $ID).NbFan}} followers</p>
+            {{end}}
+            {{end}}
         </div>
     </div>
 
@@ -74,14 +91,15 @@
             <p class="container-songs"></p>
             <ul>
                 {{range $ID,$v:= $deezer.ListSong.Data}}
-                {{if eq $ID 0}}
+                {{if le $ID 2}}
                 <li>
-                    <img src="https://e-cdns-images.dzcdn.net/images/cover/a0a843e993afcfcf54c603f96ed1e59f/1000x1000-000000-80-0-0.jpg">
-                    
-                    <h2>{{(index $deezer.ListSong.Data $ID).Title}}</h2>
-                    {{end}}
-                    {{end}}
+                    <a href="{{(index $deezer.ListSong.Data $ID).LinkURL}}" target="_blank">
+                        <img src="{{(index $deezer.ListSong.Data $ID).Album.CoverURL}}">
+                        <h2>{{(index $deezer.ListSong.Data $ID).TitleShort}}</h2>
+                    </a>
                 </li>
+                {{end}}
+                {{end}}
             </ul>   
         </div>
     </div>
@@ -115,57 +133,16 @@
                     <div class="list-songs">
                         <div>
                             <nav>
-                                <ul>
+                                <ul>{{range $ID,$v:= $deezer.ListSong.Data}}
+                                    {{if gt $ID 2}}
                                     <div class="div-song">
                                         <li>
-                                            <p>C'est normal en russie <span>1:23</span></p> 
+                                            <p id="song-list">{{(index $deezer.ListSong.Data $ID).TitleShort}}</p>
+                                            <p id="minutes">{{(index $deezer.ListSong.Data $ID).Duration}}</p>
                                         </li>
                                     </div>
-                                    <div class="div-song">
-                                        <li>
-                                            <p>C'est normal en russie<span>1:23</span></p>
-                                        </li>
-                                    </div>
-                                    <div class="div-song">
-                                        <li>
-                                            <p>C'est normal en russie<span>1:23</span></p>
-                                        </li>
-                                    </div>
-                                    <div class="div-song">
-                                        <li>
-                                            <p>C'est normal en russie<span>1:23</span></p>
-                                        </li>
-                                    </div>
-                                    <div class="div-song">
-                                        <li>
-                                            <p>C'est normal en russie<span>1:23</span></p>
-                                        </li>
-                                    </div>
-                                    <div class="div-song">
-                                        <li>
-                                            <p>C'est normal en russie<span>1:23</span></p>
-                                        </li>
-                                    </div>
-                                    <div class="div-song">
-                                        <li>
-                                            <p>C'est normal en russie<span>1:23</span></p>
-                                        </li>
-                                    </div>
-                                    <div class="div-song">
-                                        <li>
-                                            <p>C'est normal en russie<span>1:23</span></p>
-                                        </li>
-                                    </div>
-                                    <div class="div-song">
-                                        <li>
-                                            <p>C'est normal en russie<span>1:23</span></p>
-                                        </li>
-                                    </div>
-                                    <div class="div-song">
-                                        <li>
-                                            <p>C'est normal en russie<span>1:23</span></p>
-                                        </li>
-                                    </div>
+                                    {{end}}
+                                    {{end}}
                                 </ul>
                             </nav>
                         </div>

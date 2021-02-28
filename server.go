@@ -757,6 +757,6 @@ type ListSong struct {
 type Album struct {
 	ID             int    `json:"id"`
 	Title          string `json:"title"`
-	CoverURL       string `json:"cover_small"`
+	CoverURL       string `json:"cover_xl"`
 	TrackListAlbum string `json:"tracklist"`
 }
