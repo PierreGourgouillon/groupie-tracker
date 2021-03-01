@@ -132,10 +132,10 @@
                 <h1 class="albums-title">Les Albums</h1>
                 <div class="container">
                     <div class="carousel">
-                        {{range $ID,$v := $deezer.ListAlbum}}
-                        <div class="item" style="background:url('{{(index $deezer.ListAlbum $ID).CoverURL}}') ;">
-                            <h1>{{(index $deezer.ListAlbum $ID).Title}}</h1>
-                        </div>
+                        {{range $ID,$v := $deezer.ListAlbum}}                        
+                            <div class="item" style="background:url('{{(index $deezer.ListAlbum $ID).CoverURL}}') ;">
+                                <h1>{{(index $deezer.ListAlbum $ID).Title}}</h1>
+                            </div> 
                         {{end}}
                     </div>
                 </div>

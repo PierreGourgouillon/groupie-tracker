@@ -31,6 +31,28 @@ a:hover, a:active,a:visited{
 
 }
 
+@media screen and (max-width:1700px){
+    html,body{
+        zoom: 90%;
+    }
+
+    #position-text-artist{
+        font-size: 20px;
+    }
+
+    #follower{
+        font-size: 22px;
+    }
+
+    .title-top-songs{
+        font-size: 77px;
+    }
+
+    .top-songs h2{
+        font-size: 39px;
+    }
+}
+
 /**************Style bouton**************/
 
 .button-style{
@@ -145,7 +167,7 @@ footer{
 }
 
 /* Partie Flexbox*/
-.container{
+.container-a{
     margin-top: 50px;
     display: flex;
     flex-wrap: wrap;
@@ -181,7 +203,7 @@ footer{
 }
 
 @media screen and (min-width:1024px) {
-     .container p{
+     .container-a p{
         width: 50%;
         margin-top: auto;
         margin-bottom: auto;
@@ -328,49 +350,59 @@ header div{
 }
 
 /*Filter*/
-.div-form-filters{
-    margin-left: auto;
-    margin-right: auto;
+.title-filters{
+    font-size: 65px;
+    color: #3A1757;
+    text-shadow: 5px 5px #F98718;
+    font-family: "gisbon_demodemo";
+    z-index: 2;
+    position:relative;
+    left: 370px;
+    bottom:10px;
+}
+
+.form-filter{
+    background-color: white;
+    width: 70%;
+    height: 450px;
+    margin-left: 15%;
+    margin-top: -90px;
+}
+
+.position-text{
+    border:1px solid transparent;
+    color:black;
+    width: 50%;
+    height: 95%;
     text-align: center;
-    padding: 15px;
+    margin-left: 25%;
+    margin-top: 5px;
 }
 
-#div-button-form{
-    margin-top: 1%;
+.position-text li{
+    display: block;
+    margin-top: 15px;
+    font-size: 20px;
 }
 
-
-.button-style-form{
-    height: 65px;
-    width: 250px;
-    text-align: center;
-    border-radius: 32px;
-    border: none;
-    background-color: rgba(255,255,255, 0.48);
-    font-weight: bold;
-    color: black;
-    font-size: 22px;
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-.button-style-form:hover{
-    background-color: black;
+.position-text button{
+    margin-top: 60px;
+    font-size: 20px;
     color: white;
+    width: 241px;
+    height: 53px;
+    border-radius: 30px;
+    background-color: #F98718;
+    border: none;
+    text-align: center;
+    font-weight: bold;
 }
 
-#buton-hidden{
-    margin-right: 300px;
-}
-
-.div-form-filters form div {
-    padding: 3px;
+.select-second{
+    margin-left:134px;
 }
 
 
-.Members-form{
-    display: inline;
-}
 
 /* Menu Card*/
 .flip-card {
@@ -592,7 +624,7 @@ header div{
 }
 
 .container-location-concerts button{
-    margin-left: 200px;
+    margin-left: 150px;
     font-size: 20px;
     color: white;
     width: 241px;
@@ -646,11 +678,12 @@ header div{
     position: relative;
     bottom:150px;
     box-shadow: 2px 2px 2px grey;
+    padding: 2%;
 }
 
 .carousel{
     display:block;
-    width: 750px;
+    width: 850px;
     height: 400px;
     background: white;
     overflow-x: scroll;
@@ -668,7 +701,7 @@ header div{
     background: rgba(0, 0, 0, 0.05) no-repeat center center;
     background-size: cover;
     position:relative;
-    border-radius: 20px;
+    border-radius: 10px;
     box-shadow: 0 0 10px #dfdfdf;
 }
 
@@ -684,20 +717,15 @@ header div{
 }
   
 .item h1{
-    top: 70%;
+    top: 80%;
     position: absolute;
     color: white;
     text-align: center;
     width: 100%;
-    font-size: 1em;
+    font-size: 1.2em;
+    color: #F98718;
+    font-family: "gisbon_demodemo";
   }
-
-
-
-
-
-
-
 
 
 .background-map{
