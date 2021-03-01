@@ -84,25 +84,25 @@
                             <option disabled selected value>Choisir ville 1</option>
                             {{$a := .}}
                             {{range $ID,$v:= $a.Cities}}
-                            <option value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
+                            <option class="capitalize" value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
                             {{end}}
                         </select>
                     </li>
                     <li class="select-second">
-                        <select name="citySearchFilter">
+                        <select name="citySearchFilter1">
                             <option disabled selected value>Choisir ville 2</option>
                             {{$a := .}}
                             {{range $ID,$v:= $a.Cities}}
-                            <option value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
+                            <option class="capitalize" value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
                             {{end}}
                         </select>
                     </li>
                     <li class="select-second">
-                        <select name="citySearchFilter">
+                        <select name="citySearchFilter2">
                             <option disabled selected value>Choisir ville 3</option>
                             {{$a := .}}
                             {{range $ID,$v:= $a.Cities}}
-                            <option value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
+                            <option class="capitalize" value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
                             {{end}}
                         </select>
                     </li>

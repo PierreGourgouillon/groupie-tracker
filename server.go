@@ -118,13 +118,15 @@ type CityAPI struct {
 
 // filter -> structure pour recevoir les informations du filtre
 type filter struct {
-	FirstAlbum       string
-	creationDate     string
-	checkMembers     string
-	members          string
-	checkCity        string
-	city             string
-	citySearchFilter string
+	FirstAlbum        string
+	creationDate      string
+	checkMembers      string
+	members           string
+	checkCity         string
+	city              string
+	citySearchFilter0 string
+	citySearchFilter1 string
+	citySearchFilter2 string
 }
 
 // citySearch ->
@@ -247,23 +249,37 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 	Artist.Cities = structCity
 
 	filterAPI := filter{
-		FirstAlbum:       r.FormValue("firstAlbum"),
-		creationDate:     r.FormValue("creationDate"),
-		checkMembers:     r.FormValue("checkMembers"),
-		members:          r.FormValue("members"),
-		checkCity:        r.FormValue("checkCity"),
-		city:             r.FormValue("city"),
-		citySearchFilter: r.FormValue("citySearchFilter"),
+		FirstAlbum:        r.FormValue("firstAlbum"),
+		creationDate:      r.FormValue("creationDate"),
+		checkMembers:      r.FormValue("checkMembers"),
+		members:           r.FormValue("members"),
+		checkCity:         r.FormValue("checkCity"),
+		city:              r.FormValue("city"),
+		citySearchFilter0: r.FormValue("citySearchFilter"),
+		citySearchFilter1: r.FormValue("citySearchFilter1"),
+		citySearchFilter2: r.FormValue("citySearchFilter2"),
 	}
 
-	if filterAPI.FirstAlbum != "" || filterAPI.creationDate != "" || filterAPI.checkMembers != "" || filterAPI.checkCity != "" || filterAPI.citySearchFilter != "" {
+	if filterAPI.citySearchFilter0 == filterAPI.citySearchFilter1 {
+		filterAPI.citySearchFilter1 = ""
+	}
+	if filterAPI.citySearchFilter0 == filterAPI.citySearchFilter2 {
+		filterAPI.citySearchFilter2 = ""
+	}
+	if filterAPI.citySearchFilter1 == filterAPI.citySearchFilter2 {
+		filterAPI.citySearchFilter2 = ""
+	}
+
+	if filterAPI.FirstAlbum != "" || filterAPI.creationDate != "" || filterAPI.checkMembers != "" || filterAPI.checkCity != "" || filterAPI.citySearchFilter0 != "" || filterAPI.citySearchFilter1 != "" || filterAPI.citySearchFilter2 != "" {
 		structTest, notFound := filters(filterAPI)
+
 		if notFound {
 			errorHandler(w, r)
 			return
 		}
 
-		tmpl.Execute(w, structTest)
+		template, _ := template.ParseFiles("./templates/filter.html")
+		template.Execute(w, structTest)
 		return
 	}
 
@@ -317,8 +333,8 @@ func filters(filterAPI filter) (pageArtist2, bool) {
 			}
 		}
 
-		if filterAPI.citySearchFilter != "" {
-			isFilterCitySearch = filterSearchCity(b.ID, filterAPI.citySearchFilter)
+		if filterAPI.citySearchFilter0 != "" || filterAPI.citySearchFilter1 != "" || filterAPI.citySearchFilter2 != "" {
+			isFilterCitySearch = filterSearchCity(b.ID, filterAPI)
 
 			if !isFilterCitySearch {
 				continue
@@ -336,22 +352,38 @@ func filters(filterAPI filter) (pageArtist2, bool) {
 	return test, notFoundArtist
 }
 
-func filterSearchCity(ID int, stringID string) bool {
+func filterSearchCity(ID int, API filter) bool {
+	var table []string
 	a := ""
 
-	for i := range stringID {
+	if API.citySearchFilter0 != "" {
+		table = append(table, API.citySearchFilter0)
+	}
 
-		if stringID[i] != ',' {
-			a += string(stringID[i])
-		} else {
-			number, _ := strconv.Atoi(a)
-			if number == ID {
-				return true
+	if API.citySearchFilter1 != "" {
+		table = append(table, API.citySearchFilter1)
+	}
+
+	if API.citySearchFilter2 != "" {
+		table = append(table, API.citySearchFilter2)
+	}
+
+	for i := range table {
+		stringID := table[i]
+		for j := range stringID {
+			if stringID[j] != ',' {
+				a += string(stringID[j])
+			} else {
+				number, _ := strconv.Atoi(a)
+				if number == ID {
+					return true
+				}
+				a = ""
+				number = 0
 			}
-			a = ""
-			number = 0
 		}
 	}
+
 	return false
 }
 
