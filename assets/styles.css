@@ -1,4 +1,5 @@
 /*Commun*/
+
 html,body{
     margin: 0;
     padding: 0;
@@ -69,8 +70,6 @@ a:hover, a:active,a:visited{
     background-color: black;
 }
 
-
-
 .button-style{
     font-weight: bold;
     color: white;
@@ -108,6 +107,9 @@ footer{
     text-align: center;
 }
 
+#footer-filter{
+    margin-top: 30%;
+}
 
 @media screen and (max-width:650px){
     .social-network-link{
@@ -120,126 +122,134 @@ footer{
 
 /***************************Page Index***************************/
 
-/*Partie image*/
-.index-header{
-    background:url("/static/images/concert.png")no-repeat center;
-    height: 930px;
+.image-index{
+    background: url("/static/images/concert.png") no-repeat center;
+    height: 900px;
     background-size: cover;
-    border: 1px solid black;
     text-align: center;
-    position: relative;
-}
-
-.div-header-index{
-    margin-top: 50px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.div-header-index h1{
-    color: white;
-    margin-top: 50px;
-    font-size: 95px;
-    font-weight: bold;
-}
-
-
-.div-header-index h2{
-    color: white;
-    font-size: 50px;
-    font-weight: bold;
-}
-
-@media screen and (max-width:650px){
-    .div-header-index h1{
-        font-size: 80px;
-    }
-
-    .div-header-index h2{
-        font-size: 30px;
-    }
-}
-
-#image-arrow{
-    position: absolute;
-    bottom: 0px;
+    position: fixed;
     width: 100%;
 }
 
-/* Partie Flexbox*/
-.container-a{
-    margin-top: 50px;
+.title-index {
+    position: relative;
+    bottom: 5%;
+    font-size: 80px;
+    font-family: "gisbon_demodemo";
+    color: white;
+    text-shadow: 4px 4px grey;
+}
+
+.text-title-index {
+    font-size: 60px;
+    color: white;
+}
+
+
+
+.box-button{
     display: flex;
-    flex-wrap: wrap;
-    max-width: 90%;
-    margin-right: auto;
-    margin-left: auto;
-    border-radius: 50px;
-    padding: 2%;
-    background-color:rgba(112, 112, 112,0.2);
+    width: 200px;
+    margin-left: 45%;
+    justify-content: center;
+    background-color: purple;
+    transform: skewX(-15deg);
+    box-shadow: 6px 6px black;
 }
 
-.row{
-    flex-basis: 1024px;
-	flex-grow: 1;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: center;
-	
+.button-index{
+    display: flex;
+    padding: 10px;
 }
 
-.row img{
-    border-radius: 50px;
-    width: 407px;
-    height: 271px;
-    margin-left: auto;
-    margin-right: auto;
+.box-button:hover{
+    width: 250px;
+    transition: 1s;
+    box-shadow: 6px 6px yellow;
+    margin-left: 43%;
 }
 
-.row p{
-    margin-left: auto;
-    margin-right: auto;
+.button-index text{
+    font-size: 30px;
+    margin-left: 35px;
 }
 
-@media screen and (min-width:1024px) {
-     .container-a p{
-        width: 50%;
-        margin-top: auto;
-        margin-bottom: auto;
-     }
+.box-button:hover text{
+    transform: translateX(-25px);
+    transition: 0.5s;
 }
 
-.row-reverse{
-    flex-direction: row-reverse;
+.button-index .one{
+    visibility: hidden;
+    transition: 0.5s;
+    width: 35px;
 }
 
-.row-reverse p{
-    margin-left: auto;
-    margin-right: auto;
+.box-button:hover .one{
+    visibility: visible;
+}
+
+.two{
+    z-index: 1;
+    margin-left: -37px;
+    visibility: hidden;
+    transition: 0.5s;
+    width: 35px;
+}
+
+.box-button:hover .two{
+    transform: translateX(-15px);
+    visibility: visible;
+}
+
+.three{
+    z-index: 2;
+    margin-left: -37px;
+    visibility: hidden;
+    transition: 0.5s;
+    width: 35px;
+}
+
+.box-button:hover .three{
+    transform: translateX(20px);
+    visibility: visible;
 }
 
 
-/***************************Page Menu***************************/
+
+
+
+
+
 
 .button-back{
-    width: 150px;
-    height: 60px;
-    color: black;
-    border-radius: 6px;
-    font-size: 25px;
-    border:none;
-    background-color: #F07404;
+    text-shadow: 5px 5px #F98718;
+    font-size: 40px;
+    font-family: "gisbon_demodemo";
+    border: none;
+    background-color: transparent;
 }
 
 .button-back:hover{
-    border:2px solid black
+    color: #F98718;
+    text-shadow: 5px 5px #3A1757;
 }
 
 #button-back-menu{
-position: absolute;
-margin-top: 15px;
-margin-left: 15px;
+position: relative;
+top: 10px;
+left: 30px;
+border: none;
+width: 50px;
+}
+
+#button-back-menu:hover{
+    color: #F98718;
+    text-shadow: 5px 5px #3A1757;
+}
+
+#button-back-menu:hover,:active,:visited{
+    border: none;
 }
 
 /*Header*/
@@ -880,8 +890,4 @@ text-align: center;
     flex-basis: 40%;
     margin-top: 1%;
     margin-left: 3%;
-}
-
-#footer-filter{
-    margin-top: 30%;
 }
