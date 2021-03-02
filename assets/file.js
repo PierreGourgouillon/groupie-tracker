@@ -84,70 +84,29 @@ function loadMap(lat, lon) {
     });
 
     /* Récupère les données se trouvant dans les objet HTML ayant la classe geocities */
-    // var geo = document.getElementsByClassName('geocities');
-    // console.log(geo)
-    // for(var i = 0; i < geo.length; i++){
-    //     /* Récupère le texte se trouvant dans la donnée geo à l'index i */
-    //     var geoLocation = transformText(geo[i].innerHTML);
-    //     /* URL de l'API concernant le bon lieu de concert */
-    //     var url = 'https://nominatim.openstreetmap.org/search.php?q='+geoLocation+'&polygon_geojson=1&format=jsonv2';
-    //     /* Création et envoie de la requête API */
-    //     var request = new XMLHttpRequest();
-    //     request.onreadystatechange = function() {
-    //         if (this.readyState == 4 && this.status == 200) {
-    //             /* Récupère les données de la requête */
-    //             var coords = JSON.parse(this.responseText);
-    //             /* Ajoute à la map le marqueur personnalisé aux lieux des concerts */
-    //             L.marker([coords[0].lat, coords[0].lon], {icon: pinDesign}).addTo(map);
-    //         }
-    //     };
-    //     request.open('GET', url, true);
-    //     request.send();
-    // 
-
-    var popup = L.popup();
-
-    function onMapClick(e) {
-        popup
-        .setContent("You clicked the map at")
-        .openOn(map);
-    }    
-
-    map.on('click', document.getElementById("boutonmarker").addEventListener("click", function (e) {
- 
-        console.log("Evènement");
-     
-    }));
-
+    var geo = document.getElementsByClassName('geocities');
+    console.log(geo)
+    for(var i = 0; i < geo.length; i++){
+        /* Récupère le texte se trouvant dans la donnée geo à l'index i */
+        var geoLocation = transformText(geo[i].innerHTML);
+        /* URL de l'API concernant le bon lieu de concert */
+        var url = 'https://nominatim.openstreetmap.org/search.php?q='+geoLocation+'&polygon_geojson=1&format=jsonv2';
+        /* Création et envoie de la requête API */
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                /* Récupère les données de la requête */
+                var coords = JSON.parse(this.responseText);
+                /* Ajoute à la map le marqueur personnalisé aux lieux des concerts */
+                L.marker([coords[0].lat, coords[0].lon], {icon: pinDesign}).addTo(map);
+            }
+        };
+        request.open('GET', url, true);
+        request.send();
+    }
 }
 
-
-function addMarker(city) {
-    /* créer un pin personnalisé à mettre sur la carte */
-    console.log("Click")
-    var pinDesign = L.icon({
-        iconUrl: "/static/images/pin.svg",
-        iconSize: [50, 50],
-        iconAnchor: [25, 50],
-    });
-
-    var url = 'https://nominatim.openstreetmap.org/search.php?q='+city+'&polygon_geojson=1&format=jsonv2';
-    /* Création et envoie de la requête API */
-    var request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            /* Récupère les données de la requête */
-            var coords = JSON.parse(this.responseText);
-            /* Ajoute à la map le marqueur personnalisé aux lieux des concerts */
-            marker.setLatLng([coords[0].lat, coords[0].lon]);
-            map.panTo([coords[0].lat, coords[0].lon])
-        }
-    };
-    request.open('GET', url, true);
-    request.send();
-}
-
-/************* Map sur la page artist.html *************/
+/************* Map sur la page cityConcert.html *************/
 /* Javascript : Création et chargement de la map */
 function loadMapCity(city) {
     /* Créer la map */
@@ -175,10 +134,10 @@ function loadMapCity(city) {
             map.panTo([coords[0].lat, coords[0].lon])
             var geojson = L.geoJSON(coords[0].geojson, {
                 style: {
-                    "color": 'green',
+                    "color": '#3A1757',
                     "opacity": 1,
                     "weight": 1,
-                    "fillColor": 'green',
+                    "fillColor": '#F98718',
                     "fillOpacity": 0.5
                 }
             }).addTo(map);
