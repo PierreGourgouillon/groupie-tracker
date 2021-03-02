@@ -71,6 +71,7 @@ type DeezerAPI struct {
 	DeezerArtist ArtistDeezer
 	ListSong     ListSong
 	AlbumInfo    Album
+	ListAlbum    []Album
 }
 
 // ArtistAPI -> structure Artiste spécial pour la page /artist contient un seul artist, ses lieux de concert et leurs dates
@@ -117,13 +118,15 @@ type CityAPI struct {
 
 // filter -> structure pour recevoir les informations du filtre
 type filter struct {
-	FirstAlbum       string
-	creationDate     string
-	checkMembers     string
-	members          string
-	checkCity        string
-	city             string
-	citySearchFilter string
+	FirstAlbum        string
+	creationDate      string
+	checkMembers      string
+	members           string
+	checkCity         string
+	city              string
+	citySearchFilter0 string
+	citySearchFilter1 string
+	citySearchFilter2 string
 }
 
 // citySearch ->
@@ -246,23 +249,37 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 	Artist.Cities = structCity
 
 	filterAPI := filter{
-		FirstAlbum:       r.FormValue("firstAlbum"),
-		creationDate:     r.FormValue("creationDate"),
-		checkMembers:     r.FormValue("checkMembers"),
-		members:          r.FormValue("members"),
-		checkCity:        r.FormValue("checkCity"),
-		city:             r.FormValue("city"),
-		citySearchFilter: r.FormValue("citySearchFilter"),
+		FirstAlbum:        r.FormValue("firstAlbum"),
+		creationDate:      r.FormValue("creationDate"),
+		checkMembers:      r.FormValue("checkMembers"),
+		members:           r.FormValue("members"),
+		checkCity:         r.FormValue("checkCity"),
+		city:              r.FormValue("city"),
+		citySearchFilter0: r.FormValue("citySearchFilter"),
+		citySearchFilter1: r.FormValue("citySearchFilter1"),
+		citySearchFilter2: r.FormValue("citySearchFilter2"),
 	}
 
-	if filterAPI.FirstAlbum != "" || filterAPI.creationDate != "" || filterAPI.checkMembers != "" || filterAPI.checkCity != "" || filterAPI.citySearchFilter != "" {
+	if filterAPI.citySearchFilter0 == filterAPI.citySearchFilter1 {
+		filterAPI.citySearchFilter1 = ""
+	}
+	if filterAPI.citySearchFilter0 == filterAPI.citySearchFilter2 {
+		filterAPI.citySearchFilter2 = ""
+	}
+	if filterAPI.citySearchFilter1 == filterAPI.citySearchFilter2 {
+		filterAPI.citySearchFilter2 = ""
+	}
+
+	if filterAPI.FirstAlbum != "" || filterAPI.creationDate != "" || filterAPI.checkMembers != "" || filterAPI.checkCity != "" || filterAPI.citySearchFilter0 != "" || filterAPI.citySearchFilter1 != "" || filterAPI.citySearchFilter2 != "" {
 		structTest, notFound := filters(filterAPI)
+
 		if notFound {
 			errorHandler(w, r)
 			return
 		}
 
-		tmpl.Execute(w, structTest)
+		template, _ := template.ParseFiles("./templates/filter.html")
+		template.Execute(w, structTest)
 		return
 	}
 
@@ -316,8 +333,8 @@ func filters(filterAPI filter) (pageArtist2, bool) {
 			}
 		}
 
-		if filterAPI.citySearchFilter != "" {
-			isFilterCitySearch = filterSearchCity(b.ID, filterAPI.citySearchFilter)
+		if filterAPI.citySearchFilter0 != "" || filterAPI.citySearchFilter1 != "" || filterAPI.citySearchFilter2 != "" {
+			isFilterCitySearch = filterSearchCity(b.ID, filterAPI)
 
 			if !isFilterCitySearch {
 				continue
@@ -335,22 +352,38 @@ func filters(filterAPI filter) (pageArtist2, bool) {
 	return test, notFoundArtist
 }
 
-func filterSearchCity(ID int, stringID string) bool {
+func filterSearchCity(ID int, API filter) bool {
+	var table []string
 	a := ""
 
-	for i := range stringID {
+	if API.citySearchFilter0 != "" {
+		table = append(table, API.citySearchFilter0)
+	}
 
-		if stringID[i] != ',' {
-			a += string(stringID[i])
-		} else {
-			number, _ := strconv.Atoi(a)
-			if number == ID {
-				return true
+	if API.citySearchFilter1 != "" {
+		table = append(table, API.citySearchFilter1)
+	}
+
+	if API.citySearchFilter2 != "" {
+		table = append(table, API.citySearchFilter2)
+	}
+
+	for i := range table {
+		stringID := table[i]
+		for j := range stringID {
+			if stringID[j] != ',' {
+				a += string(stringID[j])
+			} else {
+				number, _ := strconv.Atoi(a)
+				if number == ID {
+					return true
+				}
+				a = ""
+				number = 0
 			}
-			a = ""
-			number = 0
 		}
 	}
+
 	return false
 }
 
@@ -690,6 +723,33 @@ func Deezer(selectedArtist *pageArtist) {
 	nameArtist := SearchNameID(selectedArtist.SpecialData.Artists[0].ID)
 	URLTracklist := SearchArtistDeezer(nameArtist, selectedArtist)
 	unmarshallJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
+	ListAlbum(selectedArtist)
+}
+
+func ListAlbum(selectedArtist *pageArtist) {
+	var table []string
+	var tableau []Album
+	var isFirstAlbum bool = true
+
+	for i, b := range selectedArtist.Deezer.ListSong.Data {
+		if i == 0 && isFirstAlbum {
+			table = append(table, b.Album.Title)
+			isFirstAlbum = false
+		}
+		for _, k := range table {
+			if b.Album.Title == k {
+				isFirstAlbum = true
+				break
+			} else {
+				isFirstAlbum = false
+			}
+		}
+		if !isFirstAlbum {
+			table = append(table, b.Album.Title)
+			tableau = append(tableau, b.Album)
+		}
+	}
+	selectedArtist.Deezer.ListAlbum = tableau
 }
 
 //SearchNameID -> Trouve le nom pour l'id et le modifie
@@ -757,6 +817,6 @@ type ListSong struct {
 type Album struct {
 	ID             int    `json:"id"`
 	Title          string `json:"title"`
-	CoverURL       string `json:"cover_small"`
+	CoverURL       string `json:"cover_big"`
 	TrackListAlbum string `json:"tracklist"`
 }
