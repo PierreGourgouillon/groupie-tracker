@@ -134,10 +134,10 @@ function loadMapCity(city) {
             map.panTo([coords[0].lat, coords[0].lon])
             var geojson = L.geoJSON(coords[0].geojson, {
                 style: {
-                    "color": 'green',
+                    "color": '#3A1757',
                     "opacity": 1,
                     "weight": 1,
-                    "fillColor": 'green',
+                    "fillColor": '#F98718',
                     "fillOpacity": 0.5
                 }
             }).addTo(map);

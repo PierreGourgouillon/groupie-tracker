@@ -10,44 +10,48 @@
     <title>Groupie Tracker</title>
 </head>
 <body onload="javascript:mapConcert();">
+
     <header>
         <div class="logo-ynov">
-            <a href="/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
+            <a href="/groupie/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
         </div>
 
-            <div class="form-search">
-                <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
-                
-                <datalist id="searchs" name="searchs">
-                    {{$MDR := .Data}}
-                    {{range $ID,$v:= $MDR.Artists}}
-                    <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{(index $MDR.Artists $ID).Name}} | Artist - Band">
-            
-                    {{range (index $MDR.Artists $ID).Members }}
-                        <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{.}} | Member"></option>
-                    {{end}}
-                        <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{(index $MDR.Artists $ID).FirstAlbum}} | First Album"></option>
-                        <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{(index $MDR.Artists $ID).CreationDate}} | Creation date"></option>
-                    {{end}}
-            
-                {{range $ID,$v := $MDR.Locations.Index}}
-                    {{range (index $MDR.Locations.Index $ID).Locations}}
-                        <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{.}} | Locations"></option>
-                    {{end}}
-                {{end}}
-        
-            {{range $ID,$v := $MDR.Locations.Index}}
-                {{range (index $MDR.Locations.Index $ID).Locations}}
-                    <option data-id="{{(index $MDR.Artists $ID).ID}}" value="{{.}} | Locations"></option>
-                {{end}}
-            {{end}}
-            </datalist>
-            
-            <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
+        <div class="random-artist">
+            <img onclick="javascript:randomArtist();" src="/static/images/Dice.png">
+            <p onclick="javascript:randomArtist();">Artiste aléatoire</p>
         </div>
 
         <div class="allLocations">
-            <a href="/concertLocation/"><h3 id="allLocations">Villes</h3></a>
+            <a href="/concertLocation/">
+                <img src="/static/images/WorldMapWhite.svg" alt="World Map">
+                <p>Villes</p>
+            </a>
+        </div>
+
+        <div class="form-search">
+            <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
+            
+            <datalist id="searchs" name="searchs">
+                {{$APISearch := .Data}}
+                {{range $ID,$v:= $APISearch.Artists}}
+                <option data-id="{{$ID}}" value="{{(index $APISearch.Artists $ID).Name}} | Artist - Band">
+        
+                {{range (index $APISearch.Artists $ID).Members }}
+                    <option data-id="{{$ID}}" value="{{.}} | Member"></option>
+                {{end}}
+                    <option data-id="{{$ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
+                    <option data-id="{{$ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
+                {{end}}
+        
+                {{range $ID,$v := $APISearch.Locations.Index}}
+                    {{range (index $APISearch.Locations.Index $ID).Locations}}
+                        <option data-id="{{$ID}}" value="{{.}} | Locations"></option>
+                    {{end}}
+                {{end}}
+            </datalist>
+            
+            <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
+        
         </div>
     </header>
 
@@ -129,8 +133,9 @@ sliderCity.oninput = function() {
             </div>
             <div class="flip-card-back">
               <h1>{{(index $API.Data.Artists $ID).Name}}</h1> 
-              <p>Creation date : {{ (index $API.Data.Artists $ID).CreationDate}}</p>
-              <h4>Membres: </h4>
+              <h3>Date de création: </h3>
+              <p>{{ (index $API.Data.Artists $ID).CreationDate}}</p>
+              <h3>Membres: </h3>
               <p>{{range (index $API.Data.Artists $ID).Members }}{{ . }} <br> {{ end }}</p>
             </div>
           </div>
