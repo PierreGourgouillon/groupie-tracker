@@ -13,53 +13,63 @@
     <title>Document</title>
 </head>
 <body>
-    
     <header>
         <div class="logo-ynov">
             <a href="/groupie/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
+        </div>
+
+        <div class="random-artist">
+            <a href="#" onclick="javascript:randomArtist();">
+                <img src="/static/images/Dice.png">
+                <p>Artiste aléatoire</p>
+            </a>
+        </div>
+
+        <div class="allLocations">
+            <a href="/concertLocation/">
+                <img src="/static/images/WorldMapWhite.svg" alt="World Map">
+                <p>Villes</p>
+            </a>
         </div>
 
         <div class="form-search">
             <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
             
             <datalist id="searchs" name="searchs">
-                {{$MDR := .Data}}
-                {{range $ID,$v:= $MDR.Artists}}
-                <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).Name}} | Artist - Band">
+                {{$APISearch := .Data}}
+                {{range $ID,$v:= $APISearch.Artists}}
+                <option data-id="{{$ID}}" value="{{(index $APISearch.Artists $ID).Name}} | Artist - Band">
         
-                {{range (index $MDR.Artists $ID).Members }}
+                {{range (index $APISearch.Artists $ID).Members }}
                     <option data-id="{{$ID}}" value="{{.}} | Member"></option>
                 {{end}}
-                    <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).FirstAlbum}} | First Album"></option>
-                    <option data-id="{{$ID}}" value="{{(index $MDR.Artists $ID).CreationDate}} | Creation date"></option>
+                    <option data-id="{{$ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
+                    <option data-id="{{$ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
                 {{end}}
         
-            {{range $ID,$v := $MDR.Locations.Index}}
-                {{range (index $MDR.Locations.Index $ID).Locations}}
-                    <option data-id="{{$ID}}" value="{{.}} | Locations"></option>
+                {{range $ID,$v := $APISearch.Locations.Index}}
+                    {{range (index $APISearch.Locations.Index $ID).Locations}}
+                        <option data-id="{{$ID}}" value="{{.}} | Locations"></option>
+                    {{end}}
                 {{end}}
-            {{end}}
             </datalist>
             
             <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
-        </div>
-
-        <div class="allLocations">
-            <a href="/concertLocation/"><h3 id="allLocations">Villes</h3></a>
+        
         </div>
     </header>
 
     {{ $API := .SpecialData }}
     {{ $Flag := .Flag}}
-    <div id="concertLocation">
+    <div class="concertLocation">
         {{range $index, $v := $API.Locations}}
             <a href="/cityConcert/{{$index}}">
                 <div class="concert">
+                    <div class="flag">
+                        <img id="flag" src="https://flagcdn.com/{{(index $Flag $index)}}.svg" width="70" height="50">
+                    </div>
                     <div class="location">
                         <p id="location" class="capitalize">{{$v}}</p>
-                    </div>
-                    <div class="flag">
-                        <img id="flag" src="https://flagcdn.com/{{(index $Flag $index)}}.svg" width="50" height="30">
                     </div>
                 </div>
             </a>
