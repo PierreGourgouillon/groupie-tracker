@@ -1,27 +1,26 @@
 /*Commun*/
 
-html,body{
+html,body {
     margin: 0;
     padding: 0;
     max-width: 1920px;
 }
 
-body{
+body {
     color: white;
     font-family: 'Open Sans', sans-serif;
     background-color: #d7dddd;
 }
 
-a{
+a {
     color: dark;
     text-decoration: none;
     color: white;
 }
 
-a:hover, a:active,a:visited{
+a:hover, a:active, a:visited {
     color: white;
 }
-
 
 @font-face {
     font-family: 'gisbon_demodemo';
@@ -215,14 +214,8 @@ footer{
     visibility: visible;
 }
 
-
-
-
-
-
-
-
 .button-back{
+    color: #3A1757;
     text-shadow: 5px 5px #F98718;
     font-size: 40px;
     font-family: "gisbon_demodemo";
@@ -235,12 +228,16 @@ footer{
     text-shadow: 5px 5px #3A1757;
 }
 
+.menu-button {
+    position: fixed;
+    z-index: 2;
+}
+
 #button-back-menu{
-position: relative;
-top: 10px;
-left: 30px;
-border: none;
-width: 50px;
+    position: relative;
+    top: 10px;
+    left: 30px;
+    width: 50px;
 }
 
 #button-back-menu:hover{
@@ -439,7 +436,7 @@ header div {
 }
 
 .position-text button{
-    margin-top: 60px;
+    margin-top: 0;
     font-size: 20px;
     color: white;
     width: 241px;
@@ -455,7 +452,10 @@ header div {
     margin-left:134px;
 }
 
-
+#filter {
+    margin-top: 0%;
+    height: 450px;
+}
 
 /* Menu Card*/
 .flip-card {
@@ -549,9 +549,9 @@ header div {
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 3%;
     margin-left: 5%;
-    margin-right: 5%
+    margin-right: 5%;
 }
 
 /***************************Page Artist***************************/
@@ -675,7 +675,7 @@ header div {
     padding: 50px;
 }
 
-.container-concerts h1{
+.container-concerts h1 {
     color: #3A1757;
     text-shadow: 5px 5px #F98718;
     font-size: 70px;
@@ -686,61 +686,71 @@ header div {
     left: 50px;
 }
 
-.between-concerts{
+.between-concerts {
     background-color: white;
     height: 499px;
     box-shadow: 2px 2px 2px grey;
-}
-
-.container-location-concerts p, button{
-    display: inline-block;
-}
-
-.container-location-concerts p{
-    margin-left: 92px;
-    font-size: 23px;
-    color: black;
-}
-
-.container-location-concerts button{
-    margin-left: 150px;
-    font-size: 20px;
-    color: white;
-    width: 241px;
-    height: 53px;
-    border-radius: 30px;
-    background-color: #F98718;
-    border: none;
-    text-align: center;
-    font-weight: bold;
-}
-
-.div-location {
-    color: black;
     display: grid;
-    grid-template: 100% / 20% 80%;
+    grid-template: 499px / 50% 50%;
 }
 
-.text-location {
+.container-location-concerts {
     grid-area: 1/1/1/1;
-    align-items: center;
+    width: auto;
+    height: 50px;
+}
+
+.flex-location-concerts {
+    margin-top: 4%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
     text-align: center;
+    color: black;
 }
 
-.map {
+
+#location-concert {
+    font-family: "gisbon_demodemo";
+    font-size: 20px;
+    text-transform: capitalize;
+    color: #F98718;
+    z-index: 3;
+}
+
+.container-date-concerts {
     grid-area: 1/2/1/2;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    display: none;
+    z-index: 2;
 }
 
-.concert-date {
-    position: relative;
-    display: none; 
+.container-date-concerts p {
+    font-family: "gisbon_demodemo";
+    color: #3A1757;
+    font-size: 25px;
 }
 
-.concert:hover + .concert-date {
-    display: block;
+#date-concert {
+    color: black;
+    text-align: center;
+    font-size: 18px;
 }
 
+.container-location-concerts:hover + .container-date-concerts {
+    display: flex;
+    flex-direction: column;
+}
 
+.container-location-concerts:hover {
+    background-color: #F98718;
+}
+
+.container-location-concerts:hover #location-concert {
+    color: #3A1757;
+}
 
 .container-albums{
     flex-basis:  47%;
@@ -918,9 +928,6 @@ text-align: center;
     top: 3%;
     text-align: center;
 }
-
-/* #flag {
-} */
 
 .location {
     text-align: center;

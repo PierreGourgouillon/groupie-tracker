@@ -20,10 +20,8 @@
         </div>
 
         <div class="random-artist">
-            <a href="#" onclick="javascript:randomArtist();">
-                <img src="/static/images/Dice.png">
-                <p>Artiste aléatoire</p>
-            </a>
+            <img onclick="javascript:randomArtist();" src="/static/images/Dice.png">
+            <p onclick="javascript:randomArtist();">Artiste aléatoire</p>
         </div>
 
         <div class="allLocations">
@@ -39,19 +37,17 @@
             <datalist id="searchs" name="searchs">
                 {{$APISearch := .Data}}
                 {{range $ID,$v:= $APISearch.Artists}}
-                <option data-id="{{$ID}}" value="{{(index $APISearch.Artists $ID).Name}} | Artist - Band">
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).Name}} | Artist - Band">
         
                 {{range (index $APISearch.Artists $ID).Members }}
-                    <option data-id="{{$ID}}" value="{{.}} | Member"></option>
+                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{.}} | Member"></option>
                 {{end}}
-                    <option data-id="{{$ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
-                    <option data-id="{{$ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
+                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
+                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
                 {{end}}
         
-                {{range $ID,$v := $APISearch.Locations.Index}}
-                    {{range (index $APISearch.Locations.Index $ID).Locations}}
-                        <option data-id="{{$ID}}" value="{{.}} | Locations"></option>
-                    {{end}}
+                {{range $index, $city := .AllLocations}}
+                    <option class="capitalize" data-id="city{{$index}}" value="{{$city}} | Locations"></option>
                 {{end}}
             </datalist>
             
@@ -120,23 +116,21 @@
             <div class="container-concerts">
                 <h1>Les concerts</h1>
                 <div class="between-concerts">
-                    <div class="container-location-concerts">
-                        <p>New York, le 24/07/2010</p>
-                        <button>UN BEAU BOUTON</button>
-                    </div>
-                    <div class="container-location-concerts">
-                        <p>New York, le 24/07/2010</p>
-                        <button>UN BEAU BOUTON</button>
-                    </div>
-                    <div class="container-location-concerts">
-                        <p>New York, le 24/07/2010</p>
-                        <button>UN BEAU BOUTON</button>
-                    </div>
-                    <div class="container-location-concerts">
-                        <p>New York, le 24/07/2010</p>
-                        <button>UN BEAU BOUTON</button>
+                    <div class="flex-location-concerts">
+                        {{ range $index, $city := (index $ArtAPI.Locations) }}
+                            <div class="container-location-concerts">
+                                <p class="geocities" id="location-concert">{{$city}}</p>
+                            </div>
+                            <ul class="container-date-concerts">
+                                <p>Dates :</p>
+                                {{ range index ( index $ArtAPI.Relation ) $city }}
+                                    <li id="date-concert">{{ . }}</li>
+                                {{ end }}
+                            </ul>
+                        {{end}}
                     </div>
                 </div>
+                
             </div>
     
             <div class="container-albums">

@@ -66,7 +66,7 @@ function mapConcert() {
 function loadMap(lat, lon) {
     console.log(lat, lon);
     /* Créer la map */
-    var map = L.map('mapID').setView([lat, lon], 3);
+    let map = L.map('mapID').setView([lat, lon], 19);
 
     /* Ajoute à la map les cartes sur openstreetmap */
     L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
@@ -80,15 +80,15 @@ function loadMap(lat, lon) {
     var pinDesign = L.icon({
         iconUrl: "/static/images/pin.svg",
         iconSize: [50, 50],
-        iconAnchor: [25, 50]
+        iconAnchor: [25, 50],
+        popupAnchor: [-3, -76]
     });
 
     /* Récupère les données se trouvant dans les objet HTML ayant la classe geocities */
     var geo = document.getElementsByClassName('geocities');
-    console.log(geo)
     for(var i = 0; i < geo.length; i++){
         /* Récupère le texte se trouvant dans la donnée geo à l'index i */
-        var geoLocation = transformText(geo[i].innerHTML);
+        let geoLocation = transformText(geo[i].innerHTML);
         /* URL de l'API concernant le bon lieu de concert */
         var url = 'https://nominatim.openstreetmap.org/search.php?q='+geoLocation+'&polygon_geojson=1&format=jsonv2';
         /* Création et envoie de la requête API */
@@ -98,12 +98,21 @@ function loadMap(lat, lon) {
                 /* Récupère les données de la requête */
                 var coords = JSON.parse(this.responseText);
                 /* Ajoute à la map le marqueur personnalisé aux lieux des concerts */
-                L.marker([coords[0].lat, coords[0].lon], {icon: pinDesign}).addTo(map);
+                let pin = L.marker([coords[0].lat, coords[0].lon], {icon: pinDesign}).addTo(map);
+                pin.bindPopup(geoLocation);
+
+                pin.on('click', function(e){
+                    map.setView(e.latlng, 13);
+                });
             }
         };
         request.open('GET', url, true);
         request.send();
     }
+
+    map.on('popupclose', function(e) {
+        map.setView([48.85341, 2.34880], 3);
+    });
 }
 
 /************* Map sur la page cityConcert.html *************/
@@ -159,7 +168,6 @@ function transformText(text) {
             newText = newText + text[i];
         }
     }
-    console.log(newText)
     return newText;
 }
 
@@ -207,3 +215,20 @@ function goToConcert(location) {
     document.location.href="http://localhost:8080/artist/"+location;
 }
 
+/************** filter *********************/
+
+function displayFilter(thingId) {
+    let targetElement;
+    let flexbox;
+    targetElement = document.getElementById(thingId) ;
+    flexbox = document.getElementsByClassName('flex-box');
+    if (targetElement.style.display == "none")
+    {
+        window.scrollTo(0,0);
+        targetElement.style.display = "" ;
+        flexbox[0].style.marginTop = "5%";
+    } else {
+        targetElement.style.display = "none" ;
+        flexbox[0].style.marginTop = "3%";
+    }
+}
