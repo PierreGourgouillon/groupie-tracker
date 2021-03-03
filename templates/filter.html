@@ -65,8 +65,9 @@
             </div>
             <div class="flip-card-back">
               <h1>{{(index $API.Data.Artists $ID).Name}}</h1> 
-              <p>Creation date : {{ (index $API.Data.Artists $ID).CreationDate}}</p>
-              <h4>Membres: </h4>
+              <h3>Date de création: </h3>
+              <p>{{ (index $API.Data.Artists $ID).CreationDate}}</p>
+              <h3>Membres: </h3>
               <p>{{range (index $API.Data.Artists $ID).Members }}{{ . }} <br> {{ end }}</p>
             </div>
           </div>
