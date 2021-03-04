@@ -9,7 +9,7 @@
     <script type="text/javascript" src="/static/file.js"></script>
     <title>Groupie Tracker</title>
 </head>
-<body onload="javascript:mapConcert();">
+<body>
 
     <header>
         <div class="logo-ynov">
@@ -34,19 +34,17 @@
             <datalist id="searchs" name="searchs">
                 {{$APISearch := .Data}}
                 {{range $ID,$v:= $APISearch.Artists}}
-                <option data-id="{{$ID}}" value="{{(index $APISearch.Artists $ID).Name}} | Artist - Band">
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).Name}} | Artist - Band">
         
                 {{range (index $APISearch.Artists $ID).Members }}
-                    <option data-id="{{$ID}}" value="{{.}} | Member"></option>
+                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{.}} | Member"></option>
                 {{end}}
-                    <option data-id="{{$ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
-                    <option data-id="{{$ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
+                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
+                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
                 {{end}}
-        
-                {{range $ID,$v := $APISearch.Locations.Index}}
-                    {{range (index $APISearch.Locations.Index $ID).Locations}}
-                        <option data-id="{{$ID}}" value="{{.}} | Locations"></option>
-                    {{end}}
+
+                {{range $index, $city := .AllLocations}}
+                    <option data-id="city{{$index}}" value="{{$city}} | Locations"></option>
                 {{end}}
             </datalist>
             
@@ -55,15 +53,26 @@
         </div>
     </header>
 
-    <a href="/" id="button-back-menu"><h1 class="button-back">Retour</h1></a>
-
-    <div class="position-filter">
+    <div class="menu-button">
+        <h1 id="button-back-menu" class="button-back" style="cursor: pointer;" onclick="javascript:displayFilter('filter'); return false;">Filtrer</h1>
+        <a href="/" id="button-back-menu"><h1 class="button-back">Retour</h1></a>
+    </div>
+    <div id="filter" style="display: none;">
         <h1 class="title-filters">Les Filtres</h1>
         <form class="form-filter">
             <div class="position-text">
                 <ul>
                     <li>
-                        <label for="checkAlbum">Premier Album</label>
+                        <label for="checkCity">Rechercher seulement les :</label></br>
+
+                        <label for="radio-artist">Artistes</label>
+                        <input type="radio" id="radio-artist" name="typeArtist" value="Artiste">
+
+                        <label for="radio-groupe"> | Groupes</label>
+                        <input type="radio" id="radio-groupe" name="typeArtist" value="Groupe">
+                    </li>
+                    <li>
+                        <label for="checkAlbum">Date du premier album</label>
                         <input type="text" onkeypress="return checkEnter(event);" name="firstAlbum" id="idFirstAlbum" placeholder="Entrer une année">
                     </li>
                     <li>
@@ -71,42 +80,42 @@
                         <input type="text" onkeypress="return checkEnter(event);" name="creationDate" id="idCreationDate" placeholder="Entrer une année">       
                     </li>
                     <li>
-                        <label for="checkMembers">Nombre de Membres</label>
+                        <label for="checkMembers">Nombre de membres</label>
                         <input type="checkbox" id="checkbox-members" name="checkMembers" value="membersIsCheck" onclick="javascript:checkboxHiddenMembers();"> 
                         <input type="range" min="1" max="8" step="1" name="members" id="idmembers" hidden>
                         <label id="membersSlider" hidden></label>
                     </li>
                     <li>
-                        <label for="checkCity">Nombre de ville joués</label>
+                        <label for="checkCity">Nombre de ville joué</label>
                         <input type="checkbox" id="checkbox-city" name="checkCity" value="cityIsCheck"  onclick="javascript:checkboxHiddencity();">
                         <input type="range" min="2" max="15" step="1" name="city" id="idcity" hidden>
                         <label id="citySlider" hidden></label>
                     </li>
                     <li>
-                        <label>Villes jouée(s):</label>
-                        <select name="citySearchFilter">
+                        <label>Ville(s) jouée(s):</label>
+                        <select class="capitalize" name="citySearchFilter">
                             <option disabled selected value>Choisir ville 1</option>
-                            {{$a := .}}
-                            {{range $ID,$v:= $a.Cities}}
-                            <option class="capitalize" value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
+                            {{$APICity := .}}
+                            {{range $index, $useless := $APICity.Cities}}
+                            <option value="{{(index $APICity.Cities $index).ID}}">{{(index $APICity.Cities $index).City}}</option>
                             {{end}}
                         </select>
                     </li>
                     <li class="select-second">
-                        <select name="citySearchFilter1">
+                        <select class="capitalize" name="citySearchFilter1">
                             <option disabled selected value>Choisir ville 2</option>
-                            {{$a := .}}
-                            {{range $ID,$v:= $a.Cities}}
-                            <option class="capitalize" value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
+                            {{$APICity := .}}
+                            {{range $index, $useless := $APICity.Cities}}
+                            <option value="{{(index $APICity.Cities $index).ID}}">{{(index $APICity.Cities $index).City}}</option>
                             {{end}}
                         </select>
                     </li>
                     <li class="select-second">
-                        <select name="citySearchFilter2">
+                        <select class="capitalize" name="citySearchFilter2">
                             <option disabled selected value>Choisir ville 3</option>
-                            {{$a := .}}
-                            {{range $ID,$v:= $a.Cities}}
-                            <option class="capitalize" value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
+                            {{$APICity := .}}
+                            {{range $index, $useless := $APICity.Cities}}
+                            <option value="{{(index $APICity.Cities $index).ID}}">{{(index $APICity.Cities $index).City}}</option>
                             {{end}}
                         </select>
                     </li>
@@ -136,20 +145,20 @@ sliderCity.oninput = function() {
 
 
 <div class="flex-box">
-    {{$API := .}}
-    {{range $ID, $v := $API.Data.Artists}}
+    {{$API := .Data}}
+    {{range $index, $useless := $API.Artists}}
       <div class="flip-card">
-        <a href="/artist/{{(index $API.Data.Artists $ID).ID}}">
+        <a href="/artist/{{(index $API.Artists $index).ID}}">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <img src="{{(index $API.Data.Artists $ID).Image}}">
+              <img src="{{(index $API.Artists $index).Image}}">
             </div>
             <div class="flip-card-back">
-              <h1>{{(index $API.Data.Artists $ID).Name}}</h1> 
+              <h1>{{(index $API.Artists $index).Name}}</h1> 
               <h3>Date de création: </h3>
-              <p>{{ (index $API.Data.Artists $ID).CreationDate}}</p>
+              <p>{{ (index $API.Artists $index).CreationDate}}</p>
               <h3>Membres: </h3>
-              <p>{{range (index $API.Data.Artists $ID).Members }}{{ . }} <br> {{ end }}</p>
+              <p>{{range (index $API.Artists $index).Members }}{{ . }} <br> {{ end }}</p>
             </div>
           </div>
         </a>         
