@@ -206,14 +206,39 @@ footer{
     color: white;
 }
 
+@media screen and (max-width:1200px){
+
+    .title-index {
+        font-size: 70px;
+    }
+
+    .text-title-index {
+        font-size: 50px;
+        color: white;
+    }
+}
+
+@media screen and (max-width:950px){
+
+    .title-index {
+        font-size: 50px;
+    }
+
+    .text-title-index {
+        font-size: 20px;
+        color: white;
+    }
+}
+
+
 .box-button{
     display: flex;
     width: 200px;
     margin-left: 45%;
     justify-content: center;
-    background-color: purple;
+    background-color: #F98718;
     transform: skewX(-15deg);
-    box-shadow: 6px 6px black;
+    box-shadow: 6px 6px white;
 }
 
 .button-index{
@@ -224,7 +249,7 @@ footer{
 .box-button:hover{
     width: 250px;
     transition: 1s;
-    box-shadow: 6px 6px yellow;
+    box-shadow: 6px 6px #3A1757;
     margin-left: 43%;
 }
 
@@ -437,11 +462,6 @@ footer{
     #card2{
         margin-left: 10%;
     }
-}
-
-.card-presentation:hover{
-    zoom: 110%;
-    transition: 1s;
 }
 
 
