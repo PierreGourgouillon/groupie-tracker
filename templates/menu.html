@@ -95,27 +95,27 @@
                         <label>Ville(s) jouée(s):</label>
                         <select class="capitalize" name="citySearchFilter">
                             <option disabled selected value>Choisir ville 1</option>
-                            {{$a := .}}
-                            {{range $ID,$v:= $a.Cities}}
-                            <option value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
+                            {{$APICity := .}}
+                            {{range $index, $useless := $APICity.Cities}}
+                            <option value="{{(index $APICity.Cities $index).ID}}">{{(index $APICity.Cities $index).City}}</option>
                             {{end}}
                         </select>
                     </li>
                     <li class="select-second">
                         <select class="capitalize" name="citySearchFilter1">
                             <option disabled selected value>Choisir ville 2</option>
-                            {{$a := .}}
-                            {{range $ID,$v:= $a.Cities}}
-                            <option class="capitalize" value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
+                            {{$APICity := .}}
+                            {{range $index, $useless := $APICity.Cities}}
+                            <option value="{{(index $APICity.Cities $index).ID}}">{{(index $APICity.Cities $index).City}}</option>
                             {{end}}
                         </select>
                     </li>
                     <li class="select-second">
                         <select class="capitalize" name="citySearchFilter2">
                             <option disabled selected value>Choisir ville 3</option>
-                            {{$a := .}}
-                            {{range $ID,$v:= $a.Cities}}
-                            <option value="{{(index $a.Cities $ID).ID}}">{{(index $a.Cities $ID).City}}</option>
+                            {{$APICity := .}}
+                            {{range $index, $useless := $APICity.Cities}}
+                            <option value="{{(index $APICity.Cities $index).ID}}">{{(index $APICity.Cities $index).City}}</option>
                             {{end}}
                         </select>
                     </li>
@@ -145,20 +145,20 @@ sliderCity.oninput = function() {
 
 
 <div class="flex-box">
-    {{$API := .}}
-    {{range $ID, $v := $API.Data.Artists}}
+    {{$API := .Data}}
+    {{range $index, $useless := $API.Artists}}
       <div class="flip-card">
-        <a href="/artist/{{(index $API.Data.Artists $ID).ID}}">
+        <a href="/artist/{{(index $API.Artists $index).ID}}">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <img src="{{(index $API.Data.Artists $ID).Image}}">
+              <img src="{{(index $API.Artists $index).Image}}">
             </div>
             <div class="flip-card-back">
-              <h1>{{(index $API.Data.Artists $ID).Name}}</h1> 
+              <h1>{{(index $API.Artists $index).Name}}</h1> 
               <h3>Date de création: </h3>
-              <p>{{ (index $API.Data.Artists $ID).CreationDate}}</p>
+              <p>{{ (index $API.Artists $index).CreationDate}}</p>
               <h3>Membres: </h3>
-              <p>{{range (index $API.Data.Artists $ID).Members }}{{ . }} <br> {{ end }}</p>
+              <p>{{range (index $API.Artists $index).Members }}{{ . }} <br> {{ end }}</p>
             </div>
           </div>
         </a>         

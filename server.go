@@ -83,10 +83,18 @@ type ArtistAPI struct {
 	Relation  map[string][]string
 }
 
-type pageArtist2 struct {
+type pageGroupie struct {
 	Data         API
-	number       int
 	Cities       []citySearch
+	AllLocations []string
+}
+
+type pageFilter struct {
+	Data        API
+	SpecialData ArtistAPI
+	// number       int
+	Cities       []citySearch
+	FilterEmpty  bool
 	AllLocations []string
 }
 
@@ -144,9 +152,6 @@ type citySearch struct {
 
 // Tracker -> Variable contenant toutes les informatiions de l'API groupie-tracker
 var Tracker API
-
-// Artist ->
-var Artist pageArtist2
 
 // allLocations -> Variable contenant tous les lieux de concert en un seul exemplaire
 var allLocations []string
@@ -266,12 +271,11 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 
 	structCity := filterCitySearch()
 
-	Artist.Data.Artists = Tracker.Artists
-	Artist.Data.Locations = Tracker.Locations
-	Artist.Data.Dates = Tracker.Dates
-	Artist.Data.Relation = Tracker.Relation
-	Artist.Cities = structCity
-	Artist.AllLocations = searchBarAllLocations
+	allInformations := pageGroupie{
+		Data:         Tracker,
+		AllLocations: searchBarAllLocations,
+		Cities:       structCity,
+	}
 
 	filterAPI := filter{
 		typeArtist:        r.FormValue("typeArtist"),
@@ -297,34 +301,28 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if filterAPI.FirstAlbum != "" || filterAPI.creationDate != "" || filterAPI.checkMembers != "" || filterAPI.checkCity != "" || filterAPI.typeArtist != "" || filterAPI.citySearchFilter0 != "" || filterAPI.citySearchFilter1 != "" || filterAPI.citySearchFilter2 != "" {
-		structTest, notFound := filters(filterAPI)
-
-		if notFound {
-			errorHandler(w, r)
-			return
-		}
-
+		structTest := filters(filterAPI)
+		fmt.Println(structTest.SpecialData.Artists)
+		template, _ := template.ParseFiles("./templates/filter.html")
 		structTest.AllLocations = searchBarAllLocations
 
-		template, _ := template.ParseFiles("./templates/filter.html")
 		template.Execute(w, structTest)
 		return
 	}
 
-	tmpl.Execute(w, Artist)
+	tmpl.Execute(w, allInformations)
 }
 
 // filters -> filtre en fonction des données reçues
-func filters(filterAPI filter) (pageArtist2, bool) {
+func filters(filterAPI filter) pageFilter {
 	var isFilterCreation bool
 	var isFilterAlbum bool
 	var isFilterMembers bool
 	var isFilterCity bool
 	var isFilterCitySearch bool
 	var isArtistOrBand bool
-	var notFoundArtist bool = false
 	var table Artists
-	var test pageArtist2
+	var apiFilter pageFilter
 
 	for i, b := range Tracker.Artists {
 		if filterAPI.typeArtist == "Artiste" {
@@ -385,11 +383,11 @@ func filters(filterAPI filter) (pageArtist2, bool) {
 	}
 
 	if table == nil {
-		notFoundArtist = true
+		apiFilter.FilterEmpty = true
 	}
 
-	test.Data.Artists = table
-	return test, notFoundArtist
+	apiFilter.SpecialData.Artists = table
+	return apiFilter
 }
 
 func filterSearchCity(ID int, API filter) bool {
@@ -593,9 +591,8 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 	ArtistTracker.Relation = tableRelation
 
 	selectedArtist := pageArtist{
-		Data:        Tracker,
-		SpecialData: ArtistTracker,
-		// Flag:         TableFlag,
+		Data:         Tracker,
+		SpecialData:  ArtistTracker,
 		AllLocations: searchBarAllLocations,
 	}
 	var selectedArtistPointer *pageArtist

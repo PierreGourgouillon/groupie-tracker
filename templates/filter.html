@@ -54,27 +54,31 @@
 
     <a href="/groupie" id="button-back-menu"><h1 class="button-back">Retour</h1></a>
 
-<div class="flex-box">
-    {{$API := .}}
-    {{range $ID, $v := $API.Data.Artists}}
-      <div class="flip-card">
-        <a href="/artist/{{(index $API.Data.Artists $ID).ID}}">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="{{(index $API.Data.Artists $ID).Image}}">
+{{if .FilterEmpty}}
+    <h1>Vos filtres sont trop précis, aucun artistes correspond à vos critères</h1>
+{{else}}
+    <div class="city-concert-artist">
+        {{$ArtAPI := .SpecialData}}
+        {{ range $ID, $v := $ArtAPI.Artists }}
+            <div class="flip-card">
+                <a href="/artist/{{(index $ArtAPI.Artists $ID).ID}}">
+                    <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="{{(index $ArtAPI.Artists $ID).Image}}">
+                    </div>
+                    <div class="flip-card-back">
+                        <h1>{{(index $ArtAPI.Artists $ID).Name}}</h1> 
+                        <h3>Date de création :</h3>
+                        <p>{{ (index $ArtAPI.Artists $ID).CreationDate}}</p>
+                        <h3>Membres : </h3>
+                        <p>{{range (index $ArtAPI.Artists $ID).Members }}{{ . }} <br> {{ end }}</p>
+                    </div>
+                    </div>
+                </a>         
             </div>
-            <div class="flip-card-back">
-              <h1>{{(index $API.Data.Artists $ID).Name}}</h1> 
-              <h3>Date de création: </h3>
-              <p>{{ (index $API.Data.Artists $ID).CreationDate}}</p>
-              <h3>Membres: </h3>
-              <p>{{range (index $API.Data.Artists $ID).Members }}{{ . }} <br> {{ end }}</p>
-            </div>
-          </div>
-        </a>         
-      </div>
-      {{end}}
-  </div>
+        {{ end }}
+    </div>
+{{end}}
 
     <footer id="footer-filter">
       <div class="social-network-link">
