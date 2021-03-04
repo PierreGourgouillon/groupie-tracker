@@ -81,53 +81,112 @@ a:hover, a:active,a:visited{
 
 footer{
     background-color: black;
-    margin-top: 60px;
+    width: 100%;
+    height: 300px;
+    display: block;
+}
+
+.flex-footer{
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.title-footer{
+    display: flex;
+    flex-direction: column;
+    flex-basis: 25%;
+}
+
+.title-footer section{
+    text-align: center;
+    font-size: 25px;
+}
+
+#groupie{
+    margin-right: 120px;
 }
 
 .logo-footer{
-    margin-left: 30%;
-    margin-right: auto;
-    align-items: center;
-}
-
-.logo-footer img{
     width: 100%;
-    margin-top: 25%;
-    margin-bottom: auto;
-}
-
-.logo-footer p{
-    width: max-content;
-    margin-top: 15%;
-}
-
-.social-network-link h2{
     text-align: center;
 }
 
-#footer-filter{
-    margin-top: 30%;
+.logo-footer img{
+    height: 60px;
 }
 
-@media screen and (max-width:650px){
-    .social-network-link{
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-    }
+.links{
+    flex-basis: 45%;
+    overflow: hidden;
 }
+
+.links h1{
+    text-align: center;
+    margin-left: 60px;
+}
+
+.flex-link{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.flex-link li {
+    flex-basis: 25%;
+    text-align: center;
+    margin-top: 5%;
+}
+
+.flex-link a:hover{
+    text-decoration: underline white;
+}
+
+
+.contact{
+    flex-basis: 30%;
+}
+
+.contact section{
+    overflow: hidden;
+    height: 30%;
+}
+
+.contact h1{
+    text-align: center;
+}
+
+.email{
+    width: 50%;
+}
+
+.linkedin{
+    width: 34%;
+    text-align: center;
+}
+
+.flex-contact{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+
 
 
 /***************************Page Index***************************/
 
+.position-image-index{
+    display: block;
+    bottom: 0px;
+}
+
 .image-index{
     background: url("/static/images/concert.png") no-repeat center;
-    height: 900px;
+    height: 950px;
     background-size: cover;
     text-align: center;
-    position: fixed;
     width: 100%;
 }
 
@@ -138,14 +197,14 @@ footer{
     font-family: "gisbon_demodemo";
     color: white;
     text-shadow: 4px 4px grey;
+    height: 400px;
+    overflow: hidden;
 }
 
 .text-title-index {
     font-size: 60px;
     color: white;
 }
-
-
 
 .box-button{
     display: flex;
@@ -215,13 +274,6 @@ footer{
     visibility: visible;
 }
 
-
-
-
-
-
-
-
 .button-back{
     text-shadow: 5px 5px #F98718;
     font-size: 40px;
@@ -234,6 +286,181 @@ footer{
     color: #F98718;
     text-shadow: 5px 5px #3A1757;
 }
+
+.flexbox-index{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.section-flex{
+    width: 100%;
+}
+
+.espacement{
+    width: 100%;
+    height: 94px;
+}
+
+.grid-flex{
+    display: flex;
+    flex-flow: column wrap;
+    width: 840px;
+}
+
+.line-flexbox1{
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+}
+
+.grid-flex section{
+    padding: 25px;
+    margin-top: 15%;
+    color: black;
+}
+
+.line-flexbox2 section{
+    position: relative;
+    right: 25px;
+    padding: 25px;
+}
+
+.line-flexbox2 img{
+    right: 40px;
+}
+
+.image-flex{
+    width: 400px;
+    height: 400px;
+}
+
+.image-flex img{
+    width: 600px;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.padding-flex{
+    padding: 15px;
+}
+
+
+.line-flexbox1 img{
+    float: right;
+}
+
+.animation-text-index{
+    animation: slide 1s linear 1 ;
+}
+
+@keyframes slide{
+    0%{margin-top: 121px;
+        visibility: hidden;}
+
+    33%{margin-top: 121px;
+        visibility: visible;}
+
+    50%{margin-top: 100px;
+        visibility: visible;}
+
+    66%{margin-top: 90px;
+        visibility: visible;}
+
+    80%{margin-top: 80px;
+        visibility: visible;}
+
+    90%{margin-top: 70px;
+        visibility: visible;}
+
+    100%{margin-top: 60px;
+        visibility: visible;}
+
+}
+
+.line-flexbox2 img{
+    float: left;
+}
+
+.line-flexbox2{
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: row-reverse nowrap;
+    flex-flow: row-reverse nowrap;
+}
+
+/*card de présentation*/
+
+.position-flexbox-presentation{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow: hidden;
+    flex-direction: column;
+    background-color: white;
+    padding-bottom: 100px;
+    padding-top: 15px;
+}
+
+.position-flexbox-presentation h1{
+    text-align: center;
+    color: black;
+    font-size: 50px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding-bottom: 15px;
+}
+
+.flex-box-presentation{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    width: 95%;
+    margin-left: 2.5%;
+}
+
+.card-presentation{
+    background-color: grey;
+    width: 400px;
+    height: 500px;
+    border-radius: 6px;
+    color: black;
+}
+
+@media screen and (min-width:700px){
+    #card2{
+        margin-left: 10%;
+    }
+}
+
+.card-presentation:hover{
+    zoom: 110%;
+    transition: 1s;
+}
+
+
+.card-presentation img{
+    width: 100%;
+    height: 270px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.card-presentation section{
+    text-align: center;
+}
+
+
+
+
+
+/***************************Bouton retour***************************/
 
 #button-back-menu{
 position: relative;
@@ -252,7 +479,7 @@ width: 50px;
     border: none;
 }
 
-/*Header*/
+/***************************Header***************************/
 :root {
     --rad: .5rem;
     --dur: .3s;

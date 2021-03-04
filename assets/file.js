@@ -206,4 +206,3 @@ function goToConcert(location) {
     console.log(location);
     document.location.href="http://localhost:8080/artist/"+location;
 }
-
