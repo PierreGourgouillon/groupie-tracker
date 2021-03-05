@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/static/file.js"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+    <title>Deezer</title>
+</head>
+<body onload="javascript:mapConcert()">
+
+    <header>
+        <div class="logo-ynov">
+            <a href="/groupie/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
+        </div>
+
+        <div class="random-artist">
+            <img onclick="javascript:randomArtist();" src="/static/images/Dice.png">
+            <p onclick="javascript:randomArtist();">Artiste aléatoire</p>
+        </div>
+
+        <div class="allLocations">
+            <a href="/concertLocation/">
+                <img src="/static/images/WorldMapWhite.svg" alt="World Map">
+                <p>Villes</p>
+            </a>
+        </div>
+
+        <div class="form-search">
+            <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
+            
+            <datalist id="searchs" name="searchs">
+                {{$APISearch := .Data}}
+                {{range $ID,$v:= $APISearch.Artists}}
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).Name}} | Artist - Band">
+        
+                {{range (index $APISearch.Artists $ID).Members }}
+                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{.}} | Member"></option>
+                {{end}}
+                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
+                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
+                {{end}}
+        
+                {{range $index, $city := .AllLocations}}
+                    <option class="capitalize" data-id="city{{$index}}" value="{{$city}} | Locations"></option>
+                {{end}}
+            </datalist>
+            
+            <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
+        
+        </div>
+    </header>
+
+    {{$deezer := .Deezer}}
+    <div id="header-artist"> 
+        <div id="position-image-artist">
+            {{range $f,$g := $deezer.DeezerArtist.Data}}
+            {{if eq $f 0}}
+            <img src="{{(index $deezer.DeezerArtist.Data $f).Picture}}">
+            {{end}}
+            {{end}}
+        </div>
+        <div id="position-text-artist">
+            {{range $f,$g := $deezer.DeezerArtist.Data}}
+            {{if eq $f 0}}
+            <h1>{{(index $deezer.DeezerArtist.Data $f).Name}}</h1>
+            {{end}}
+            {{end}}
+            <div id="info-artist-deezer">
+            
+                    <div class="size-flex-info-artist">
+                        {{range $ID,$v := $deezer.DeezerArtist.Data}}
+                    {{if eq $ID 0}}
+                    <p>Nombre de projets réalisés: {{(index $deezer.DeezerArtist.Data $ID).NbAlbum}}</p>{{end}}{{end}}  
+                    </div>
+
+                    <div class="follower">
+                        {{range $ID,$v := $deezer.DeezerArtist.Data}}
+                            {{if eq $ID 0}}
+                        <a href="{{(index $deezer.DeezerArtist.Data $ID).Link}}" target="_blank">
+                            <img id="logo-deezer" src="/static/images/deezer.png">
+                        </a>
+                        <p> {{(index $deezer.DeezerArtist.Data $ID).NbFan}} followers</p>
+                        {{end}}
+                        {{end}}
+                    </div>
+                
+            </div>
+        </div>
+        
+    </div>
+
+    <div>
+        <h1 class="title-top-songs">Top Titres</h1>
+
+
+        <div class="top-songs">
+            <p class="container-songs"></p>
+            <ul>
+                {{range $ID,$v:= $deezer.ListSong.Data}}
+                {{if le $ID 2}}
+                <li>
+                    <a href="{{(index $deezer.ListSong.Data $ID).LinkURL}}" target="_blank">
+                        <img src="{{(index $deezer.ListSong.Data $ID).Album.CoverURL}}">
+                        <h2>{{(index $deezer.ListSong.Data $ID).TitleShort}}</h2>
+                    </a>
+                </li>
+                {{end}}
+                {{end}}
+            </ul>   
+        </div>
+    </div>
+
+    <div class="position-flex">
+        <div class="flex-artists">
+            <div class="container-concerts">
+                <h1>Les Titres</h1>
+                <div class="between-concert">
+                    <div id="scroll-songs"> 
+                            <div class="flex-song-scroll" id="maj-title">
+                                <div class="player-song"></div>
+                                <div class="title-songs"><p>TITRE</p></div>
+                                <div class="album-songs"><p>album</p></div>
+                                <div class="duree-songs"><p>D.</p></div>
+                             </div>
+                             {{range $ID,$v:= $deezer.ListSong.Data}}
+                            <div class="flex-song-scroll">
+                                <div class="player-song" style="cursor: pointer;"><img src="/static/images/play_circle.svg"/></div>
+                                <div class="title-songs"><p>{{(index $deezer.ListSong.Data $ID).TitleShort}}</p></div>
+                                <div class="album-songs"><p>{{(index $deezer.ListSong.Data $ID).Album.Title}}</p></div>
+                                <div class="duree-songs"><p>{{(index $deezer.ListSong.Data $ID).Duration}}</p></div>
+                            </div>
+                            {{end}}
+                    </div>
+                </div>
+                
+            </div>
+    
+            <div class="container-albums">
+                <h1 class="albums-title">Les Albums</h1>
+                <div class="container">
+                    <div class="carousel">
+                        {{range $ID,$v := $deezer.ListAlbum}}                        
+                            <div class="item" style="background:url('{{(index $deezer.ListAlbum $ID).CoverURL}}') ;">
+                                <h1>{{(index $deezer.ListAlbum $ID).Title}}</h1>
+                            </div> 
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-artists">
+        <footer>
+            <div class="social-network-link">
+                <h2>Nous contacter</h2>
+                <div>
+                    <a href="https://www.linkedin.com/in/pierre-gourgouillon-a506391aa/" target="_blank"><ul><img src="/static/images/linkedin.png">Pierre Gourgouillon</ul></a>
+                    <a href="#" target="_blank"><ul><img src="/static/images/linkedin.png"> Lucas Barthelemy</ul></a>
+                </div> 
+                <div>
+                    <ul><img src="/static/images/email.png">Pierre_gourgouillon@hotmail.com</ul>
+                    <ul><img src="/static/images/email.png">lucasbart@hotmail.fr</ul>
+                </div>
+            </div>
+            <div class="logo-footer">
+                <img src="/static/images/logo_ynov.svg">
+                <p>Créé par Lucas et Pierre</p>
+            </div>
+        </footer>
+    </div>  
+</body>
+</html>

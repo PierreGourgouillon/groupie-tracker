@@ -342,7 +342,6 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 
 	if filterAPI.FirstAlbum != "" || filterAPI.creationDate != "" || filterAPI.checkMembers != "" || filterAPI.checkCity != "" || filterAPI.typeArtist != "" || filterAPI.citySearchFilter0 != "" || filterAPI.citySearchFilter1 != "" || filterAPI.citySearchFilter2 != "" {
 		structTest := filters(filterAPI)
-		fmt.Println(structTest.SpecialData.Artists)
 		template, _ := template.ParseFiles("./templates/filter.html")
 		structTest.AllLocations = searchBarAllLocations
 
@@ -608,6 +607,8 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 			tmplCity.Execute(w, selectedCity)
 			return
 
+		} else if r.URL.Path[8:12] == "deezer" {
+
 		} else {
 			errorHandler(w, r)
 			return
@@ -637,7 +638,7 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 	}
 	var selectedArtistPointer *pageArtist
 	selectedArtistPointer = &selectedArtist
-	Deezer(selectedArtistPointer)
+	Deezer(selectedArtistPointer, "")
 
 	tmpl.Execute(w, selectedArtistPointer)
 }
@@ -821,13 +822,38 @@ func main() {
 	http.HandleFunc("/artist/", artistPage)
 	http.HandleFunc("/concertLocation/", concertLocationPage)
 	http.HandleFunc("/cityConcert/", cityConcertPage)
+	http.HandleFunc("/deezer/", deezerPage)
 	http.ListenAndServe(":8080", nil)
 }
 
 /***************DEEZER API***************/
 
-func Deezer(selectedArtist *pageArtist) {
-	nameArtist := SearchNameID(selectedArtist.SpecialData.Artists[0].ID)
+func deezerPage(w http.ResponseWriter, r *http.Request) {
+	tmpl, _ := template.ParseFiles("./templates/deezer.html")
+
+	var artistInDeezer *pageArtist
+	var structTemporary pageArtist
+
+	structTemporary.Data = Tracker
+	structTemporary.AllLocations = searchBarAllLocations
+	artistInDeezer = &structTemporary
+
+	deezerArtist := r.URL.Path[8:]
+
+	Deezer(artistInDeezer, deezerArtist)
+
+	tmpl.Execute(w, artistInDeezer)
+}
+
+func Deezer(selectedArtist *pageArtist, artistInSearchBar string) {
+	var nameArtist string
+
+	if artistInSearchBar != "" {
+		nameArtist = strings.Replace(artistInSearchBar, " ", "%20", -1)
+	} else {
+		nameArtist = SearchNameID(selectedArtist.SpecialData.Artists[0].ID)
+	}
+
 	URLTracklist := SearchArtistDeezer(nameArtist, selectedArtist)
 	unmarshallJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
 	ListAlbum(selectedArtist)

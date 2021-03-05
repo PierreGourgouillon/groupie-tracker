@@ -27,7 +27,12 @@ function searchBar() {
         }
     }
     /* Renvoie sur la page erreur 404 */
-    document.location.href="http://localhost:8080/error/";
+    document.location.href="http://localhost:8080/deezer/"+ valInput.toLowerCase();
+}
+
+function searchBarArtistdeezer(){
+    var valData = document.getElementById('ArtistDeezerInput').value
+    document.location.href="http://localhost:8080/deezer/"+ valData.toLowerCase();
 }
 
 /* Javascript : Transmorme les données de la datalist pour les recherches tapéees à la main
@@ -66,7 +71,7 @@ function mapConcert() {
 function loadMap(lat, lon) {
     console.log(lat, lon);
     /* Créer la map */
-    let map = L.map('mapID').setView([lat, lon], 19);
+    let map = L.map('mapID').setView([lat, lon], 3);
 
     /* Ajoute à la map les cartes sur openstreetmap */
     L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {

@@ -489,7 +489,7 @@ footer{
 
 #button-back-menu{
     position: relative;
-    top: 10px;
+    top: -10px;
     left: 30px;
     width: 50px;
 }
@@ -670,7 +670,7 @@ header div {
     width: 70%;
     height: 450px;
     margin-left: 15%;
-    margin-top: -90px;
+    margin-top: -110px;
 }
 
 .position-text{
@@ -707,7 +707,7 @@ header div {
 }
 
 #filter {
-    margin-top: 0%;
+    margin-top: 5%;
     height: 450px;
 }
 
@@ -808,6 +808,61 @@ header div {
     margin-right: 5%;
 }
 
+#div-deezer-input{
+    text-align: center;
+    overflow:hidden;
+    margin-top: 15px;
+    padding: 5px;
+    width: 60%;
+    margin-left: 20%;
+    position: absolute;
+}
+
+#button-pop-deezer{
+    position: relative;
+    left: 30px;
+}
+
+.input-deezer, .button-deezer{
+    height: var(--height);
+    border: 0;
+    color: var(--color-dark);
+    font-size: 1.4rem;
+    z-index: 2;
+}
+
+
+.input-deezer{
+    outline: 0; 
+    width: 18%;
+    background: var(--color-light);
+    padding: 0 1.6rem;
+    border-radius: var(--rad);
+    appearance: none; 
+    transition: all var(--dur) var(--bez);
+    transition-property: width, border-radius;
+    z-index: 1;
+    position: relative;
+}
+
+.input-deezer:not(:placeholder-shown) {
+    width: 22%;
+  }
+  
+.button-deezer {
+    color: #F98718;
+    width: 100px;
+    font-weight: bold;
+    background: var(--color-brand);
+    border-radius: var(--rad);
+    position: relative;
+    top: 0;
+    right: 0;
+}
+
+
+
+
 /***************************Page Artist***************************/
 
 #header-artist{
@@ -851,17 +906,7 @@ header div {
     width: 55%;
 }
 
-#position-text-artist div{
-    position: absolute;
-    bottom: 0px;
-    margin-bottom: 80px;
-    background-color: #3A1757;
-    width: 60%;
-    height: 200px;
-    margin-left: 50px;
-    padding-left: 30px;
-    padding-top: 30px;
-}
+
 
 .title-top-songs{
     color: #3A1757;
@@ -948,6 +993,11 @@ header div {
     grid-template: 499px / 50% 50%;
 }
 
+.between-concert{
+    height: 499px;
+    box-shadow: 2px 2px 2px grey;
+}
+
 .container-location-concerts {
     grid-area: 1/1/1/1;
     width: auto;
@@ -962,6 +1012,64 @@ header div {
     text-align: center;
     color: black;
 }
+
+.flex-location-concerts p{
+    border: 1px solid red;
+}
+
+#scroll-songs{
+    overflow-y:scroll;
+    flex-wrap: nowrap;
+    width: 100%;
+    background-color: white;
+    height: 100%;
+    color: black;
+}
+
+.flex-song-scroll{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    border-bottom: 1px solid rgba(128,128,128,0.5);
+}
+
+
+#maj-title div {
+    padding-top: 20px;
+    color: grey;
+}
+
+.player-song{
+    flex-basis: 5%;
+    text-align: center;
+    margin-top: 3px;
+}
+
+.player-song img{
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+}
+
+.title-songs{    
+    flex-basis: 40%;
+    padding-left: 15px;
+}
+.album-songs{
+    flex-basis: 45%;
+}
+.duree-songs{
+    flex-basis: 5%;
+}
+
+.flex-song-scroll:hover .player-song img{
+    opacity: 1;
+}
+
+
+
+
+
 
 
 #location-concert {
@@ -1099,17 +1207,6 @@ header div {
     top: 50px;
 }
 
-.follower{
-    width: 400px;
-    height: 150px;
-    position: relative;
-    bottom: 270px;
-    left: 750px;
-    background-color: transparent;
-    z-index: 5;
-    display: inline-block;
-    text-align: center;
-}
 
 .follower p{
     position: relative;
@@ -1248,4 +1345,59 @@ text-align: center;
     width: auto;
     margin: 2%;
     z-index: 1;
+}
+
+/*Page Deezer*/
+
+#info-artist-deezer{
+    font-size: 30px;
+}
+
+#info-artist-deezer{
+    
+}
+
+.flex-artist1{
+    border: 1px solid green;
+}
+
+.flex-artist2{
+    border: 1px solid blue;
+}
+
+#info-artist-deezer p{
+    display: block;
+}
+
+#info-artist-deezer{
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: 80px;
+    background-color: #3A1757;
+    width: 60%;
+    height: 200px;
+    margin-left: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.follower{
+    
+    text-align: center;
+    flex-basis:25%;
+    margin-top: 27px;
+}
+
+
+
+.size-flex-info-artist{
+    flex-basis: 75%;
+}
+
+.size-flex-info-artist p{
+    margin-top: 8%;
+    max-width: 80%;
+    border: 1px solid pink;
+    margin-left: 20px;
 }

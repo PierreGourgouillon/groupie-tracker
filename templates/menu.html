@@ -13,7 +13,7 @@
 
     <header>
         <div class="logo-ynov">
-            <a href="/groupie/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
+            <a href="/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
         </div>
 
         <div class="random-artist">
@@ -53,7 +53,19 @@
         </div>
     </header>
 
+    
+
+    <div id="div-deezer-input" style="display: none;">   
+        <input type="text" id="ArtistDeezerInput" class="input-deezer" placeholder="Entrez un artiste...">
+        <button onclick="javascript:searchBarArtistdeezer();" type="submit" class="button-deezer">Go</button> 
+    </div>
+    
+    
+    
+
+
     <div class="menu-button">
+        <h1 class="button-back" id="button-pop-deezer" style="cursor: pointer;" onclick="javascript:displayFilter('div-deezer-input'); return false;">Deezer</h1>
         <h1 id="button-back-menu" class="button-back" style="cursor: pointer;" onclick="javascript:displayFilter('filter'); return false;">Filtrer</h1>
         <a href="/" id="button-back-menu"><h1 class="button-back">Retour</h1></a>
     </div>
