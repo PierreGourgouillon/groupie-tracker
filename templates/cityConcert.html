@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="/static/file.js"></script>
-    <title>Document</title>
+    <title>Groupie Tracker</title>
 </head>
 <body onload="javascript:loadMapCity({{.City}})">
 
@@ -33,38 +33,34 @@
 
         <div class="form-search">
             <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
-            
             <datalist id="searchs" name="searchs">
                 {{$APISearch := .Data}}
                 {{range $ID,$v:= $APISearch.Artists}}
                 <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).Name}} | Artist - Band">
-        
+
                 {{range (index $APISearch.Artists $ID).Members }}
-                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{.}} | Member"></option>
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{.}} | Member"></option>
                 {{end}}
-                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
-                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
                 {{end}}
-        
+
                 {{range $index, $city := .AllLocations}}
                     <option class="capitalize" data-id="city{{$index}}" value="{{$city}} | Locations"></option>
                 {{end}}
             </datalist>
-            
             <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
-        
         </div>
     </header>
 
     {{ $API := .SpecialData }}
-
     <div class="city-concert"><h1 class="capitalize">{{.City}}</h1></div>
 
     <div class="city-concert-artist">
-        {{ range $ID, $v := $API.Artists }}
-            <div class="flip-card">
-                <a href="/artist/{{(index $API.Artists $ID).ID}}">
-                    <div class="flip-card-inner">
+        {{range $ID, $v := $API.Artists}}
+        <div class="flip-card">
+            <a href="/artist/{{(index $API.Artists $ID).ID}}">
+                <div class="flip-card-inner">
                     <div class="flip-card-front">
                         <img src="{{(index $API.Artists $ID).Image}}">
                     </div>
@@ -75,17 +71,17 @@
                         <h3>Membres : </h3>
                         <p>{{range (index $API.Artists $ID).Members }}{{ . }} <br> {{ end }}</p>
                     </div>
-                    </div>
-                </a>         
-            </div>
-        {{ end }}
+                </div>
+            </a>         
+        </div>
+        {{end}}
     </div>
 
     <div class="container-title-mapcity">
         <h1 class="mapcity-title">Carte de la ville</h1>
-            <div class="background-mapcity">
-                <div id="mapcity"></div>
-            </div>
+        <div class="background-mapcity">
+            <div id="mapcity"></div>
+        </div>
     </div>
 
     <footer>
@@ -105,8 +101,5 @@
             <p>Créé par Lucas et Pierre</p>
         </div>
     </footer>
-  
-
-
 </body>
 </html>

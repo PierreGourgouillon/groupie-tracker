@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="/static/file.js"></script>
-    <title>Document</title>
+    <title>Groupie Tracker</title>
 </head>
 <body>
     <header>
@@ -32,26 +32,21 @@
 
         <div class="form-search">
             <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
-            
             <datalist id="searchs" name="searchs">
                 {{$APISearch := .Data}}
                 {{range $ID,$v:= $APISearch.Artists}}
                 <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).Name}} | Artist - Band">
-        
                 {{range (index $APISearch.Artists $ID).Members }}
-                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{.}} | Member"></option>
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{.}} | Member"></option>
                 {{end}}
-                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
-                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
                 {{end}}
-        
                 {{range $index, $city := .AllLocations}}
-                    <option class="capitalize" data-id="city{{$index}}" value="{{$city}} | Locations"></option>
+                <option class="capitalize" data-id="city{{$index}}" value="{{$city}} | Locations"></option>
                 {{end}}
             </datalist>
-            
             <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
-        
         </div>
     </header>
 
@@ -59,16 +54,16 @@
     {{ $Flag := .Flag}}
     <div class="concertLocation">
         {{range $index, $v := $API.Locations}}
-            <a href="/cityConcert/{{$index}}">
-                <div class="concert">
-                    <div class="flag">
-                        <img id="flag" src="https://flagcdn.com/{{(index $Flag $index)}}.svg" width="70" height="50">
-                    </div>
-                    <div class="location">
-                        <p id="location" class="capitalize">{{$v}}</p>
-                    </div>
+        <a href="/cityConcert/{{$index}}">
+            <div class="concert">
+                <div class="flag">
+                    <img id="flag" src="https://flagcdn.com/{{(index $Flag $index)}}.svg" width="70" height="50">
                 </div>
-            </a>
+                <div class="location">
+                    <p id="location" class="capitalize">{{$v}}</p>
+                </div>
+            </div>
+        </a>
         {{end}}  
     </div>
 
@@ -89,8 +84,5 @@
             <p>Créé par Lucas et Pierre</p>
         </div>
     </footer>
-  
-
-
 </body>
 </html>

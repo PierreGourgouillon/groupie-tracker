@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-// Structure pour l'API Globale
+/******************************************TOUTES LES STRUCTURES*****************************************/
 
 // API -> structure contenants les structure de l'API groupie-trackers
 type API struct {
@@ -57,7 +57,8 @@ type Relation struct {
 	} `json:"index"`
 }
 
-// Structure pour la page artist
+/******************************************STRUCTURE POUR LA PAGE ARTIST******************************************/
+
 // pageArtists -> structures pour envoyer les informations à la page /artist
 type pageArtist struct {
 	Data         API
@@ -67,7 +68,7 @@ type pageArtist struct {
 	Deezer       DeezerAPI
 }
 
-/*Structure API Deezer*/
+/******************************************STRUCTURE API DEEZER******************************************/
 
 //DeezerAPI -> Structure les données Deezer de l'artiste
 type DeezerAPI struct {
@@ -116,7 +117,7 @@ type Album struct {
 	TrackListAlbum string `json:"tracklist"`
 }
 
-/*Fin structure API Deezer*/
+/******************************************FIN STRUCTURE API DEEZER******************************************/
 
 // ArtistAPI -> structure Artiste spécial pour la page /artist contient un seul artist, ses lieux de concert et leurs dates
 type ArtistAPI struct {
@@ -139,7 +140,8 @@ type pageFilter struct {
 	AllLocations []string
 }
 
-// Structure pour la page concertLocation
+/******************************************STRUCTURE POUR LA PAGE CONCERTLOCATION******************************************/
+
 // pageConcert -> structure pour envoyer les informations à la page /concertLocations
 type pageConcert struct {
 	Data         API
@@ -154,7 +156,8 @@ type ConcertAPI struct {
 	Locations []string
 }
 
-// Structure pour la page cityConcert
+/******************************************STRUCTURE POUR LA PAGE CITYCONCERT******************************************/
+
 // pageCity -> structure pour envoyer les informations à la page /cityConcert
 type pageCity struct {
 	Data         API
@@ -222,43 +225,6 @@ func serverJSON() {
 	allLocationsFilter()
 
 	fmt.Println("Server UP")
-}
-
-// transformAPILocation -> change l'orthographe des lieux de concert
-func transformAPILocation() {
-	for index, api := range Tracker.Locations.Index {
-		for i := 0; i < len(api.Locations); i++ {
-			locationChange := transformLocation(api.Locations[i])
-			Tracker.Locations.Index[index].Locations[i] = locationChange
-		}
-	}
-}
-
-// transformAPIRelation -> change l'orthographe des lieux de concert
-func transformAPIRelation() {
-	for i := 0; i < len(Tracker.Artists); i++ {
-		var mapChange = make(map[string][]string)
-		for index, api := range Tracker.Relation.Index[i].DatesLocations {
-			locationChange := transformLocation(index)
-			mapChange[locationChange] = api
-		}
-		Tracker.Relation.Index[i].DatesLocations = mapChange
-	}
-}
-
-// transformLocation -> remplace les "_" par un " " et les "-" par un "|"
-func transformLocation(text string) string {
-	var newText string = ""
-	for i := 0; i < len(text); i++ {
-		if text[i] == '_' {
-			newText = newText + " "
-		} else if text[i] == '-' {
-			newText = newText + " | "
-		} else {
-			newText = newText + string(text[i])
-		}
-	}
-	return newText
 }
 
 // allLocationsFilter -> créer un tableau contenant les lieux des concert en un seul exemplaire pour la search bar
@@ -345,11 +311,9 @@ func groupiePage(w http.ResponseWriter, r *http.Request) {
 		structTest := filters(filterAPI)
 		template, _ := template.ParseFiles("./templates/filter.html")
 		structTest.AllLocations = searchBarAllLocations
-
 		template.Execute(w, structTest)
 		return
 	}
-
 	tmpl.Execute(w, allInformations)
 }
 
@@ -418,7 +382,6 @@ func filters(filterAPI filter) pageFilter {
 				continue
 			}
 		}
-
 		table = append(table, Tracker.Artists[i])
 	}
 
@@ -461,7 +424,6 @@ func filterSearchCity(ID int, API filter) bool {
 			}
 		}
 	}
-
 	return false
 }
 
@@ -589,7 +551,6 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 			}
 
 			city := deleteCountry([]string{searchBarAllLocations[nbrPathCity]})
-
 			CityTracker := cityConcertFilter(city[0])
 
 			selectedCity := pageCity{
@@ -824,26 +785,46 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
-/***************DEEZER API***************/
+/******************************************TRANSFORMATION SYNTHAXIQUE******************************************/
 
-func deezerPage(w http.ResponseWriter, r *http.Request) {
-	tmpl, _ := template.ParseFiles("./templates/deezer.html")
-
-	var artistInDeezer *pageArtist
-	var structTemporary pageArtist
-
-	structTemporary.Data = Tracker
-	structTemporary.AllLocations = searchBarAllLocations
-	artistInDeezer = &structTemporary
-
-	deezerArtist := r.URL.Path[8:]
-
-	deezer(artistInDeezer, deezerArtist)
-	conversionDeezer(artistInDeezer)
-
-	tmpl.Execute(w, artistInDeezer)
+// transformAPILocation -> change l'orthographe des lieux de concert
+func transformAPILocation() {
+	for index, api := range Tracker.Locations.Index {
+		for i := 0; i < len(api.Locations); i++ {
+			locationChange := transformLocation(api.Locations[i])
+			Tracker.Locations.Index[index].Locations[i] = locationChange
+		}
+	}
 }
 
+// transformAPIRelation -> change l'orthographe des lieux de concert
+func transformAPIRelation() {
+	for i := 0; i < len(Tracker.Artists); i++ {
+		var mapChange = make(map[string][]string)
+		for index, api := range Tracker.Relation.Index[i].DatesLocations {
+			locationChange := transformLocation(index)
+			mapChange[locationChange] = api
+		}
+		Tracker.Relation.Index[i].DatesLocations = mapChange
+	}
+}
+
+//transformLocation -> remplace les "_" par un " " et les "-" par un "|"
+func transformLocation(text string) string {
+	var newText string = ""
+	for i := 0; i < len(text); i++ {
+		if text[i] == '_' {
+			newText = newText + " "
+		} else if text[i] == '-' {
+			newText = newText + " | "
+		} else {
+			newText = newText + string(text[i])
+		}
+	}
+	return newText
+}
+
+//conversionDeezer -> Convertie les durées de son de secondes à minutes
 func conversionDeezer(selectedArtist *pageArtist) {
 	var conversion string
 	durationSong := 0
@@ -861,50 +842,28 @@ func conversionDeezer(selectedArtist *pageArtist) {
 			conversion = strconv.Itoa(minutes) + ":" + strconv.Itoa(secondes)
 			selectedArtist.Deezer.ListSong.Data[i].DurationMinute = conversion
 		}
-
 	}
 }
 
-// Deezer -> Crée l'artiste via l'API Deezer
-func deezer(selectedArtist *pageArtist, artistInSearchBar string) {
-	var nameArtist string
+/******************************************DEEZER API******************************************/
 
-	if artistInSearchBar != "" {
-		nameArtist = strings.Replace(artistInSearchBar, " ", "%20", -1)
-	} else {
-		nameArtist = searchNameID(selectedArtist.SpecialData.Artists[0].ID)
-	}
+//deezerPage -> Page pour les artistes deezer
+func deezerPage(w http.ResponseWriter, r *http.Request) {
+	tmpl, _ := template.ParseFiles("./templates/deezer.html")
 
-	URLTracklist := searchArtistDeezer(nameArtist, selectedArtist)
-	unmarshallJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
-	listAlbum(selectedArtist)
-}
+	var artistInDeezer *pageArtist
+	var structTemporary pageArtist
 
-// listAlbum -> Crée la liste des albums de l'artiste
-func listAlbum(selectedArtist *pageArtist) {
-	var table []string
-	var tableau []Album
-	var isFirstAlbum bool = true
+	structTemporary.Data = Tracker
+	structTemporary.AllLocations = searchBarAllLocations
+	artistInDeezer = &structTemporary
 
-	for i, b := range selectedArtist.Deezer.ListSong.Data {
-		if i == 0 && isFirstAlbum {
-			table = append(table, b.Album.Title)
-			isFirstAlbum = false
-		}
-		for _, k := range table {
-			if b.Album.Title == k {
-				isFirstAlbum = true
-				break
-			} else {
-				isFirstAlbum = false
-			}
-		}
-		if !isFirstAlbum {
-			table = append(table, b.Album.Title)
-			tableau = append(tableau, b.Album)
-		}
-	}
-	selectedArtist.Deezer.ListAlbum = tableau
+	deezerArtist := r.URL.Path[8:]
+
+	deezer(artistInDeezer, deezerArtist)
+	conversionDeezer(artistInDeezer)
+
+	tmpl.Execute(w, artistInDeezer)
 }
 
 //SearchNameID -> Trouve le nom pour l'id et le modifie
@@ -936,4 +895,48 @@ func searchArtistDeezer(name string, StructPageArtist *pageArtist) string {
 	}
 
 	return URLTracklist
+}
+
+// deezer -> Crée l'artiste via l'API Deezer
+func deezer(selectedArtist *pageArtist, artistInSearchBar string) {
+	var nameArtist string
+
+	if artistInSearchBar != "" {
+		nameArtist = strings.Replace(artistInSearchBar, " ", "%20", -1)
+	} else {
+		nameArtist = searchNameID(selectedArtist.SpecialData.Artists[0].ID)
+	}
+
+	URLTracklist := searchArtistDeezer(nameArtist, selectedArtist)
+	unmarshallJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
+	listAlbum(selectedArtist)
+}
+
+//listAlbum -> Crée la liste des albums de l'artiste
+func listAlbum(selectedArtist *pageArtist) {
+	var table []string
+	var tableau []Album
+	var isFirstAlbum bool = true
+
+	for i, b := range selectedArtist.Deezer.ListSong.Data {
+		if i == 0 && isFirstAlbum {
+			table = append(table, b.Album.Title)
+			isFirstAlbum = false
+		}
+
+		for _, k := range table {
+			if b.Album.Title == k {
+				isFirstAlbum = true
+				break
+			} else {
+				isFirstAlbum = false
+			}
+		}
+
+		if !isFirstAlbum {
+			table = append(table, b.Album.Title)
+			tableau = append(tableau, b.Album)
+		}
+	}
+	selectedArtist.Deezer.ListAlbum = tableau
 }

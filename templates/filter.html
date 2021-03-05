@@ -29,40 +29,37 @@
 
         <div class="form-search">
             <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
-            
             <datalist id="searchs" name="searchs">
                 {{$APISearch := .Data}}
                 {{range $ID,$v:= $APISearch.Artists}}
                 <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).Name}} | Artist - Band">
         
                 {{range (index $APISearch.Artists $ID).Members }}
-                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{.}} | Member"></option>
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{.}} | Member"></option>
                 {{end}}
-                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
-                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
                 {{end}}
         
                 {{range $index, $city := .AllLocations}}
-                    <option class="capitalize" data-id="city{{$index}}" value="{{$city}} | Locations"></option>
+                <option class="capitalize" data-id="city{{$index}}" value="{{$city}} | Locations"></option>
                 {{end}}
             </datalist>
-            
             <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
-        
         </div>
     </header>
 
     <a href="/groupie" id="button-back-menu"><h1 class="button-back">Retour</h1></a>
 
-{{if .FilterEmpty}}
-    <h1>Vos filtres sont trop précis, aucun artistes correspond à vos critères</h1>
-{{else}}
+    {{if .FilterEmpty}}
+        <h1>Vos filtres sont trop précis, aucun artistes correspond à vos critères</h1>
+    {{else}}
     <div class="city-concert-artist">
         {{$ArtAPI := .SpecialData}}
         {{ range $ID, $v := $ArtAPI.Artists }}
-            <div class="flip-card">
-                <a href="/artist/{{(index $ArtAPI.Artists $ID).ID}}">
-                    <div class="flip-card-inner">
+        <div class="flip-card">
+            <a href="/artist/{{(index $ArtAPI.Artists $ID).ID}}">
+                <div class="flip-card-inner">
                     <div class="flip-card-front">
                         <img src="{{(index $ArtAPI.Artists $ID).Image}}">
                     </div>
@@ -73,31 +70,29 @@
                         <h3>Membres : </h3>
                         <p>{{range (index $ArtAPI.Artists $ID).Members }}{{ . }} <br> {{ end }}</p>
                     </div>
-                    </div>
-                </a>         
-            </div>
+                </div>
+            </a>         
+        </div>
         {{ end }}
     </div>
-{{end}}
+    {{end}}
 
     <footer id="footer-filter">
-      <div class="social-network-link">
+        <div class="social-network-link">
           <h2>Nous contacter</h2>
           <div>
               <a href="https://www.linkedin.com/in/pierre-gourgouillon-a506391aa/" target="_blank"><ul><img src="/static/images/linkedin.png">Pierre Gourgouillon</ul></a>
               <a href="#" target="_blank"><ul><img src="/static/images/linkedin.png"> Lucas Barthelemy</ul></a>
           </div> 
-          <div>
+            <div>
               <ul><img src="/static/images/email.png">Pierre_gourgouillon@hotmail.com</ul>
-
               <ul><img src="/static/images/email.png">lucasbart@hotmail.fr</ul>
-          </div>
-      </div>
-      <div class="logo-footer">
+            </div>
+        </div>
+        <div class="logo-footer">
           <img src="/static/images/logo_ynov.svg">
           <p>Créé par Lucas et Pierre</p>
-      </div>
-</footer>
-
+        </div>
+    </footer>
 </body>
 </html>

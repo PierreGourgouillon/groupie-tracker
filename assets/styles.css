@@ -60,6 +60,7 @@ a:hover, a:active, a:visited {
     }
 }
 
+
 /**************Style bouton**************/
 
 .button-style{
@@ -149,7 +150,6 @@ footer{
     text-decoration: underline white;
 }
 
-
 .contact{
     flex-basis: 30%;
 }
@@ -177,8 +177,6 @@ footer{
     flex-direction: row;
     flex-wrap: wrap;
 }
-
-
 
 
 /***************************Page Index***************************/
@@ -213,7 +211,6 @@ footer{
 }
 
 @media screen and (max-width:1200px){
-
     .title-index {
         font-size: 70px;
     }
@@ -235,7 +232,6 @@ footer{
         color: white;
     }
 }
-
 
 .box-button{
     display: flex;
@@ -380,7 +376,6 @@ footer{
     padding: 15px;
 }
 
-
 .line-flexbox1 img{
     float: right;
 }
@@ -425,8 +420,8 @@ footer{
     flex-flow: row-reverse nowrap;
 }
 
-/*card de présentation*/
 
+/**************card de présentation**************/
 .position-flexbox-presentation{
     display: flex;
     width: 100%;
@@ -471,7 +466,6 @@ footer{
     }
 }
 
-
 .card-presentation img{
     width: 100%;
     height: 270px;
@@ -482,9 +476,6 @@ footer{
 .card-presentation section{
     text-align: center;
 }
-
-
-
 
 
 /***************************Bouton retour***************************/
@@ -520,7 +511,7 @@ footer{
     --height: 3rem;
     --btn-width: 5rem;
     --bez: cubic-bezier(0, 0, 0.43, 1.49);
-  }
+}
 
 header {
     width:100%;
@@ -597,40 +588,42 @@ header div {
     width: 30rem;
     height: 30px;
 }
- 
-/*SearchBar*/
+
+
+/***************************SearchBar***************************/
+
 .design-search, .button {
-  height: var(--height);
-  border: 0;
-  color: var(--color-dark);
-  font-size: 1.4rem;
-  margin-right: 2rem;
-  margin-top: 27px;
+    height: var(--height);
+    border: 0;
+    color: var(--color-dark);
+    font-size: 1.4rem;
+    margin-right: 2rem;
+    margin-top: 27px;
 }
 
 .design-search[type="text"] {
-  outline: 0; 
-  width: 90%;
-  background: var(--color-light);
-  padding: 0 1.6rem;
-  border-radius: var(--rad);
-  appearance: none; 
-  transition: all var(--dur) var(--bez);
-  transition-property: width, border-radius;
-  z-index: 1;
-  position: relative;
+    outline: 0; 
+    width: 90%;
+    background: var(--color-light);
+    padding: 0 1.6rem;
+    border-radius: var(--rad);
+    appearance: none; 
+    transition: all var(--dur) var(--bez);
+    transition-property: width, border-radius;
+    z-index: 1;
+    position: relative;
 }
 
 .button {
-  display: none; 
-  position: absolute;
-  color: #F98718;
-  top: 0;
-  right: 0;
-  width: var(--btn-width);
-  font-weight: bold;
-  background: var(--color-brand);
-  border-radius: 0 var(--rad) var(--rad) 0;
+    display: none; 
+    position: absolute;
+    color: #F98718;
+    top: 0;
+    right: 0;
+    width: var(--btn-width);
+    font-weight: bold;
+    background: var(--color-brand);
+    border-radius: 0 var(--rad) var(--rad) 0;
 }
 
 .design-search:not(:placeholder-shown) {
@@ -662,7 +655,9 @@ header div {
     }
 }
 
-/*Filter*/
+
+/***************************Filter***************************/
+
 .title-filters{
     font-size: 65px;
     color: #3A1757;
@@ -720,7 +715,9 @@ header div {
     height: 450px;
 }
 
-/* Menu Card*/
+
+/***************************Menu Card***************************/
+
 .flip-card {
     background-color: transparent;
     width: 300px;
@@ -729,15 +726,15 @@ header div {
     border-radius: 15px;
     margin-right: 2%;
     margin-top: 2%;
-  }
+}
 
-  .flip-card-front img{
-      width: 100%;
-      height: 100%;
-      border-radius: 15px;
-  }
+.flip-card-front img{
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+}
   
-  .flip-card-inner {
+.flip-card-inner {
     position: relative;
     width: 100%;
     height: 100%;
@@ -746,55 +743,55 @@ header div {
     transition: transform 1.2s;
     transform-style: preserve-3d;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  }
+}
   
-  .flip-card:hover .flip-card-inner {
+.flip-card:hover .flip-card-inner {
     transform: rotateY(180deg)
-  }
+}
   
-  .flip-card-front, .flip-card-back {
+.flip-card-front, .flip-card-back {
     position: absolute;
     width: 100%;
     height: 100%;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-  }
+}
   
-  .flip-card-front {
+.flip-card-front {
     background-color: #bbb;
     color: black;
     border-radius: 15px;
-  }
+}
   
-  .flip-card-back {
+.flip-card-back {
     background-color: white;
     transform: rotateY(180deg);
     border-radius: 15px;
-  }
+}
 
-  .flip-card-back h1 {
+.flip-card-back h1 {
     font-family: "gisbon_demodemo";
     color: #3A1757;
     text-shadow: 4px 4px #F98718;
-  }
+}
 
-  .flip-card-back h3{
+.flip-card-back h3{
     font-family: "gisbon_demodemo";
     color: #3A1757;
-  }
+}
 
-  .flip-card-back p{
+.flip-card-back p{
     position: relative;
     text-align: center;
     font-size: 13px;
     color: #F98718;
     bottom: 15px;
     font-family: "montserrat"
-  }
+}
 
-  .flip-card-front img{
+.flip-card-front img{
     border-radius: 15px;
-  }
+}
 
 .flex-box{
     display: flex;
@@ -829,7 +826,6 @@ header div {
     z-index: 2;
 }
 
-
 .input-deezer{
     outline: 0; 
     width: 18%;
@@ -845,7 +841,7 @@ header div {
 
 .input-deezer:not(:placeholder-shown) {
     width: 22%;
-  }
+}
   
 .button-deezer {
     color: #F98718;
@@ -857,8 +853,6 @@ header div {
     top: 0;
     right: 0;
 }
-
-
 
 
 /***************************Page Artist***************************/
@@ -903,8 +897,6 @@ header div {
     height: auto;
     width: 55%;
 }
-
-
 
 .title-top-songs{
     color: #3A1757;
@@ -1056,7 +1048,6 @@ header div {
     border-bottom: 1px solid rgba(128,128,128,0.5);
 }
 
-
 #maj-title div {
     padding-top: 20px;
     color: grey;
@@ -1078,9 +1069,11 @@ header div {
     flex-basis: 40%;
     padding-left: 15px;
 }
+
 .album-songs{
     flex-basis: 45%;
 }
+
 .duree-songs{
     flex-basis: 5%;
 }
@@ -1088,12 +1081,6 @@ header div {
 .flex-song-scroll:hover .player-song img{
     opacity: 1;
 }
-
-
-
-
-
-
 
 #location-concert {
     font-family: "montserrat";
@@ -1230,7 +1217,6 @@ header div {
     top: 50px;
 }
 
-
 .follower p{
     position: relative;
     bottom: 15px;
@@ -1245,10 +1231,9 @@ header div {
 }
 
 
-
 /***************************Page Error***************************/
 #error-button{
-background-color: #707070;
+    background-color: #707070;
 }
 
 #error-button:hover{
@@ -1256,8 +1241,8 @@ background-color: #707070;
 }
 
 #error{
-margin-top: 10%;
-text-align: center;
+    margin-top: 10%;
+    text-align: center;
 }
 
 #error h1{
@@ -1268,6 +1253,7 @@ text-align: center;
 #div-button-error{
     text-align: center;
 }
+
 
 /***************************Page concertLocation***************************/
 
@@ -1353,7 +1339,6 @@ text-align: center;
     z-index: 2;
 }
 
-
 .background-mapcity {
     width: 96%;
     height: 550px;
@@ -1370,12 +1355,12 @@ text-align: center;
     z-index: 1;
 }
 
-/*Page Deezer*/
+
+/***************************Page Deezer***************************/
 
 #info-artist-deezer{
     font-size: 30px;
 }
-
 
 .flex-artist1{
     border: 1px solid green;

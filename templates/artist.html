@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="/static/file.js"></script>
-    <title>Document</title>
+    <title>Groupie Tracker</title>
 </head>
 <body onload="javascript:mapConcert()">
 
@@ -33,12 +33,11 @@
 
         <div class="form-search">
             <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
-            
             <datalist id="searchs" name="searchs">
                 {{$APISearch := .Data}}
                 {{range $ID,$v:= $APISearch.Artists}}
                 <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).Name}} | Artist - Band">
-        
+    
                 {{range (index $APISearch.Artists $ID).Members }}
                     <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{.}} | Member"></option>
                 {{end}}
@@ -50,15 +49,12 @@
                     <option class="capitalize" data-id="city{{$index}}" value="{{$city}} | Locations"></option>
                 {{end}}
             </datalist>
-            
             <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
-        
         </div>
     </header>
 
     {{$ArtAPI:= .SpecialData}}
     {{$deezer := .Deezer}}
-
     <div id="header-artist"> 
         <div id="position-image-artist">
             {{range $f,$g := $deezer.DeezerArtist.Data}}
@@ -70,7 +66,6 @@
         
         <div id="position-text-artist">
             <h1>{{(index $ArtAPI.Artists 0).Name }}</h1>
-
             <div id="info-artist-deezer">
                 <div id="size-text">
                     <p>Première apparition : {{(index $ArtAPI.Artists 0).CreationDate}}</p>
@@ -79,10 +74,9 @@
                     {{if eq $ID 0}}
                     <p>Nombre de projets réalisés: {{(index $deezer.DeezerArtist.Data $ID).NbAlbum}}</p>{{end}}{{end}}    
                 </div>
-
                 <div class="follower">
                     {{range $ID,$v := $deezer.DeezerArtist.Data}}
-                        {{if eq $ID 0}}
+                    {{if eq $ID 0}}
                     <a href="{{(index $deezer.DeezerArtist.Data $ID).Link}}" target="_blank">
                         <img id="logo-deezer" src="/static/images/deezer.png">
                     </a>
@@ -96,7 +90,6 @@
 
     <div>
         <h1 class="title-top-songs">Top Titres</h1>
-
         <div id="dz-root"></div>
         <div class="top-songs">
             <p class="container-songs"></p>
@@ -127,30 +120,28 @@
                 <h1>Les concerts</h1>
                 <div class="between-concerts">
                     <div class="flex-location-concerts">
-                        {{ range $index, $city := (index $ArtAPI.Locations) }}
+                        {{range $index, $city := (index $ArtAPI.Locations)}}
                             <div class="container-location-concerts">
                                 <p class="geocities" id="location-concert">{{$city}}</p>
                             </div>
                             <ul class="container-date-concerts">
                                 <p>Dates :</p>
-                                {{ range index ( index $ArtAPI.Relation ) $city }}
-                                    <li id="date-concert">{{.}}</li>
+                                {{range index ( index $ArtAPI.Relation ) $city}}
+                                <li id="date-concert">{{.}}</li>
                                 {{end}}
                             </ul>
                         {{end}}
                     </div>
-                </div>
-                
+                </div>   
             </div>
-    
             <div class="container-albums">
                 <h1 class="albums-title">Les Albums</h1>
                 <div class="container">
                     <div class="carousel">
                         {{range $ID,$v := $deezer.ListAlbum}}                        
-                            <div class="item" onclick="javascript:playAlbum('{{(index $deezer.ListAlbum $ID).ID}}')" style="cursor: pointer; background:url('{{(index $deezer.ListAlbum $ID).CoverURL}}');">
-                                <h1>{{(index $deezer.ListAlbum $ID).Title}}</h1>
-                            </div> 
+                        <div class="item" onclick="javascript:playAlbum('{{(index $deezer.ListAlbum $ID).ID}}')" style="cursor: pointer; background:url('{{(index $deezer.ListAlbum $ID).CoverURL}}');">
+                            <h1>{{(index $deezer.ListAlbum $ID).Title}}</h1>
+                        </div> 
                         {{end}}
                     </div>
                 </div>
@@ -185,16 +176,16 @@
 
     <script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
     <script>
-         DZ.init({
-        appId  : '8',
-        channelUrl : 'http://localhost:8080/channel.html',
-        player : {
-            container : 'player',
-            layout: 'dark',
-            onload : function(){
+        DZ.init({
+            appId  : '8',
+            channelUrl : 'http://localhost:8080/channel.html',
+            player : {
+                container : 'player',
+                layout: 'dark',
+                onload : function(){
+                }
             }
-        }
-    });
+        });
     </script>  
 </body>
 </html>

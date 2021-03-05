@@ -221,7 +221,6 @@ function goToConcert(location) {
 }
 
 /************** filter *********************/
-
 function displayFilter(thingId) {
     let targetElement;
     let flexbox;
@@ -239,7 +238,6 @@ function displayFilter(thingId) {
 }
 
 /************** player deezer ****************/
-
 function playMusic(ID) {
     var table = []
     var f = table.unshift(ID);

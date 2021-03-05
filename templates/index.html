@@ -30,7 +30,6 @@
         </div>
     </div>
 
-
     <div class="section-flex">
         <div class="espacement"></div>
         <div class="flexbox-index">
@@ -42,7 +41,9 @@
                     <div class="padding-flex">
                         <section id="animation-1">
                             <h2>Discographie des artistes</h2>
-                            <p>Vous allez retrouvez sur ce site la discographie de grand artiste de la musique. Vous pourrez visionner une multitude d'information le concernant.</p>
+                            <p>Vous allez retrouver sur ce site la discographie de grand artiste de la musique. Vous pourrez visionner une multitude d'information le concernant.
+                                Rechercher tous les artistes du monde.
+                            </p>
                         </section>
                     </div>
                 </div>
@@ -54,7 +55,9 @@
                     <div class="padding-flex">
                         <section id="animation-2">
                             <h2>Les filtres</h2>
-                            <p>Amusez-vous avec les différents filtres pour tout connaitre de vos artistes préférés. </p>
+                            <p>Amusez-vous avec les différents filtres pour tout connaitre de vos artistes préférés. Vous pouvez filtrer par ville, nombre de membre et bien plus !
+                                De plus vous pouvez visionner les lieux des différents concerts.
+                            </p>
                         </section>
                     </div>
                 </div>
@@ -78,29 +81,24 @@
     <div class="position-flexbox-presentation">
         <h1>Présentation de l'équipe</h1>
         <div class="flex-box-presentation">
-        <div class="card-presentation">
-            <div>
-                <img src="/static/images/concert.png">
+            <div class="card-presentation">
+                <div>
+                    <img src="/static/images/concert.png">
+                </div>
+                <section>
+                    <h2>Lucas Barthélémy</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta dolor praesentium at quod autem omnis, amet eaque unde perspiciatis adipisci possimus quam facere illo et quisquam quia earum nesciunt porro.</p>
+                </section>   
             </div>
-
-            <section>
-                <h2>Lucas Barthélémy</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta dolor praesentium at quod autem omnis, amet eaque unde perspiciatis adipisci possimus quam facere illo et quisquam quia earum nesciunt porro.</p>
-            </section>
-            
-        </div>
-        ²²
-        <div class="card-presentation" id="card2">
-            <div>
-                <img src="/static/images/concert.png">
+            <div class="card-presentation" id="card2">
+                <div>
+                    <img src="/static/images/concert.png">
+                </div>
+                <section>
+                    <h2>Pierre Gourgouillon</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta dolor praesentium at quod autem omnis, amet eaque unde perspiciatis adipisci possimus quam facere illo et quisquam quia earum nesciunt porro.</p>
+                </section>
             </div>
-
-            <section>
-                <h2>Pierre Gourgouillon</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta dolor praesentium at quod autem omnis, amet eaque unde perspiciatis adipisci possimus quam facere illo et quisquam quia earum nesciunt porro.</p>
-            </section>
-            
-        </div>
         </div>
     </div>
     <div class="espacement"></div>
@@ -138,15 +136,12 @@
             </div>
         </div>
 
-      <div class="logo-footer">
+        <div class="logo-footer">
           <img src="/static/images/logo_ynov.svg">
-      </div>  
+        </div>  
     </footer>
     
-
     <script>
-    
-    
         let backScroll = 0;
 
         window.addEventListener('scroll',(event)=>{
@@ -154,11 +149,9 @@
             const section2 = document.querySelector('#animation-2')
             const section3 = document.querySelector('#animation-3')
 
-
             var scrollLive = document.documentElement.scrollTop
             console.log("Cest le scroll", scrollLive)
         
-
             if (scrollLive > backScroll){
                 if (scrollLive > 100){
                     section1.classList.add("animation-text-index")
@@ -181,6 +174,5 @@
             backScroll = scrollLive;
         })
     </script>
-
 </body>
 </html>

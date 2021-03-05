@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="/static/file.js"></script>
     <link rel="stylesheet" href="/static/styles.css">
-    <title>Deezer</title>
+    <title>Groupie Tracker</title>
 </head>
 <body onload="javascript:mapConcert()">
 
@@ -29,26 +29,23 @@
 
         <div class="form-search">
             <input onsubmit="event.preventDefault();" name="search" class="design-search" id="search" type="text" list="searchs" placeholder="Rechercher..." autofocus required />
-            
             <datalist id="searchs" name="searchs">
                 {{$APISearch := .Data}}
                 {{range $ID,$v:= $APISearch.Artists}}
                 <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).Name}} | Artist - Band">
         
                 {{range (index $APISearch.Artists $ID).Members }}
-                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{.}} | Member"></option>
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{.}} | Member"></option>
                 {{end}}
-                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
-                    <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).FirstAlbum}} | First Album"></option>
+                <option data-id="{{(index $APISearch.Artists $ID).ID}}" value="{{(index $APISearch.Artists $ID).CreationDate}} | Creation date"></option>
                 {{end}}
         
                 {{range $index, $city := .AllLocations}}
-                    <option class="capitalize" data-id="city{{$index}}" value="{{$city}} | Locations"></option>
+                <option class="capitalize" data-id="city{{$index}}" value="{{$city}} | Locations"></option>
                 {{end}}
             </datalist>
-            
             <button class="button" onclick="javascript:searchBar();" type="submit">Go</button>    
-        
         </div>
     </header>
 
@@ -69,7 +66,6 @@
             {{end}}
             {{end}}        
             <div id="info-artist-deezer">
-            
                 <div class="size-flex-info-artist">
                     {{range $ID,$v := $deezer.DeezerArtist.Data}}
                     {{if eq $ID 0}}
@@ -80,9 +76,9 @@
                     {{range $ID,$v := $deezer.DeezerArtist.Data}}
                     {{if eq $ID 0}}
                     <a href="{{(index $deezer.DeezerArtist.Data $ID).Link}}" target="_blank">
-                    <img id="logo-deezer" src="/static/images/deezer.png">
+                        <img id="logo-deezer" src="/static/images/deezer.png">
                     </a>
-                    <p> {{(index $deezer.DeezerArtist.Data $ID).NbFan}} followers</p>
+                    <p>{{(index $deezer.DeezerArtist.Data $ID).NbFan}} followers</p>
                     {{end}}
                     {{end}}
                 </div>
@@ -92,8 +88,6 @@
 
     <div>
         <h1 class="title-top-songs">Top Titres</h1>
-
-
         <div class="top-songs">
             <p class="container-songs"></p>
             <ul>
@@ -123,33 +117,31 @@
                 <h1>Les Titres</h1>
                 <div class="between-concert">
                     <div id="scroll-songs"> 
-                            <div class="flex-song-scroll" id="maj-title">
-                                <div class="player-song"></div>
-                                <div class="title-songs"><p>TITRE</p></div>
-                                <div class="album-songs"><p>album</p></div>
-                                <div class="duree-songs"><p>D.</p></div>
-                             </div>
-                             {{range $ID,$v:= $deezer.ListSong.Data}}
-                            <div class="flex-song-scroll">
-                                <div class="player-song"><img style="cursor: pointer;" onclick="javascript:playMusic('{{(index $deezer.ListSong.Data $ID).ID}}')" src="/static/images/play_circle.svg"/></div>
-                                <div class="title-songs"><p>{{(index $deezer.ListSong.Data $ID).TitleShort}}</p></div>
-                                <div class="album-songs"><p>{{(index $deezer.ListSong.Data $ID).Album.Title}}</p></div>
-                                <div class="duree-songs"><p>{{(index $deezer.ListSong.Data $ID).DurationMinute}}</p></div>
-                            </div>
-                            {{end}}
+                        <div class="flex-song-scroll" id="maj-title">
+                            <div class="player-song"></div>
+                            <div class="title-songs"><p>TITRE</p></div>
+                            <div class="album-songs"><p>album</p></div>
+                            <div class="duree-songs"><p>D.</p></div>
+                        </div>
+                        {{range $ID,$v:= $deezer.ListSong.Data}}
+                        <div class="flex-song-scroll">
+                            <div class="player-song"><img style="cursor: pointer;" onclick="javascript:playMusic('{{(index $deezer.ListSong.Data $ID).ID}}')" src="/static/images/play_circle.svg"/></div>
+                            <div class="title-songs"><p>{{(index $deezer.ListSong.Data $ID).TitleShort}}</p></div>
+                            <div class="album-songs"><p>{{(index $deezer.ListSong.Data $ID).Album.Title}}</p></div>
+                            <div class="duree-songs"><p>{{(index $deezer.ListSong.Data $ID).DurationMinute}}</p></div>
+                        </div>
+                        {{end}}
                     </div>
-                </div>
-                
-            </div>
-    
+                </div>              
+            </div>  
             <div class="container-albums">
                 <h1 class="albums-title">Les Albums</h1>
                 <div class="container">
                     <div class="carousel">
                         {{range $ID,$v := $deezer.ListAlbum}}                        
-                            <div class="item" onclick="javascript:playAlbum('{{(index $deezer.ListAlbum $ID).ID}}')" style="cursor: pointer; background:url('{{(index $deezer.ListAlbum $ID).CoverURL}}');">
-                                <h1>{{(index $deezer.ListAlbum $ID).Title}}</h1>
-                            </div> 
+                        <div class="item" onclick="javascript:playAlbum('{{(index $deezer.ListAlbum $ID).ID}}')" style="cursor: pointer; background:url('{{(index $deezer.ListAlbum $ID).CoverURL}}');">
+                            <h1>{{(index $deezer.ListAlbum $ID).Title}}</h1>
+                        </div> 
                         {{end}}
                     </div>
                 </div>
@@ -179,17 +171,16 @@
 
     <script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
     <script>
-         DZ.init({
-        appId  : '8',
-        channelUrl : 'http://localhost:8080/channel.html',
-        player : {
-            container : 'player',
-            layout: 'dark',
-            onload : function(){
+        DZ.init({
+            appId  : '8',
+            channelUrl : 'http://localhost:8080/channel.html',
+            player : {
+                container : 'player',
+                layout: 'dark',
+                onload : function(){
+                }
             }
-        }
-    });
+        });
     </script>  
-
 </body>
 </html>
