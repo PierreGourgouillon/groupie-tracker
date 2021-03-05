@@ -159,32 +159,6 @@
         <div id="mapID"></div>
     </div>
 
-    <script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
-    <script>
-        function playMusic(ID) {
-            var table = []
-            var f = table.unshift(ID);
-            DZ.player.playTracks(table);
-        }
-
-        function playAlbum(ID) {
-            IDAlbum = parseInt(ID);
-            DZ.player.playAlbum(IDAlbum);
-        }
-
-        DZ.init({
-            appId  : '8',
-            channelUrl : 'http://localhost:8080/channel.html',
-            player : {
-                container : 'player',
-                layout: 'dark',
-                onload : function(){
-                    //DZ.player.playTracks([7543848]);
-                }
-            }
-        });
-    </script>
-
     <div class="footer-artists">
         <footer>
             <div class="social-network-link">
@@ -203,6 +177,20 @@
                 <p>Créé par Lucas et Pierre</p>
             </div>
         </footer>
-    </div>  
+    </div>
+
+    <script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
+    <script>
+         DZ.init({
+        appId  : '8',
+        channelUrl : 'http://localhost:8080/channel.html',
+        player : {
+            container : 'player',
+            layout: 'dark',
+            onload : function(){
+            }
+        }
+    });
+    </script>  
 </body>
 </html>
