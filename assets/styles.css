@@ -31,6 +31,13 @@ a:hover, a:active, a:visited {
 
 }
 
+@font-face {
+    font-family: "montserrat";
+    src: url('Montserrat-Regular.ttf') format('ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
 @media screen and (max-width:1700px){
     html,body{
         zoom: 90%;
@@ -556,10 +563,11 @@ header div {
     position: relative;
     bottom: 30px;
     text-align: center;
-    font-size: 20px;
+    font-size: 22px;
     color: white;
     z-index: 2;
     cursor: pointer;
+    font-family: "montserrat";
 }
 
 .allLocations {
@@ -576,11 +584,12 @@ header div {
 
 .allLocations p {
     position: relative;
-    bottom: 30px;
+    bottom: 29px;
     text-align: center;
-    font-size: 20px;
+    font-size: 22px;
     color: white;
     z-index: 2;
+    font-family: "montserrat";
 }
 
 .form-search{
@@ -780,22 +789,11 @@ header div {
     font-size: 13px;
     color: #F98718;
     bottom: 15px;
+    font-family: "montserrat"
   }
 
   .flip-card-front img{
     border-radius: 15px;
-  }
-
-  .font-gibson {
-    font-family: "gisbon_demodemo";
-  }
-
-  .purple {
-      color: #3A1757;
-  }
-
-  .orange {
-      color: #F98718;
   }
 
 .flex-box{
@@ -913,9 +911,38 @@ header div {
     font-family: "gisbon_demodemo";
 }
 
+.player {
+    background-color: white;
+    width: 75%;
+    height: 200px;
+    margin-top: -6%;
+    margin-left: 12.5%;
+}
+
+#title-player {
+    height: 72px;
+    font-family: "gisbon_demodemo";
+    color: #3A1757;
+    text-shadow: 5px 5px #F98718;
+    font-size: 70px;
+    z-index: 2;
+    position: relative;
+    bottom: 70px;
+    left: 50px;
+}
+
+.player-container {
+    width: 95%;
+    height: 130px;
+    margin-left: 2.5%;
+    z-index: 1;
+    position: relative;
+    top: -75px;
+}
+
 .position-flex{
     position: relative;
-    bottom: 230px;
+    bottom: 170px;
 }
 
 .flex-artists{
@@ -965,7 +992,7 @@ header div {
 
 
 #location-concert {
-    font-family: "gisbon_demodemo";
+    font-family: "montserrat";
     font-size: 20px;
     text-transform: capitalize;
     color: #F98718;
@@ -982,7 +1009,7 @@ header div {
 }
 
 .container-date-concerts p {
-    font-family: "gisbon_demodemo";
+    font-family: "montserrat";
     color: #3A1757;
     font-size: 25px;
 }
@@ -1190,7 +1217,7 @@ text-align: center;
 #location {
     margin-top: 0;
     font-size: 23px;
-    font-family: "gisbon_demodemo";
+    font-family: "montserrat";
     color:#F98718 ;
 }
 

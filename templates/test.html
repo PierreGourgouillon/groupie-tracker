@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="/static/file.js"></script>
+    <title>Groupie Tracker</title>
+</head>
+<body>
+
+    <header>
+        <div class="logo-ynov">
+            <a href="/groupie/"><img src="/static/images/ynov_white.png" alt="logo de Ynov"></a>
+        </div>
+
+        <div class="random-artist">
+            <img onclick="javascript:randomArtist();" src="/static/images/Dice.png">
+            <p onclick="javascript:randomArtist();">Artiste aléatoire</p>
+        </div>
+
+        <div class="allLocations">
+            <a href="/concertLocation/">
+                <img src="/static/images/WorldMapWhite.svg" alt="World Map">
+                <p>Villes</p>
+            </a>
+        </div>
+    </header>
+
+    <div id="dz-root" style="height: 300px; width: 500px;"></div>
+    <div id="player" style="width:100%;" align="center"></div>
+<script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
+<script>
+	DZ.init({
+		appId  : '8',
+		channelUrl : 'http://localhost:8080/test/channel.html',
+        player : {
+			container: 'player',
+			width : 800,
+			height : 300,
+			onload : function(){
+                DZ.player.playAlbum(302127);
+            }
+		}
+	});
+</script>
+
+</body>
+</html>
