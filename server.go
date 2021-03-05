@@ -579,7 +579,7 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	nbrPath, err2 := strconv.Atoi(r.URL.Path[8:])
-	if err2 != nil {
+	if err2 != nil || nbrPath > 52 {
 		if r.URL.Path[8:12] == "city" {
 			nbrPathCity, err3 := strconv.Atoi(r.URL.Path[12:])
 			if err3 != nil {
@@ -607,12 +607,10 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 			tmplCity.Execute(w, selectedCity)
 			return
 
-		} else if r.URL.Path[8:12] == "deezer" {
-
-		} else {
-			errorHandler(w, r)
-			return
 		}
+
+		errorHandler(w, r)
+		return
 	}
 
 	var ArtistTracker ArtistAPI
@@ -804,7 +802,6 @@ func errorHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func menuPage(w http.ResponseWriter, r *http.Request) {
-
 	if r.URL.Path != "/" {
 		errorHandler(w, r)
 		return
@@ -845,6 +842,7 @@ func deezerPage(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, artistInDeezer)
 }
 
+// Deezer -> Crée l'artiste via l'API Deezer
 func Deezer(selectedArtist *pageArtist, artistInSearchBar string) {
 	var nameArtist string
 
@@ -859,6 +857,7 @@ func Deezer(selectedArtist *pageArtist, artistInSearchBar string) {
 	ListAlbum(selectedArtist)
 }
 
+// ListAlbum -> Crée la liste des albums de l'artiste
 func ListAlbum(selectedArtist *pageArtist) {
 	var table []string
 	var tableau []Album
