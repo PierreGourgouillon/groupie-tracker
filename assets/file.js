@@ -237,3 +237,16 @@ function displayFilter(thingId) {
         flexbox[0].style.marginTop = "3%";
     }
 }
+
+/************** player deezer ****************/
+
+function playMusic(ID) {
+    var table = []
+    var f = table.unshift(ID);
+    DZ.player.playTracks(table);
+}
+
+function playAlbum(ID) {
+    IDAlbum = parseInt(ID);
+    DZ.player.playAlbum(IDAlbum);
+}

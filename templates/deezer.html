@@ -99,15 +99,21 @@
             <ul>
                 {{range $ID,$v:= $deezer.ListSong.Data}}
                 {{if le $ID 2}}
-                <li>
-                    <a href="{{(index $deezer.ListSong.Data $ID).LinkURL}}" target="_blank">
-                        <img src="{{(index $deezer.ListSong.Data $ID).Album.CoverURL}}">
-                        <h2>{{(index $deezer.ListSong.Data $ID).TitleShort}}</h2>
-                    </a>
+                <li onclick="javascript:playMusic('{{(index $deezer.ListSong.Data $ID).ID}}')" style="cursor: pointer;">
+                    <img src="{{(index $deezer.ListSong.Data $ID).Album.CoverURL}}">
+                    <h2>{{(index $deezer.ListSong.Data $ID).TitleShort}}</h2>
                 </li>
                 {{end}}
                 {{end}}
             </ul>   
+        </div>
+    </div>
+
+    <div class="player">
+        <h1 id="title-player">Lecteur</h1>
+        <div class="player-container">
+            <div id="dz-root" style="display: none;"></div>
+            <div id="player"></div>
         </div>
     </div>
 
@@ -125,7 +131,7 @@
                              </div>
                              {{range $ID,$v:= $deezer.ListSong.Data}}
                             <div class="flex-song-scroll">
-                                <div class="player-song" style="cursor: pointer;"><img src="/static/images/play_circle.svg"/></div>
+                                <div class="player-song"><img style="cursor: pointer;" onclick="javascript:playMusic('{{(index $deezer.ListSong.Data $ID).ID}}')" src="/static/images/play_circle.svg"/></div>
                                 <div class="title-songs"><p>{{(index $deezer.ListSong.Data $ID).TitleShort}}</p></div>
                                 <div class="album-songs"><p>{{(index $deezer.ListSong.Data $ID).Album.Title}}</p></div>
                                 <div class="duree-songs"><p>{{(index $deezer.ListSong.Data $ID).DurationMinute}}</p></div>
@@ -141,7 +147,7 @@
                 <div class="container">
                     <div class="carousel">
                         {{range $ID,$v := $deezer.ListAlbum}}                        
-                            <div class="item" style="background:url('{{(index $deezer.ListAlbum $ID).CoverURL}}') ;">
+                            <div class="item" onclick="javascript:playAlbum('{{(index $deezer.ListAlbum $ID).ID}}')" style="cursor: pointer; background:url('{{(index $deezer.ListAlbum $ID).CoverURL}}');">
                                 <h1>{{(index $deezer.ListAlbum $ID).Title}}</h1>
                             </div> 
                         {{end}}
@@ -169,6 +175,21 @@
                 <p>Créé par Lucas et Pierre</p>
             </div>
         </footer>
-    </div>  
+    </div>
+
+    <script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
+    <script>
+         DZ.init({
+        appId  : '8',
+        channelUrl : 'http://localhost:8080/channel.html',
+        player : {
+            container : 'player',
+            layout: 'dark',
+            onload : function(){
+            }
+        }
+    });
+    </script>  
+
 </body>
 </html>
