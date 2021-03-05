@@ -1403,13 +1403,10 @@ text-align: center;
 }
 
 .follower{
-    
     text-align: center;
     flex-basis:25%;
     margin-top: 27px;
 }
-
-
 
 .size-flex-info-artist{
     flex-basis: 75%;
@@ -1417,6 +1414,16 @@ text-align: center;
 
 .size-flex-info-artist p{
     margin-top: 8%;
+    max-width: 80%;
+    margin-left: 20px;
+}
+
+#size-text{
+    font-size: 20px;
+    flex-basis: 75%;
+}
+
+#size-text p{
     max-width: 80%;
     margin-left: 20px;
 }

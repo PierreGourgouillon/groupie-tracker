@@ -61,34 +61,33 @@
             {{end}}
             {{end}}
         </div>
+
         <div id="position-text-artist">
             {{range $f,$g := $deezer.DeezerArtist.Data}}
             {{if eq $f 0}}
             <h1>{{(index $deezer.DeezerArtist.Data $f).Name}}</h1>
             {{end}}
-            {{end}}
+            {{end}}        
             <div id="info-artist-deezer">
             
-                    <div class="size-flex-info-artist">
-                        {{range $ID,$v := $deezer.DeezerArtist.Data}}
+                <div class="size-flex-info-artist">
+                    {{range $ID,$v := $deezer.DeezerArtist.Data}}
                     {{if eq $ID 0}}
                     <p>Nombre de projets réalisés: {{(index $deezer.DeezerArtist.Data $ID).NbAlbum}}</p>{{end}}{{end}}  
-                    </div>
+                </div>
 
-                    <div class="follower">
-                        {{range $ID,$v := $deezer.DeezerArtist.Data}}
-                            {{if eq $ID 0}}
-                        <a href="{{(index $deezer.DeezerArtist.Data $ID).Link}}" target="_blank">
-                            <img id="logo-deezer" src="/static/images/deezer.png">
-                        </a>
-                        <p> {{(index $deezer.DeezerArtist.Data $ID).NbFan}} followers</p>
-                        {{end}}
-                        {{end}}
-                    </div>
-                
+                <div class="follower">
+                    {{range $ID,$v := $deezer.DeezerArtist.Data}}
+                    {{if eq $ID 0}}
+                    <a href="{{(index $deezer.DeezerArtist.Data $ID).Link}}" target="_blank">
+                    <img id="logo-deezer" src="/static/images/deezer.png">
+                    </a>
+                    <p> {{(index $deezer.DeezerArtist.Data $ID).NbFan}} followers</p>
+                    {{end}}
+                    {{end}}
+                </div>
             </div>
-        </div>
-        
+        </div>  
     </div>
 
     <div>
@@ -129,7 +128,7 @@
                                 <div class="player-song" style="cursor: pointer;"><img src="/static/images/play_circle.svg"/></div>
                                 <div class="title-songs"><p>{{(index $deezer.ListSong.Data $ID).TitleShort}}</p></div>
                                 <div class="album-songs"><p>{{(index $deezer.ListSong.Data $ID).Album.Title}}</p></div>
-                                <div class="duree-songs"><p>{{(index $deezer.ListSong.Data $ID).Duration}}</p></div>
+                                <div class="duree-songs"><p>{{(index $deezer.ListSong.Data $ID).DurationMinute}}</p></div>
                             </div>
                             {{end}}
                     </div>

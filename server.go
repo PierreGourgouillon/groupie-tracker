@@ -103,7 +103,8 @@ type ListSong struct {
 		Rank           int    `json:"rank"`
 		ExplicitLyrics bool   `json:"explicit_lyrics"`
 		Preview        string `json:"preview"`
-		Album          Album  `json:"album"`
+		DurationMinute string
+		Album          Album `json:"album"`
 	} `json:"data"`
 }
 
@@ -636,7 +637,7 @@ func artistPage(w http.ResponseWriter, r *http.Request) {
 	}
 	var selectedArtistPointer *pageArtist
 	selectedArtistPointer = &selectedArtist
-	Deezer(selectedArtistPointer, "")
+	deezer(selectedArtistPointer, "")
 
 	tmpl.Execute(w, selectedArtistPointer)
 }
@@ -837,28 +838,50 @@ func deezerPage(w http.ResponseWriter, r *http.Request) {
 
 	deezerArtist := r.URL.Path[8:]
 
-	Deezer(artistInDeezer, deezerArtist)
+	deezer(artistInDeezer, deezerArtist)
+	conversionDeezer(artistInDeezer)
 
 	tmpl.Execute(w, artistInDeezer)
 }
 
+func conversionDeezer(selectedArtist *pageArtist) {
+	var conversion string
+	durationSong := 0
+	minutes := 0
+	secondes := 0
+	for i := 0; i < len(selectedArtist.Deezer.ListSong.Data); i++ {
+		durationSong = selectedArtist.Deezer.ListSong.Data[i].Duration
+		minutes = durationSong / 60
+		secondes = durationSong % 60
+		if secondes < 10 {
+			conversion = strconv.Itoa(minutes) + ":" + "0" + strconv.Itoa(secondes)
+			selectedArtist.Deezer.ListSong.Data[i].DurationMinute = conversion
+
+		} else {
+			conversion = strconv.Itoa(minutes) + ":" + strconv.Itoa(secondes)
+			selectedArtist.Deezer.ListSong.Data[i].DurationMinute = conversion
+		}
+
+	}
+}
+
 // Deezer -> Crée l'artiste via l'API Deezer
-func Deezer(selectedArtist *pageArtist, artistInSearchBar string) {
+func deezer(selectedArtist *pageArtist, artistInSearchBar string) {
 	var nameArtist string
 
 	if artistInSearchBar != "" {
 		nameArtist = strings.Replace(artistInSearchBar, " ", "%20", -1)
 	} else {
-		nameArtist = SearchNameID(selectedArtist.SpecialData.Artists[0].ID)
+		nameArtist = searchNameID(selectedArtist.SpecialData.Artists[0].ID)
 	}
 
-	URLTracklist := SearchArtistDeezer(nameArtist, selectedArtist)
+	URLTracklist := searchArtistDeezer(nameArtist, selectedArtist)
 	unmarshallJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
-	ListAlbum(selectedArtist)
+	listAlbum(selectedArtist)
 }
 
-// ListAlbum -> Crée la liste des albums de l'artiste
-func ListAlbum(selectedArtist *pageArtist) {
+// listAlbum -> Crée la liste des albums de l'artiste
+func listAlbum(selectedArtist *pageArtist) {
 	var table []string
 	var tableau []Album
 	var isFirstAlbum bool = true
@@ -885,7 +908,7 @@ func ListAlbum(selectedArtist *pageArtist) {
 }
 
 //SearchNameID -> Trouve le nom pour l'id et le modifie
-func SearchNameID(ID int) string {
+func searchNameID(ID int) string {
 	for _, data := range Tracker.Artists {
 		if data.ID == ID {
 			nameModif := strings.Replace(data.Name, " ", "%20", -1)
@@ -896,7 +919,7 @@ func SearchNameID(ID int) string {
 }
 
 //SearchArtistDeezer -> Trouve l'artiste dans l'API Deezer
-func SearchArtistDeezer(name string, StructPageArtist *pageArtist) string {
+func searchArtistDeezer(name string, StructPageArtist *pageArtist) string {
 	var urlPart1 string = "https://api.deezer.com/search/artist/?q="
 
 	var url = urlPart1 + name

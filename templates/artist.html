@@ -67,26 +67,30 @@
             {{end}}
             {{end}}
         </div>
+        
         <div id="position-text-artist">
             <h1>{{(index $ArtAPI.Artists 0).Name }}</h1>
-            <div>
-                <p>Première apparition : {{(index $ArtAPI.Artists 0).CreationDate}}</p>
-                <p>Date du premier projet: {{(index $ArtAPI.Artists 0).FirstAlbum}}</p>
-                {{range $ID,$v := $deezer.DeezerArtist.Data}}
-                {{if eq $ID 0}}
-                <p>Nombre de projets réalisés: {{(index $deezer.DeezerArtist.Data $ID).NbAlbum}}</p>{{end}}{{end}}
+
+            <div id="info-artist-deezer">
+                <div id="size-text">
+                    <p>Première apparition : {{(index $ArtAPI.Artists 0).CreationDate}}</p>
+                    <p>Date du premier projet: {{(index $ArtAPI.Artists 0).FirstAlbum}}</p>
+                    {{range $ID,$v := $deezer.DeezerArtist.Data}}
+                    {{if eq $ID 0}}
+                    <p>Nombre de projets réalisés: {{(index $deezer.DeezerArtist.Data $ID).NbAlbum}}</p>{{end}}{{end}}    
+                </div>
+
+                <div class="follower">
+                    {{range $ID,$v := $deezer.DeezerArtist.Data}}
+                        {{if eq $ID 0}}
+                    <a href="{{(index $deezer.DeezerArtist.Data $ID).Link}}" target="_blank">
+                        <img id="logo-deezer" src="/static/images/deezer.png">
+                    </a>
+                    <p> {{(index $deezer.DeezerArtist.Data $ID).NbFan}} followers</p>
+                    {{end}}
+                    {{end}}
+                </div> 
             </div>
-            
-        </div>
-        <div class="follower">
-            {{range $ID,$v := $deezer.DeezerArtist.Data}}
-                {{if eq $ID 0}}
-            <a href="{{(index $deezer.DeezerArtist.Data $ID).Link}}" target="_blank">
-                <img id="logo-deezer" src="/static/images/deezer.png">
-            </a>
-            <p> {{(index $deezer.DeezerArtist.Data $ID).NbFan}} followers</p>
-            {{end}}
-            {{end}}
         </div>
     </div>
 
@@ -130,8 +134,8 @@
                             <ul class="container-date-concerts">
                                 <p>Dates :</p>
                                 {{ range index ( index $ArtAPI.Relation ) $city }}
-                                    <li id="date-concert">{{ . }}</li>
-                                {{ end }}
+                                    <li id="date-concert">{{.}}</li>
+                                {{end}}
                             </ul>
                         {{end}}
                     </div>
