@@ -104,7 +104,8 @@ function loadMap(lat, lon) {
                 var coords = JSON.parse(this.responseText);
                 /* Ajoute à la map le marqueur personnalisé aux lieux des concerts */
                 let pin = L.marker([coords[0].lat, coords[0].lon], {icon: pinDesign}).addTo(map);
-                pin.bindPopup(geoLocation);
+                var textPopup = transformTextPopup(geoLocation)
+                pin.bindPopup(textPopup);
 
                 pin.on('click', function(e){
                     map.setView(e.latlng, 13);
@@ -161,7 +162,7 @@ function loadMapCity(city) {
     request.send();
 }
 
-/* Javascript : Transforme l'orthographe des lieux des concerts afin qu'ils soient conforment pour être utilisés par l'API */
+/* Javascript : Transforme la syntaxe des lieux des concerts afin qu'ils soient conforment pour être utilisés par l'API */
 function transformText(text) {
     var newText = "";
     for(i = 0; i < text.length; i++) {
@@ -174,6 +175,15 @@ function transformText(text) {
         }
     }
     return newText;
+}
+
+/* Javascript : Transforme la syntaxe des lieux des concerts pour qu'ils soent plus propres dans les popups */
+function transformTextPopup(text) {
+    table = text.split("-");
+    for (let i = 0; i < table.length; i++) {
+        table[i] = table[i][0].toUpperCase() + table[i].substr(1);
+    }
+    return table.join(" ");
 }
 
 //Javascript : évite d'appuyer sur enter dans le formulaire de filtre
