@@ -664,36 +664,30 @@ func flagCountryFilter(locations []string) []string {
 			continue
 		}
 		location = location[idxPipe+2:]
-		if location == "usa" {
+		switch location {
+		case "usa":
 			TableFlag = append(TableFlag, "us")
-			continue
-		} else if location == "us" {
+		case "us":
 			TableFlag = append(TableFlag, "us")
-			continue
-		} else if location == "uk" {
+		case "uk":
 			TableFlag = append(TableFlag, "gb")
-			continue
-		} else if location == "netherlands antilles" {
+		case "netherlands antilles":
 			TableFlag = append(TableFlag, "nl")
-			continue
-		} else if location == "czech republic" {
+		case "czech republic":
 			TableFlag = append(TableFlag, "cz")
-			continue
-		} else if location == "brasil" {
+		case "brasil":
 			TableFlag = append(TableFlag, "br")
-			continue
-		} else if location == "philippine" {
+		case "philippine":
 			TableFlag = append(TableFlag, "ph")
-			continue
-		} else if location == "korea" {
+		case "korea":
 			TableFlag = append(TableFlag, "kr")
-			continue
-		}
-		for countryCode, value := range flagCountry {
-			value = strings.ToLower(value)
-			if value == location {
-				TableFlag = append(TableFlag, countryCode)
-				break
+		default:
+			for countryCode, value := range flagCountry {
+				value = strings.ToLower(value)
+				if value == location {
+					TableFlag = append(TableFlag, countryCode)
+					break
+				}
 			}
 		}
 	}
