@@ -471,6 +471,7 @@ footer{
     height: 270px;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+    background-size: cover;
 }
 
 .card-presentation section{
@@ -554,7 +555,7 @@ header div {
     position: relative;
     bottom: 30px;
     text-align: center;
-    font-size: 22px;
+    font-size: 19px;
     color: white;
     z-index: 2;
     cursor: pointer;
@@ -577,7 +578,7 @@ header div {
     position: relative;
     bottom: 29px;
     text-align: center;
-    font-size: 22px;
+    font-size: 19px;
     color: white;
     z-index: 2;
     font-family: "montserrat";

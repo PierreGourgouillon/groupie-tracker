@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
     <script type="text/javascript" src="/static/file.js"></script>
     <title>Groupie Tracker</title>
 </head>
@@ -154,25 +155,44 @@
         <div id="mapID"></div>
     </div>
 
-    <div class="footer-artists">
-        <footer>
-            <div class="social-network-link">
-                <h2>Nous contacter</h2>
-                <div>
-                    <a href="https://www.linkedin.com/in/pierre-gourgouillon-a506391aa/" target="_blank"><ul><img src="/static/images/linkedin.png">Pierre Gourgouillon</ul></a>
-                    <a href="#" target="_blank"><ul><img src="/static/images/linkedin.png"> Lucas Barthelemy</ul></a>
-                </div> 
-                <div>
-                    <ul><img src="/static/images/email.png">Pierre_gourgouillon@hotmail.com</ul>
-                    <ul><img src="/static/images/email.png">lucasbart@hotmail.fr</ul>
+    <div class="espacement"></div>
+    <footer>
+        <div class="flex-footer">
+            <div class="title-footer">
+                <section>
+                    <h1 id="groupie">Groupie</h1>
+                    <h1>Tracker</h1>
+                </section>
+            </div>
+            <div class="links">
+                <section>
+                    <h1>Liens utiles</h1>
+                </section>
+
+                <div class="flex-link">
+                    <li><a>Groupie</a></li>
+                    <li><a>Groupie</a></li>
+                    <li><a>Groupie</a></li>
+                    <li><a>Groupie</a></li>
                 </div>
             </div>
-            <div class="logo-footer">
-                <img src="/static/images/logo_ynov.svg">
-                <p>Créé par Lucas et Pierre</p>
+            <div class="contact">
+                <section>
+                    <h1>Contact</h1>
+                </section>
+                <div class="flex-contact">
+                    <ul class="email"><img src="/static/images/email.png">Pierre_gourgouillon@hotmail.com</ul>
+                    <ul class="linkedin">Pierre Gourgouillon <img src="/static/images/linkedin.png"></ul>
+                    <ul class="email"><img src="/static/images/email.png">Lucas Barthélémy@hotmail.com</ul>
+                    <ul class="linkedin">Lucas Barthélémy <img src="/static/images/linkedin.png"></ul>
+                </div>
             </div>
-        </footer>
-    </div>
+        </div>
+
+        <div class="logo-footer">
+          <img src="/static/images/logo_ynov.svg">
+        </div>  
+    </footer>
 
     <script src="https://e-cdns-files.dzcdn.net/js/min/dz.js"></script>
     <script>
