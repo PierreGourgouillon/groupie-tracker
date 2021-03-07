@@ -3,13 +3,13 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
+	"text/template"
 )
 
 /******************************************TOUTES LES STRUCTURES*****************************************/
@@ -776,7 +776,11 @@ func main() {
 	http.HandleFunc("/concertLocation/", concertLocationPage)
 	http.HandleFunc("/cityConcert/", cityConcertPage)
 	http.HandleFunc("/deezer/", deezerPage)
-	http.ListenAndServe(":8080", nil)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	http.ListenAndServe(":"+port, nil)
 }
 
 /******************************************TRANSFORMATION SYNTHAXIQUE******************************************/

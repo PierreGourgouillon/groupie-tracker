@@ -1,0 +1,15 @@
+{
+    "name": "Heroku Deployment Test",
+    "description": "Deploy your project instantly",
+    "keywords": [
+      "go",
+      "ytrack"
+    ],
+    "website": "https://git.ytrack.learn.ynov.com/ERUAUD/heroku-deployment",
+    "repository": "https://git.ytrack.learn.ynov.com/ERUAUD/heroku-deployment",
+    "buildpacks": [
+        {
+          "url": "https://github.com/heroku/heroku-buildpack-go"
+        }
+    ]
+  }
