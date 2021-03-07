@@ -860,6 +860,12 @@ func deezerPage(w http.ResponseWriter, r *http.Request) {
 	deezerArtist := r.URL.Path[8:]
 
 	deezer(artistInDeezer, deezerArtist)
+
+	if len(artistInDeezer.Deezer.ListAlbum) == 0 {
+		errorHandler(w, r)
+		return
+	}
+
 	conversionDeezer(artistInDeezer)
 
 	tmpl.Execute(w, artistInDeezer)
@@ -881,6 +887,14 @@ func searchArtistDeezer(name string, StructPageArtist *pageArtist) string {
 	var urlPart1 string = "https://api.deezer.com/search/artist/?q="
 
 	var url = urlPart1 + name
+
+	a, _ := http.Get(url)
+
+	b, _ := ioutil.ReadAll(a.Body)
+
+	if len(b) == 21 {
+		return ""
+	}
 
 	unmarshallJSON(url, &StructPageArtist.Deezer.DeezerArtist)
 	unmarshallJSON(url, &StructPageArtist.Deezer.DeezerArtist)
@@ -907,8 +921,13 @@ func deezer(selectedArtist *pageArtist, artistInSearchBar string) {
 	}
 
 	URLTracklist := searchArtistDeezer(nameArtist, selectedArtist)
-	unmarshallJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
-	listAlbum(selectedArtist)
+
+	if URLTracklist != "" {
+		unmarshallJSON(URLTracklist, &selectedArtist.Deezer.ListSong) //Range dans la structure ListSong, tous les sons
+		listAlbum(selectedArtist)
+		return
+	}
+
 }
 
 //listAlbum -> Crée la liste des albums de l'artiste
