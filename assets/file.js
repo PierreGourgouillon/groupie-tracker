@@ -5,7 +5,7 @@ function randomArtist() {
     /* Choisi un nombre entier entre 1 et 52 */
     var random = Math.floor(Math.random()*52)+1;
     /* Renvoie sur la page de l'artiste correspondant à l'id */
-    document.location.href="http://localhost:8080/artist/"+random;
+    document.location.href="/artist/"+random;
 }
 
 /************* Search Bar *************/
@@ -22,17 +22,17 @@ function searchBar() {
             /* Récupère le data-id de l'option correspondante */
             var ID = valData[i].dataset.id;
             /* Renvoie sur la page de l'artiste correspondant à l'id */
-            document.location.href="http://localhost:8080/artist/"+ID;
+            document.location.href="/artist/"+ID;
             return;
         }
     }
     /* Renvoie sur la page erreur 404 */
-    document.location.href="http://localhost:8080/deezer/"+ valInput.toLowerCase();
+    document.location.href="/deezer/"+ valInput.toLowerCase();
 }
 
 function searchBarArtistdeezer(){
     var valData = document.getElementById('ArtistDeezerInput').value
-    document.location.href="http://localhost:8080/deezer/"+ valData.toLowerCase();
+    document.location.href="/deezer/"+ valData.toLowerCase();
 }
 
 /* Javascript : Transforme les données de la datalist pour les recherches tapéees à la main
@@ -51,27 +51,12 @@ function transformSearch(text) {
 
 /************* Map sur la page artist.html *************/
 
-/* Javascript : Centrage de la map en fonction des options de l'utilisateur */
-function mapConcert() {
-    let lat = 0;
-    let lon = 0;
-    /* Si la geolocalisation est activée pour le navigateur utilisé */
-    if('geolocation' in navigator) {
-        /* Prend la position de l'appareil utilisé et charge la map centrée sur cette position */
-        navigator.geolocation.getCurrentPosition(position => {
-            loadMap(position.coords.latitude, position.coords.longitude)
-        });
-    /* Sinon charge la map centrée sur Paris */
-    } else {
-        loadMap(48.85341, 2.34880);
-    }
-}
 
 /* Javascript : Création et chargement de la map */
-function loadMap(lat, lon) {
-    console.log(lat, lon);
+function loadMap() {
+    console.log();
     /* Créer la map */
-    let map = L.map('mapID').setView([lat, lon], 3);
+    let map = L.map('mapID').setView([48.85341, 2.34880], 3);
 
     /* Ajoute à la map les cartes sur openstreetmap */
     L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
@@ -227,7 +212,7 @@ function checkboxHiddencity(){
 /************* concertLocation *************/
 function goToConcert(location) {
     console.log(location);
-    document.location.href="http://localhost:8080/artist/"+location;
+    document.location.href="http://localhost:5000/artist/"+location;
 }
 
 /************** filter *********************/
