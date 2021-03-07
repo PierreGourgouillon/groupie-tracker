@@ -987,6 +987,7 @@ header div {
     display: flex;
     flex-wrap: wrap;
     position: relative;
+    /* width: 100%; */
 }
 
 .container-concerts{
@@ -1006,11 +1007,12 @@ header div {
 }
 
 .between-concerts {
+    width: 100%;
     background-color: white;
     height: 499px;
     box-shadow: 2px 2px 2px grey;
-    display: grid;
-    grid-template: 499px / 50% 50%;
+    display: flex;
+    flex-direction: row;
 }
 
 .between-concert{
@@ -1019,16 +1021,16 @@ header div {
 }
 
 .container-location-concerts {
-    grid-area: 1/1/1/1;
-    width: auto;
     height: 50px;
 }
 
 .flex-location-concerts {
+    width: 50%;
     margin-top: 4%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+    flex-basis: 50%;
     text-align: center;
     color: black;
 }
@@ -1083,7 +1085,7 @@ header div {
     opacity: 1;
 }
 
-#location-concert {
+.geocities {
     font-family: "montserrat";
     font-size: 20px;
     text-transform: capitalize;
@@ -1092,15 +1094,13 @@ header div {
 }
 
 .container-date-concerts {
-    grid-area: 1/2/1/2;
-    position: absolute;
-    top: 30%;
-    left: 30%;
+    text-align: center;
+    width: 50%;
     display: none;
     z-index: 2;
 }
 
-.container-date-concerts p {
+.container-date-concerts ul p {
     font-family: "montserrat";
     color: #3A1757;
     font-size: 25px;
@@ -1112,18 +1112,14 @@ header div {
     font-size: 18px;
 }
 
-.container-location-concerts:hover + .container-date-concerts {
-    display: flex;
-    flex-direction: column;
-}
-
 .container-location-concerts:hover {
     background-color: #F98718;
 }
 
-.container-location-concerts:hover #location-concert {
+/* .container-location-concerts:hover + #location-concert {
     color: #3A1757;
-}
+    z-index: 3;
+} */
 
 .container-albums{
     flex-basis:  47%;
