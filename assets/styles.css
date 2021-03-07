@@ -453,11 +453,13 @@ footer{
 }
 
 .card-presentation{
-    background-color: grey;
+    background-color: rgb(44, 42, 42);
     width: 400px;
     height: 500px;
     border-radius: 6px;
-    color: black;
+    color: white;
+    border: 1px solid rgb(44, 42, 42);
+    box-shadow: 4px 4px 4px rgba(128, 128, 128, 0.8);
 }
 
 @media screen and (min-width:700px){
@@ -471,10 +473,19 @@ footer{
     height: 270px;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
-    background-size: cover;
+    background-size: contain;
 }
 
 .card-presentation section{
+    width: 95%;
+    margin-left: 2.5%;
+}
+
+.card-presentation section p{
+    text-align: justify;
+}
+
+.card-presentation section h2{
     text-align: center;
 }
 
@@ -716,6 +727,14 @@ header div {
     height: 450px;
 }
 
+.no-artist{
+    text-align: center;
+}
+
+.no-artist h1{
+    font-family: "montserrat";
+    color: black;
+}
 
 /***************************Menu Card***************************/
 
@@ -1161,6 +1180,7 @@ header div {
     position:relative;
     border-radius: 10px;
     box-shadow: 0 0 10px #dfdfdf;
+    overflow: hidden;
 }
 
 .albums-title{
@@ -1173,18 +1193,6 @@ header div {
     top: 140px;
     left: 50px;
 }
-  
-.item h1{
-    top: 80%;
-    position: absolute;
-    color: white;
-    text-align: center;
-    width: 100%;
-    font-size: 1.2em;
-    color: #F98718;
-    font-family: "gisbon_demodemo";
-  }
-
 
 .background-map{
     background-color: white;
@@ -1369,6 +1377,7 @@ header div {
 
 #info-artist-deezer p{
     display: block;
+    font-family: "montserrat";
 }
 
 #info-artist-deezer{
@@ -1395,13 +1404,18 @@ header div {
 }
 
 .size-flex-info-artist p{
-    margin-top: 8%;
+    margin-top: 2%;
     max-width: 80%;
     margin-left: 20px;
 }
 
+#les-membres{
+    position: relative;
+    bottom: 10px;
+}
+
 #size-text{
-    font-size: 20px;
+    font-size: 18px;
     flex-basis: 75%;
 }
 

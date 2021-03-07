@@ -141,7 +141,6 @@
                     <div class="carousel">
                         {{range $ID,$v := $deezer.ListAlbum}}                        
                         <div class="item" onclick="javascript:playAlbum('{{(index $deezer.ListAlbum $ID).ID}}')" style="cursor: pointer; background:url('{{(index $deezer.ListAlbum $ID).CoverURL}}');">
-                            <h1>{{(index $deezer.ListAlbum $ID).Title}}</h1>
                         </div> 
                         {{end}}
                     </div>
@@ -165,10 +164,10 @@
                 </section>
 
                 <div class="flex-link">
-                    <li><a>Groupie</a></li>
-                    <li><a>Groupie</a></li>
-                    <li><a>Groupie</a></li>
-                    <li><a>Groupie</a></li>
+                    <li><a href="/">Informations</a></li>
+                    <li><a href="/groupie/">Menu</a></li>
+                    <li><a onclick="javascript:randomArtist();">Artiste aléatoire</a></li>
+                    <li><a href="/concertLocation/">Les villes</a></li>
                 </div>
             </div>
             <div class="contact">
@@ -177,9 +176,9 @@
                 </section>
                 <div class="flex-contact">
                     <ul class="email"><img src="/static/images/email.png">Pierre_gourgouillon@hotmail.com</ul>
-                    <ul class="linkedin">Pierre Gourgouillon <img src="/static/images/linkedin.png"></ul>
-                    <ul class="email"><img src="/static/images/email.png">Lucas Barthélémy@hotmail.com</ul>
-                    <ul class="linkedin">Lucas Barthélémy <img src="/static/images/linkedin.png"></ul>
+                    <ul class="linkedin"><a href="https://www.linkedin.com/in/pierre-gourgouillon-a506391aa/" target="_blank">Pierre Gourgouillon </a> <img src="/static/images/linkedin.png"></ul>
+                    <ul class="email"><img src="/static/images/email.png">lucasbart@hotmail.fr</ul>
+                    <ul class="linkedin"><a href="https://www.linkedin.com/in/lucas-barth%C3%A9l%C3%A9my-256679208/" target="_blank">Lucas Barthélémy </a><img src="/static/images/linkedin.png"></ul>
                 </div>
             </div>
         </div>
