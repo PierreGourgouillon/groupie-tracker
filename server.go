@@ -780,6 +780,7 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
+	fmt.Println(port)
 	http.ListenAndServe(":"+port, nil)
 }
 

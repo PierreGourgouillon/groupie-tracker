@@ -5,7 +5,7 @@ function randomArtist() {
     /* Choisi un nombre entier entre 1 et 52 */
     var random = Math.floor(Math.random()*52)+1;
     /* Renvoie sur la page de l'artiste correspondant à l'id */
-    document.location.href="http://localhost:8080/artist/"+random;
+    document.location.href="/artist/"+random;
 }
 
 /************* Search Bar *************/
@@ -22,17 +22,17 @@ function searchBar() {
             /* Récupère le data-id de l'option correspondante */
             var ID = valData[i].dataset.id;
             /* Renvoie sur la page de l'artiste correspondant à l'id */
-            document.location.href="http://localhost:8080/artist/"+ID;
+            document.location.href="/artist/"+ID;
             return;
         }
     }
     /* Renvoie sur la page erreur 404 */
-    document.location.href="http://localhost:8080/deezer/"+ valInput.toLowerCase();
+    document.location.href="/deezer/"+ valInput.toLowerCase();
 }
 
 function searchBarArtistdeezer(){
     var valData = document.getElementById('ArtistDeezerInput').value
-    document.location.href="http://localhost:8080/deezer/"+ valData.toLowerCase();
+    document.location.href="/deezer/"+ valData.toLowerCase();
 }
 
 /* Javascript : Transforme les données de la datalist pour les recherches tapéees à la main
@@ -227,7 +227,7 @@ function checkboxHiddencity(){
 /************* concertLocation *************/
 function goToConcert(location) {
     console.log(location);
-    document.location.href="http://localhost:8080/artist/"+location;
+    document.location.href="http://localhost:5000/artist/"+location;
 }
 
 /************** filter *********************/
