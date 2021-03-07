@@ -109,6 +109,11 @@ footer{
     font-size: 25px;
 }
 
+.flex-link li{
+    cursor: pointer;
+}
+
+
 #groupie{
     margin-right: 120px;
 }
@@ -1382,7 +1387,7 @@ header div {
 
 #info-artist-deezer{
     position: absolute;
-    bottom: 0px;
+    bottom: 64px;
     margin-bottom: 80px;
     background-color: #3A1757;
     width: 60%;

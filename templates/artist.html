@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/static/file.js"></script>
     <title>Groupie Tracker</title>
 </head>
-<body onload="javascript:mapConcert()">
+<body onload="javascript:loadMap()">
 
     <header>
         <div class="logo-ynov">
@@ -65,6 +65,8 @@
             {{end}}
         </div>
         
+        <a href="/groupie/" id="button-back-menu"><h1 class="button-back">Retour</h1></a>
+
         <div id="position-text-artist">
             <h1>{{(index $ArtAPI.Artists 0).Name }}</h1>
             <div id="info-artist-deezer">
