@@ -121,17 +121,21 @@
                 <div class="between-concerts">
                     <div class="flex-location-concerts">
                         {{range $index, $city := (index $ArtAPI.Locations)}}
-                            <div class="container-location-concerts">
-                                <p class="geocities" id="location-concert">{{$city}}</p>
+                            <div class="container-location-concerts" onmouseover="javascript:displayDates('{{$index}}')" onmouseout="javascript:hiddenDates('{{$index}}')">
+                                <p class="geocities" id="{{$index}}-location-concert">{{$city}}</p>
                             </div>
-                            <ul class="container-date-concerts">
-                                <p>Dates :</p>
-                                {{range index ( index $ArtAPI.Relation ) $city}}
-                                <li id="date-concert">{{.}}</li>
-                                {{end}}
-                            </ul>
                         {{end}}
                     </div>
+                    {{range $index, $city := (index $ArtAPI.Locations)}}
+                    <div class="container-date-concerts" id="{{$index}}-dates">
+                        <ul>
+                            <p>Dates :</p>
+                            {{range index ( index $ArtAPI.Relation ) $city}}
+                            <p id="date-concert">{{.}}</p>
+                            {{end}}
+                        </ul>
+                    </div>
+                    {{end}}
                 </div>   
             </div>
             <div class="container-albums">

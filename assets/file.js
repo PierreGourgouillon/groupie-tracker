@@ -258,3 +258,20 @@ function playAlbum(ID) {
     IDAlbum = parseInt(ID);
     DZ.player.playAlbum(IDAlbum);
 }
+
+/************** page artist Les Concerts ****************/
+
+function displayDates(index) {
+    var div = document.getElementById(index+"-dates")
+    var p = document.getElementById(index+"-location-concert")
+    div.style.display = "flex";
+    div.style.flexDirection = "column";
+    p.style.color = "#3A1757"
+}
+
+function hiddenDates(index) {
+    var div = document.getElementById(index+"-dates")
+    var p = document.getElementById(index+"-location-concert")
+    div.style.display = "none";
+    p.style.color = "#F98718"
+}
